@@ -9,9 +9,8 @@ using System.Text;
 
 namespace Hoquei.Data
 {
-    public class HoqueiDB : IdentityDbContext
-    {
-        public class ApplicationUser : IdentityUser
+
+public class ApplicationUser : IdentityUser
         {
 
             /// <summary>
@@ -23,6 +22,18 @@ namespace Hoquei.Data
             ////public int UtilizadorFK { get; set; }
             //public virtual User user { get; set; }
         }
+    /// <summary>
+    /// classe para recolher os dados particulares dos Utilizadores
+    /// vamos deixar de usar o 'IdentityUser' e começar a usar este
+    /// A adição desta classe implica:
+    ///    - mudar a classe de criação da Base de Dados
+    ///    - mudar no ficheiro 'startup.cs' a referência ao tipo do utilizador
+    ///    - mudar em todos os ficheiros do projeto a referência a 'IdentityUser' 
+    ///           para 'ApplicationUser'
+    /// </summary>
+    public class HoqueiDB : IdentityDbContext<ApplicationUser>
+    {
+        
 
 
 

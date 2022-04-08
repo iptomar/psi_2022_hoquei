@@ -13,33 +13,38 @@
 
    <div class="row">
       @*<form asp-route-returnUrl="@Model.ReturnUrl" method="post">*@
-      <div class="col-md-4">
+       <div class="col-md-4">
 
-         <h4>Criar uma nova conta.</h4>
-         <hr />
-         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           <h4>Criar uma nova conta.</h4>
+           <hr />
+           <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-         <div class="form-group">
-            <label asp-for="Input.Email"></label>
-            <input asp-for="Input.Email" class="form-control" />
-            <span asp-validation-for="Input.Email" class="text-danger"></span>
-         </div>
-         <div class="form-group">
-            <label asp-for="Input.Password"></label>
-            <input asp-for="Input.Password" class="form-control" />
-            <span asp-validation-for="Input.Password" class="text-danger"></span>
-         </div>
-         <div class="form-group">
-            <label asp-for="Input.ConfirmPassword"></label>
-            <input asp-for="Input.ConfirmPassword" class="form-control" />
-            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-         </div>
-         <button type="submit" class="btn btn-primary">Registar</button>
+           <div class="form-group">
+               <label asp-for="Input.Email"></label>
+               <input asp-for="Input.Email" class="form-control" />
+               <span asp-validation-for="Input.Email" class="text-danger"></span>
+           </div>
+           <div class="form-group">
+               <label asp-for="Input.Password"></label>
+               <input asp-for="Input.Password" class="form-control" />
+               <span asp-validation-for="Input.Password" class="text-danger"></span>
+           </div>
+           <div class="form-group">
+               <label asp-for="Input.ConfirmPassword"></label>
+               <input asp-for="Input.ConfirmPassword" class="form-control" />
+               <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+           </div>
+           <div class="form-group">
+               <label asp-for="Input.Utilizador.CC"></label>
+               <input asp-for="Input.Utilizador.CC" class="form-control" />
+               <span asp-validation-for="Input.Utilizador.CC" class="text-danger"></span>
+           </div>
+           <button type="submit" class="btn btn-primary">Registar</button>
 
-      </div>
-      <div class="col-md-6 col-md-offset-2">
+       </div>
+      <!--<div class="col-md-6 col-md-offset-2">-->
          @* Pedir ao novo utilizador que preencha os dados do criador *@
-         <p><b>recolha dos Dados do Criador</b></p>
+         <!--<p><b>recolha dos Dados do Criador</b></p>
          <hr />
          <div class="form-group">
             <label asp-for="Input.Utilizador. Nome" class="control-label"></label>
@@ -47,7 +52,7 @@
             <span asp-validation-for="Input.Utilizador.Nome" class="text-danger"></span>
          </div>
         
-      </div>
+      </div>-->
    </div>
 </form>
 

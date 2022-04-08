@@ -130,15 +130,16 @@ namespace Hoquei.Areas.Identity.Pages.Account {
          // Se os dados forem validados pela classe 'InputModel'
          if (ModelState.IsValid) {
 
-            // criar um objeto do tipo 'ApplicationUser'
-            var user = new ApplicationUser {
-               UserName = Input.Email, // username
-               Email = Input.Email,    // email do utilizador
-               EmailConfirmed = false, // o email não está formalmente confirmado
-               LockoutEnabled = true,  // o utilizador pode ser bloqueado
-               LockoutEnd = new DateTime(DateTime.Now.Year + 10, 1, 1),  // data em que termina o bloqueio,
-                                                                         // se não for anulado antes
-               DataRegisto = DateTime.Now // data do registo
+                // criar um objeto do tipo 'ApplicationUser'
+                var user = new ApplicationUser {
+                    UserName = Input.Email, // username
+                    Email = Input.Email,    // email do utilizador
+                    EmailConfirmed = false, // o email não está formalmente confirmado
+                    LockoutEnabled = true,  // o utilizador pode ser bloqueado
+                    LockoutEnd = new DateTime(DateTime.Now.Year + 10, 1, 1),  // data em que termina o bloqueio,
+                                                                              // se não for anulado antes
+                    DataRegisto = DateTime.Now, // data do registo
+                     
             };
 
             // vou tentar criar, efetivamente, esse utilizador
@@ -150,7 +151,7 @@ namespace Hoquei.Areas.Identity.Pages.Account {
 
 
                // se se desejar associar o utilizador recem criado à role 'Criador' 
-               await _userManager.AddToRoleAsync(user, "Criador");
+               await _userManager.AddToRoleAsync(user, "Utilizador");
 
                //*************************************************************
                // Vamos proceder à operação de guardar os dados do Criador
