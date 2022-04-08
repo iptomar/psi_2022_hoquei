@@ -10,18 +10,18 @@ using System.Text;
 namespace Hoquei.Data
 {
 
-public class ApplicationUser : IdentityUser
-        {
+    public class ApplicationUser : IdentityUser
+    {
 
-            /// <summary>
-            /// recolhe a data de registo de um utilizador
-            /// </summary>
-            public DateTime DataRegisto { get; set; }
+        /// <summary>
+        /// recolhe a data de registo de um utilizador
+        /// </summary>
+        public DateTime DataRegisto { get; set; }
 
-            ////[ForeignKey(nameof(cliente))]
-            ////public int UtilizadorFK { get; set; }
-            //public virtual User user { get; set; }
-        }
+        ////[ForeignKey(nameof(cliente))]
+        ////public int UtilizadorFK { get; set; }
+        //public virtual User user { get; set; }
+    }
     /// <summary>
     /// classe para recolher os dados particulares dos Utilizadores
     /// vamos deixar de usar o 'IdentityUser' e começar a usar este
