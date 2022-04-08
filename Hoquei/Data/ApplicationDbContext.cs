@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Hoquei.Data
 {
-    public class HoqueiDB : IdentityDbContext
-    {
-        public class ApplicationUser : IdentityUser
+
+public class ApplicationUser : IdentityUser
         {
 
             /// <summary>
@@ -20,14 +20,39 @@ namespace Hoquei.Data
 
             ////[ForeignKey(nameof(cliente))]
             ////public int UtilizadorFK { get; set; }
-            //[ForeignKey("userId")]
-            //public virtual Utilizador user { get; set; }
+            //public virtual User user { get; set; }
         }
-        public HoqueiDB(DbContextOptions<HoqueiDB> options)
-            : base(options)
-        {
+    /// <summary>
+    /// classe para recolher os dados particulares dos Utilizadores
+    /// vamos deixar de usar o 'IdentityUser' e começar a usar este
+    /// A adição desta classe implica:
+    ///    - mudar a classe de criação da Base de Dados
+    ///    - mudar no ficheiro 'startup.cs' a referência ao tipo do utilizador
+    ///    - mudar em todos os ficheiros do projeto a referência a 'IdentityUser' 
+    ///           para 'ApplicationUser'
+    /// </summary>
+    public class HoqueiDB : IdentityDbContext<ApplicationUser>
+    {
+        
 
+
+
+        public HoqueiDB(DbContextOptions<HoqueiDB> options) : base(options)
+        { }
+            protected override void OnModelCreating(ModelBuilder modelbuilder)
+        {
+            base.OnModelCreating(modelbuilder);
+
+            modelbuilder.Entity<IdentityRole>().HasData(
+             new IdentityRole { Id = "u", Name = "Utilizador", NormalizedName = "UTILIZADOR" },
+             new IdentityRole { Id = "a", Name = "Admin", NormalizedName = "ADMIN" }
+             );
         }
+           
         public DbSet<User> User { get; set; }
     }
-}
+            
+        
+    }
+
+
