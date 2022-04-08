@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,12 @@ namespace Hoquei.Controllers
 {
     public class UserController : Controller
     {
+
+        /// <summary>
+        /// referência à base de dados
+        /// </summary>
+        private readonly Data.HoqueiDB _context;
+
         // GET: UserController
         public ActionResult Index()
         {
@@ -63,25 +70,37 @@ namespace Hoquei.Controllers
             }
         }
 
+        /*---------------------------------------------------*/
+        // TO-DO : falta fazer views. não decidi ainda como
+        // ASS: Gonçalo
+
         // GET: UserController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var utilizadores = await _context.User
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (utilizadores == null)
+            {
+                return NotFound();
+            }
+
+            return View(utilizadores);
         }
 
         // POST: UserController/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> DeleteConfirmed(int? id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var utilizadorARemover = await _context.User.FindAsync(id);
+            _context.User.Remove(utilizadorARemover);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
 }
