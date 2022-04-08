@@ -21,18 +21,27 @@ namespace Hoquei.Data
 
             ////[ForeignKey(nameof(cliente))]
             ////public int UtilizadorFK { get; set; }
-            public virtual User user { get; set; }
+            //public virtual User user { get; set; }
         }
-       
 
 
-            public HoqueiDB(DbContextOptions<HoqueiDB> options)
-            : base(options)
-            {
 
-            }
+        public HoqueiDB(DbContextOptions<HoqueiDB> options) : base(options)
+        { }
+            protected override void OnModelCreating(ModelBuilder modelbuilder)
+        {
+            base.OnModelCreating(modelbuilder);
+
+            modelbuilder.Entity<IdentityRole>().HasData(
+             new IdentityRole { Id = "u", Name = "Utilizador", NormalizedName = "UTILIZADOR" },
+             new IdentityRole { Id = "a", Name = "Admin", NormalizedName = "ADMIN" }
+             );
+        }
+           
+        public DbSet<User> User { get; set; }
+    }
             
         
     }
-}
+
 
