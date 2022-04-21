@@ -31,9 +31,6 @@ namespace Hoquei.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DataRegisto")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -115,6 +112,98 @@ namespace Hoquei.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CC = "098446793",
+                            DataNascimento = new DateTime(2019, 4, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "Marisa.Freitas@iol.pt",
+                            Nome = "Marisa Vieira",
+                            NumTele = "967197885",
+                            UserName = "MarVi"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CC = "098446795",
+                            DataNascimento = new DateTime(2019, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "Fátima.Machado@gmail.com",
+                            Nome = "Fátima Ribeiro",
+                            NumTele = "963737476",
+                            UserName = "FáRibeiro"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CC = "098446801",
+                            DataNascimento = new DateTime(2011, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "Paula.Lopes@iol.pt",
+                            Nome = "Paula Silva",
+                            NumTele = "967517256",
+                            UserName = "Pauva"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CC = "098446804",
+                            DataNascimento = new DateTime(2008, 6, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "Mariline.Martins@sapo.pt",
+                            Nome = "Mariline Marques",
+                            NumTele = "967212144",
+                            UserName = "Mariques"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CC = "098446807",
+                            DataNascimento = new DateTime(2012, 8, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "Marcos.Rocha@sapo.pt",
+                            Nome = "Marcos Rocha",
+                            NumTele = "962125638",
+                            UserName = "Marcha"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CC = "098446809",
+                            DataNascimento = new DateTime(2010, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "Alexandre.Dias@hotmail.com",
+                            Nome = "Alexandre Vieira",
+                            NumTele = "961493756",
+                            UserName = "Alexeira"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CC = "098446811",
+                            DataNascimento = new DateTime(2010, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "Paula.Vieira@clix.pt",
+                            Nome = "Paula Soares",
+                            NumTele = "961937768",
+                            UserName = "Paulares"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CC = "098446799",
+                            DataNascimento = new DateTime(2017, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "Mariline.Ribeiro@iol.pt",
+                            Nome = "Mariline Santos",
+                            NumTele = "964106478",
+                            UserName = "Marilintos"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CC = "098446812",
+                            DataNascimento = new DateTime(2018, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "Roberto.Vieira@sapo.pt",
+                            Nome = "Roberto Pinto",
+                            NumTele = "964685937",
+                            UserName = "RoPinto"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -142,22 +231,6 @@ namespace Hoquei.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "u",
-                            ConcurrencyStamp = "1a4a1bf5-aa83-4804-9114-aa0b304778f1",
-                            Name = "Utilizador",
-                            NormalizedName = "UTILIZADOR"
-                        },
-                        new
-                        {
-                            Id = "a",
-                            ConcurrencyStamp = "707f34a2-5bef-4455-88bf-387a958fdeee",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

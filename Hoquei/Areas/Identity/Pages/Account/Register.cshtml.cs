@@ -138,7 +138,7 @@ namespace Hoquei.Areas.Identity.Pages.Account {
                     LockoutEnabled = true,  // o utilizador pode ser bloqueado
                     LockoutEnd = new DateTime(DateTime.Now.Year + 10, 1, 1),  // data em que termina o bloqueio,
                                                                               // se não for anulado antes
-                    DataRegisto = DateTime.Now, // data do registo
+                    //DataRegisto = DateTime.Now, // data do registo
                      
             };
 

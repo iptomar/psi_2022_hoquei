@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Hoquei.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hoquei.Data;
 
 namespace Hoquei.Controllers
 {
@@ -14,18 +16,35 @@ namespace Hoquei.Controllers
         /// <summary>
         /// referência à base de dados
         /// </summary>
-        private readonly Data.HoqueiDB _context;
+        private readonly HoqueiDB _context;
+
+        public UserController(HoqueiDB context)
+        {
+            _context = context;
+        }
 
         // GET: UserController
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            return View(await _context.User.ToListAsync());
         }
 
         // GET: UserController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var users = await _context.User
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (users == null)
+            {
+                return NotFound();
+            }
+
+            return View(users);
         }
 
         // GET: UserController/Create
@@ -48,28 +67,59 @@ namespace Hoquei.Controllers
                 return View();
             }
         }
-
-        // GET: UserController/Edit/5
-        public ActionResult Edit(int id)
+        // -------------------------------------------------------------------------------------------------------
+        // GET: User/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var users = await _context.User.FindAsync(id);
+            if (users == null)
+            {
+                return NotFound();
+            }
+            return View(users);
         }
 
-        // POST: UserController/Edit/5
+        // POST: User/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,UserName,Email,NumTele,CC,DataNascimento")] User user)
         {
-            try
+            if (id != user.Id)
             {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UserExists(user.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(user);
         }
 
+        // -------------------------------------------------------------------------------------------------------
         /*---------------------------------------------------*/
         // TO-DO : falta fazer views. não decidi ainda como
         // ASS: Gonçalo
@@ -101,6 +151,11 @@ namespace Hoquei.Controllers
             _context.User.Remove(utilizadorARemover);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool UserExists(int id)
+        {
+            return _context.User.Any(e => e.Id == id);
         }
     }
 }
