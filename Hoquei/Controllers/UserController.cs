@@ -130,6 +130,7 @@ namespace Hoquei.Controllers
                 return NotFound();
             }
 
+
             var utilizadores = await _context.User
                 .FirstOrDefaultAsync(m => m.Id == id);
 
