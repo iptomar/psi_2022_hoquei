@@ -76,14 +76,14 @@ namespace Hoquei.Areas.Identity.Pages.Account {
          [Display(Name = "Email")]
          public string Email { get; set; }
 
-         [Required]
-         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-         [DataType(DataType.Password)]
+         //[Required]
+         //[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+         //[DataType(DataType.Password)]
          [Display(Name = "Password")]
          public string Password { get; set; }
 
-         [DataType(DataType.Password)]
-         [Display(Name = "Confirm password")]
+         //[DataType(DataType.Password)]
+         //[Display(Name = "Confirm password")]
          [Compare("Password", ErrorMessage = "A password e a sua confirmação não correspondem.")]
          public string ConfirmPassword { get; set; }
 
@@ -129,18 +129,23 @@ namespace Hoquei.Areas.Identity.Pages.Account {
          // validar se se pode criar um USER
          // Se os dados forem validados pela classe 'InputModel'
          if (ModelState.IsValid) {
-
+                if (Input.Utilizador.DataNascimento.CompareTo(DateTime.Now.AddYears(-18)) > 0)
+                {
+                    ModelState.AddModelError("", "Para entrar no site é necessário ser maior de 18 anos");
+                    return Page();
+                }
                 // criar um objeto do tipo 'ApplicationUser'
                 var user = new ApplicationUser {
-                    UserName = Input.Email, // username
+                    UserName = Input.Utilizador.UserName, // username
                     Email = Input.Email,    // email do utilizador
-                    EmailConfirmed = false, // o email não está formalmente confirmado
-                    LockoutEnabled = true,  // o utilizador pode ser bloqueado
+                    EmailConfirmed = true, // o email não está formalmente confirmado
+                    LockoutEnabled = false,  // o utilizador pode ser bloqueado
                     LockoutEnd = new DateTime(DateTime.Now.Year + 10, 1, 1),  // data em que termina o bloqueio,
                                                                               // se não for anulado antes
-                    //DataRegisto = DateTime.Now, // data do registo
+                    DataRegisto = DateTime.Now, // data do registo
                      
             };
+
 
             // vou tentar criar, efetivamente, esse utilizador
             var result = await _userManager.CreateAsync(user, Input.Password);
@@ -158,29 +163,30 @@ namespace Hoquei.Areas.Identity.Pages.Account {
                //*************************************************************
                // preparar os dados do Criador para serem adicionados à BD
                Input.Utilizador.Email = Input.Email; // atribuir ao objeto 'criador' o email fornecido pelo utilizador,
-                                                  // a quando da escreita dos dados na interface
-                                                  // exatamente a mesma tarefa feita na linha 128
+                                                     // a quando da escreita dos dados na interface
+                                                     // exatamente a mesma tarefa feita na linha 128
 
-               Input.Utilizador.UserName = user.Id;  // adicionar o ID do utilizador,
-                                                  // para formar uma 'ponte' (foreign key) entre
-                                                  // os dados da autenticação e os dados do 'negócio'
-
-               
-
+                    //Input.Utilizador.;  // adicionar o ID do utilizador,
+                    // para formar uma 'ponte' (foreign key) entre
+                    // os dados da autenticação e os dados do 'negócio'
+                    
+               //user.UserName = Input.Utilizador.UserName;
+              
 
                // estamos em condições de guardar os dados na BD
                try {
                   _context.Add(Input.Utilizador); // adicionar o Criador
+                  
                   await _context.SaveChangesAsync(); // 'commit' da adição
                   // Enviar para o utilizador para a página de confirmação da criaçao de Registo
-                  return RedirectToPage("RegisterConfirmation");
+                  return RedirectToPage("Index");
                }
                catch (Exception) {
                   // houve um erro na criação dos dados do Criador
                   // Mas, o USER já foi criado na BD
                   // vou efetuar o Roolback da ação
                   await _userManager.DeleteAsync(user);
-
+                  await _context.SaveChangesAsync(); // 'commit' do delete
                   // avisar que houve um erro
                   ModelState.AddModelError("", "Ocorreu um erro na criação de dados");
                }
