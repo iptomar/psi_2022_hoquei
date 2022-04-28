@@ -47,26 +47,26 @@ namespace Hoquei.Controllers
             return View(users);
         }
 
-        // GET: UserController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        //// GET: UserController/Create
+        //public ActionResult Create()
+        //{
+        //    return View();
+        //}
 
-        // POST: UserController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //// POST: UserController/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create(IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
         // -------------------------------------------------------------------------------------------------------
         // GET: User/Edit/5
         public async Task<IActionResult> Edit(int? id)

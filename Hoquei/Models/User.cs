@@ -48,5 +48,9 @@ namespace Hoquei.Models
         /// Data de nascimento do utilizador
         /// </summary>
         public DateTime DataNascimento { get; set; }
+        /// <summary>
+        /// Chave de ligação entre a autenticação e os users
+        /// </summary>
+ 
     }
 }
