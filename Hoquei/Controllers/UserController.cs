@@ -132,14 +132,18 @@ namespace Hoquei.Controllers
                 return NotFound();
             }
 
+
             var utilizadores = await _context.User
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            await DeleteConfirmed(utilizadores.Id);
             if (utilizadores == null)
             {
                 return NotFound();
             }
 
-            return View(utilizadores);
+            //return View(utilizadores);
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: UserController/Delete/5
