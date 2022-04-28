@@ -139,7 +139,8 @@ namespace Hoquei.Controllers
                 return NotFound();
             }
 
-            return View(utilizadores);
+            //return View(utilizadores);
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: UserController/Delete/5
