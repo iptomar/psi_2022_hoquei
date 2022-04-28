@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Hoquei.Data.HoqueiDB;
 
 namespace Hoquei
 {
@@ -27,13 +28,27 @@ namespace Hoquei
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<HoqueiDB>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+
+            //uso de variáveis de sessão
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(100);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+
+            //Configurar o acesso à base de dados
+            services.AddDbContext<HoqueiDB>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<HoqueiDB>();
+            services.AddDefaultIdentity<ApplicationUser>(options =>
+                        options.SignIn.RequireConfirmedAccount = true)
+                            .AddRoles<IdentityRole>() // ativa a utilização de Roles
+                            .AddEntityFrameworkStores<HoqueiDB>();
             services.AddControllersWithViews();
         }
 
