@@ -121,8 +121,6 @@ namespace Hoquei.Controllers
 
         // -------------------------------------------------------------------------------------------------------
         /*---------------------------------------------------*/
-        // TO-DO : falta fazer views. não decidi ainda como
-        // ASS: Gonçalo
 
         // GET: UserController/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -134,6 +132,8 @@ namespace Hoquei.Controllers
 
             var utilizadores = await _context.User
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            await DeleteConfirmed(utilizadores.Id);
             if (utilizadores == null)
             {
                 return NotFound();
