@@ -47,28 +47,6 @@ namespace Hoquei.Controllers
             return View(users);
         }
 
-        //// GET: UserController/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: UserController/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-        // -------------------------------------------------------------------------------------------------------
-        // GET: User/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -150,7 +128,14 @@ namespace Hoquei.Controllers
         public async Task<ActionResult> DeleteConfirmed(int? id)
         {
             var utilizadorARemover = await _context.User.FindAsync(id);
+            var userARemover = await _context.Users.FirstOrDefaultAsync(u => u.UserName == utilizadorARemover.UserName);
+            
             _context.User.Remove(utilizadorARemover);
+            _context.Users.Remove(userARemover);
+            
+
+           
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
