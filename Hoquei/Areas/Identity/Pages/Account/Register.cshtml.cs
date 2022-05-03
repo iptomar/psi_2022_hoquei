@@ -143,7 +143,8 @@ namespace Hoquei.Areas.Identity.Pages.Account {
                     LockoutEnd = new DateTime(DateTime.Now.Year + 10, 1, 1),  // data em que termina o bloqueio,
                                                                               // se não for anulado antes
                     DataRegisto = DateTime.Now, // data do registo
-                     
+                    NormalizedEmail = Input.Email.ToUpper(),
+                    NormalizedUserName = Input.Utilizador.UserName.ToUpper(),
             };
 
 
@@ -169,12 +170,12 @@ namespace Hoquei.Areas.Identity.Pages.Account {
                     //Input.Utilizador.;  // adicionar o ID do utilizador,
                     // para formar uma 'ponte' (foreign key) entre
                     // os dados da autenticação e os dados do 'negócio'
-                    
-               //user.UserName = Input.Utilizador.UserName;
-              
+
+                    //user.UserName = Input.Utilizador.UserName;
+                    Input.Utilizador.UserNameId = user.Id;
 
                // estamos em condições de guardar os dados na BD
-               try {
+                    try {
                   _context.Add(Input.Utilizador); // adicionar o Criador
                   
                   await _context.SaveChangesAsync(); // 'commit' da adição

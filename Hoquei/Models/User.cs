@@ -51,6 +51,6 @@ namespace Hoquei.Models
         /// <summary>
         /// Chave de ligação entre a autenticação e os users
         /// </summary>
- 
+        public string UserNameId { get; set; }
     }
 }

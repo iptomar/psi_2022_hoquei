@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Hoquei.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hoquei.Controllers
 {
@@ -18,9 +19,11 @@ namespace Hoquei.Controllers
         /// </summary>
         private readonly HoqueiDB _context;
 
-        public UserController(HoqueiDB context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public UserController(HoqueiDB context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: UserController
@@ -67,7 +70,7 @@ namespace Hoquei.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,UserName,Email,NumTele,CC,DataNascimento")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,UserName,NumTele,CC,DataNascimento,UserNameId,Email")] User user)
         {
             if (id != user.Id)
             {
@@ -76,9 +79,49 @@ namespace Hoquei.Controllers
 
             if (ModelState.IsValid)
             {
+                User emailUser = await _context.User.Where(e => e.Email == user.Email).FirstOrDefaultAsync();
+                
+                if (emailUser != null /*&& aux != id*/)
+
+                {
+                    ModelState.AddModelError("", "Email já em uso");
+                    return View();
+                }
+
+                User nameUser = await _context.User.Where(e => e.UserName == user.UserName).FirstOrDefaultAsync();
+                
+                if (nameUser != null /*&& aux1 != id*/)
+                {
+                    ModelState.AddModelError("", "Username já em uso");
+                    return View();
+                }
+
+                //vamos realizar as alterações também nas tabelas da autenticação
+                ApplicationUser identidade = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == user.UserNameId); ;
+                
+                if (identidade == null)
+                {
+                    ModelState.AddModelError("", "Ocorreu um erro..");
+                    return View();
+                }
+                //verificar a idade do utilizador
+                if (user.DataNascimento.CompareTo(DateTime.Now.AddYears(-18)) > 0)
+                {
+                    ModelState.AddModelError("", "Para entrar no site é necessário ser maior de 18 anos");
+                    return View(user);
+                }
+
+                identidade.Email = user.Email;
+                identidade.UserName = user.UserName;
+                identidade.NormalizedEmail = identidade.Email.ToUpper();
+                identidade.NormalizedUserName = identidade.UserName.ToUpper();
+             
                 try
                 {
-                    _context.Update(user);
+                    //preparar as alterações 
+                    _context.Users.Update(identidade);
+                    _context.User.Update(user);
+                    //fazer commit das alterações na bd
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
