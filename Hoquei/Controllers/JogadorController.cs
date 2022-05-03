@@ -51,35 +51,53 @@ namespace Hoquei.Controllers
         [HttpPost]
         public async Task<IActionResult> Adicionar([Bind("Num_Fed,Name,Num_Cam,Data_Nasc,Alcunha,Foto")] Jogador jogador, IFormFile imgFile, DateTime bornDate, int numeroCamisola)
         {
+            string nomeImg = "";
+            bool flagErro = false;
 
-            jogador.Foto = imgFile.FileName;
-            jogador.Data_Nasc = bornDate;
-            jogador.Num_Cam = numeroCamisola;
+            if (ModelState.IsValid) { 
+                //jogador.Foto = imgFile.;
+                jogador.Data_Nasc = bornDate;
+                jogador.Num_Cam = numeroCamisola;
 
-            //_webhost.WebRootPath vai ter o path para a pasta wwwroot
-            var saveimg = Path.Combine(_caminho.WebRootPath, "fotos", imgFile.FileName);
+                var imgext = Path.GetExtension(imgFile.FileName);
 
-            var imgext = Path.GetExtension(imgFile.FileName);
-
-            if (imgext == ".jpg" || imgext == ".png" || imgext == ".JPG" || imgext == ".PNG")
-            {
-                using (var uploadimg = new FileStream(saveimg, FileMode.Create))
+                if (imgext == ".jpg" || imgext == ".png" || imgext == ".jpeg")
                 {
-                    await imgFile.CopyToAsync(uploadimg);
+                    Fotos foto = new Fotos();
+                    //definir novo nome da fotografia
+                    Guid g;
+                    g = Guid.NewGuid();
+
+                    nomeImg = jogador.Num_Fed + "" + g.ToString();
+
+                    //determinar a extensão do nome da imagem
+                    string extensao = Path.GetExtension(imgFile.FileName).ToLower();
+
+                    // agora, consigo ter o nome final do ficheiro
+                    nomeImg = nomeImg + extensao;
+                    foto.Nome = nomeImg;
+
+                    // associar este ficheiro aos dados da Fotografia do jogador
+                    jogador.Foto = foto;
+
+                    string localizacaoFicheiro = _caminho.WebRootPath;
+                    nomeImg = Path.Combine(localizacaoFicheiro, "fotos", nomeImg);
+                }
+                else
+                {
+                    //se foram adicionados ficheiros inválidos
+                    //adicionar msg de erro
+                    ModelState.AddModelError("", "Os ficheiros adicionados não são válidos");
+                    flagErro = true;
 
                 }
-            }
-
-            if (ModelState.IsValid)
-            {
                 _context.Add(jogador);
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction(nameof(Index));
 
+                 
             }
             return View(jogador);
-
         }
 
         // GET: Jogador/Details/5

@@ -64,7 +64,7 @@ namespace Hoquei.Data
            
         public DbSet<User> User { get; set; }
         public DbSet<Jogador> Jogador { get; set; }
-        public DbSet<Hoquei.Models.Foto> Foto { get; set; }
+        public DbSet<Hoquei.Models.Fotos> Foto { get; set; }
     }
             
         

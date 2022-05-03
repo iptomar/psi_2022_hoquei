@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -42,10 +43,16 @@ namespace Hoquei.Models
         [Required]
         public string Alcunha { get; set; }
 
-
         /// <summary>
-        /// Foto do carro
+        /// Foto do Jogador
+        /// </summary>
+        public Fotos Foto { get; set; }
+
+        /*
+        /// <summary>
+        /// Foto do jogador
         /// </summary>
         public string Foto { get; set; }
+        */
     }
 }
