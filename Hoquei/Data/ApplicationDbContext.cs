@@ -64,6 +64,8 @@ namespace Hoquei.Data
            
         public DbSet<User> User { get; set; }
         public DbSet<Jogador> Jogador { get; set; }
+        public DbSet<Clube> Clube { get; set; }
+        public DbSet<Jogo> Jogo { get; set; }
     }
             
         
