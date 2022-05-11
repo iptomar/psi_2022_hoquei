@@ -1,0 +1,28 @@
+﻿@model Hoquei.Models.Clube
+
+@{
+    ViewData["Title"] = @Html.DisplayFor(model => model.Nome);
+}
+@if (User.IsInRole("Gestor")) {
+<h1>Apagar</h1>
+
+<h3>Tem a certeza que pretende apagar?</h3>
+<div>
+
+    <hr />
+
+    <h1>Clube: </h1>
+    <br />
+
+    <h4>@Html.DisplayFor(model => model.Nome)</h4>
+
+    <br />
+    <br />
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Cancelar</a>
+    </form>
+</div>
+}

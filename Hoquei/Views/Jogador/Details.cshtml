@@ -27,6 +27,12 @@
         @Html.DisplayFor(model => model.Foto)<br />
 
 
+        <b>Clube: </b>
+
+        @foreach (var item in Model.ListaDeClubes)
+        {
+    <a asp-controller="Clube" asp-action="Details" asp-route-id="@item.Id" style="margin-right:5px;">@item.Nome</a>}
+
 
     </div>
     <div>

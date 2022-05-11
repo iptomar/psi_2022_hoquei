@@ -1,0 +1,88 @@
+﻿@model Hoquei.Models.Clube
+
+@{ ViewData["Title"] = @Model.Nome; }
+
+<h1>@Model.Nome</h1>
+<br />
+<br />
+
+<div>
+    @foreach (var item in Model.ListaDeJogadores)
+    {
+<div class="Jogador">
+    <a asp-action="Details" asp-controller="Componentes" asp-route-id="@item.Num_Fed">
+        <img class="FotoComponente" src="~/fotos/@Html.DisplayFor(modelItem => item.Foto)" />
+        <div class="overlay">
+            <div class="text">
+                @Html.DisplayFor(modelItem => item.Name)
+            </div>
+        </div>
+    </a>
+
+</div>}
+</div>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<a class="btn btn-primary" asp-action="Index">Voltar</a>
+
+
+
+

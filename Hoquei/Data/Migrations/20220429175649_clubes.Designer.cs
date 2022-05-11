@@ -4,35 +4,22 @@ using Hoquei.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hoquei.Data.Migrations
 {
     [DbContext(typeof(HoqueiDB))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220429175649_clubes")]
+    partial class clubes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("ClubeJogador", b =>
-                {
-                    b.Property<int>("ListaDeClubesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ListaDeJogadoresNum_Fed")
-                        .HasColumnType("int");
-
-                    b.HasKey("ListaDeClubesId", "ListaDeJogadoresNum_Fed");
-
-                    b.HasIndex("ListaDeJogadoresNum_Fed");
-
-                    b.ToTable("ClubeJogador");
-                });
 
             modelBuilder.Entity("Hoquei.Data.ApplicationUser", b =>
                 {
@@ -124,7 +111,7 @@ namespace Hoquei.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ListaDeClubes");
+                    b.ToTable("Clube");
 
                     b.HasData(
                         new
@@ -177,17 +164,6 @@ namespace Hoquei.Data.Migrations
                     b.HasKey("Num_Fed");
 
                     b.ToTable("Jogador");
-
-                    b.HasData(
-                        new
-                        {
-                            Num_Fed = 1,
-                            Alcunha = "Toni",
-                            Data_Nasc = new DateTime(2000, 12, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Foto = "Cristiano_Ronaldo_2018.jpg",
-                            Name = "Antonio Alberto",
-                            Num_Cam = 10
-                        });
                 });
 
             modelBuilder.Entity("Hoquei.Models.User", b =>
@@ -353,21 +329,6 @@ namespace Hoquei.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("ClubeJogador", b =>
-                {
-                    b.HasOne("Hoquei.Models.Clube", null)
-                        .WithMany()
-                        .HasForeignKey("ListaDeClubesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Hoquei.Models.Jogador", null)
-                        .WithMany()
-                        .HasForeignKey("ListaDeJogadoresNum_Fed")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
