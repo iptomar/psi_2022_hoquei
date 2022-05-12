@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Hoquei.Data.ApplicationUser> SignInManager
+@inject UserManager<Hoquei.Data.ApplicationUser> UserManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -34,7 +37,18 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
-                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-link text-dark"><a asp-action="Details" asp-controller="Utilizadores" asp-route-userName="@User.Identity.Name" title="Manage">Olá @User.Identity.Name!</a> @* User.Identity.Name --> devolve o UserName  *@</li>
+                            <li class="nav-link text-dark"><a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">SAIR</a></li>
+                        }
+                        else
+                        {
+                            <li><a asp-area="Identity" asp-page="/Account/Register">CRIAR CONTA</a></li>
+                            <li><a asp-area="Identity" asp-page="/Account/Login">   ENTRAR</a></li>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>

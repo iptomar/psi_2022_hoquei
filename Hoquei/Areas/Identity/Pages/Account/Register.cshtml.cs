@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Hoquei.Models;
 using static Hoquei.Data.HoqueiDB;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hoquei.Areas.Identity.Pages.Account {
    [AllowAnonymous]
@@ -124,14 +125,34 @@ namespace Hoquei.Areas.Identity.Pages.Account {
          returnUrl ??= Url.Content("~/");
 
 
-         // ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
+            // ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            bool correto = true;
          // validar se se pode criar um USER
          // Se os dados forem validados pela classe 'InputModel'
          if (ModelState.IsValid) {
                 if (Input.Utilizador.DataNascimento.CompareTo(DateTime.Now.AddYears(-18)) > 0)
                 {
                     ModelState.AddModelError("", "Para entrar no site é necessário ser maior de 18 anos");
+                    correto = false;
+                }
+                User emailUser = await _context.User.Where(e => e.Email == Input.Email).FirstOrDefaultAsync();
+                User nameUser = await _context.User.Where(e => e.UserName == Input.Utilizador.UserName).FirstOrDefaultAsync();
+                User teleUser = await _context.User.Where(e => e.NumTele == Input.Utilizador.NumTele).FirstOrDefaultAsync();
+                if (emailUser != null /*&& aux != id*/)
+
+                {
+                    ModelState.AddModelError("", "Email já em uso");
+                    correto = false;
+                }
+                
+
+                if (nameUser != null /*&& aux1 != id*/)
+                {
+                    ModelState.AddModelError("", "Username já em uso");
+                    correto = false;
+                } 
+                if (!correto)
+                {
                     return Page();
                 }
                 // criar um objeto do tipo 'ApplicationUser'
@@ -147,10 +168,10 @@ namespace Hoquei.Areas.Identity.Pages.Account {
                     NormalizedUserName = Input.Utilizador.UserName.ToUpper(),
             };
 
-
+               
             // vou tentar criar, efetivamente, esse utilizador
             var result = await _userManager.CreateAsync(user, Input.Password);
-
+                user.LockoutEnabled = false;
             // se houver sucesso
             if (result.Succeeded) {
                _logger.LogInformation("User created a new account with password.");
@@ -191,10 +212,6 @@ namespace Hoquei.Areas.Identity.Pages.Account {
                   // avisar que houve um erro
                   ModelState.AddModelError("", "Ocorreu um erro na criação de dados");
                }
-
-
-
-
 
                //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
