@@ -91,6 +91,9 @@ namespace Hoquei.Controllers
                     flagErro = true;
 
                 }
+                if (!flagErro) { 
+                    
+                }
                 _context.Add(jogador);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -148,7 +151,7 @@ namespace Hoquei.Controllers
 
             if (imgFile != null)
             {
-                novoJogador.Foto = imgFile.FileName;
+                //novoJogador.Foto = imgFile.FileName; change this!!!!
 
                 //_webhost.WebRootPath vai ter o path para a pasta wwwroot
                 var saveimg = Path.Combine(_caminho.WebRootPath, "fotos", imgFile.FileName);

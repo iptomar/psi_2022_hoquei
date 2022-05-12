@@ -4,14 +4,16 @@ using Hoquei.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hoquei.Data.Migrations
 {
     [DbContext(typeof(HoqueiDB))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220506174737_updateFotos")]
+    partial class updateFotos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,6 +102,9 @@ namespace Hoquei.Data.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("JogadorId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
 
@@ -107,6 +112,9 @@ namespace Hoquei.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("JogadorId")
+                        .IsUnique();
 
                     b.ToTable("Foto");
                 });
@@ -125,9 +133,6 @@ namespace Hoquei.Data.Migrations
                     b.Property<DateTime>("Data_Nasc")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FotoId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -136,9 +141,6 @@ namespace Hoquei.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Num_Fed");
-
-                    b.HasIndex("FotoId")
-                        .IsUnique();
 
                     b.ToTable("Jogador");
                 });
@@ -308,15 +310,15 @@ namespace Hoquei.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Hoquei.Models.Jogador", b =>
+            modelBuilder.Entity("Hoquei.Models.Fotos", b =>
                 {
-                    b.HasOne("Hoquei.Models.Fotos", "Foto")
-                        .WithOne("Player")
-                        .HasForeignKey("Hoquei.Models.Jogador", "FotoId")
+                    b.HasOne("Hoquei.Models.Jogador", "Player")
+                        .WithOne("Foto")
+                        .HasForeignKey("Hoquei.Models.Fotos", "JogadorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Foto");
+                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -370,9 +372,9 @@ namespace Hoquei.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Hoquei.Models.Fotos", b =>
+            modelBuilder.Entity("Hoquei.Models.Jogador", b =>
                 {
-                    b.Navigation("Player");
+                    b.Navigation("Foto");
                 });
 #pragma warning restore 612, 618
         }

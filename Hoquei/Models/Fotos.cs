@@ -31,13 +31,10 @@ namespace Hoquei.Models
         public string Descricao { get; set; }
 
 
-        // criação da FK que referencia as fotos ao Jogador a que pertencem 
-        [ForeignKey(nameof(Jogador))]
-        public int HotelFK { get; set; }
+        /// <summary>
+        /// Identifica o jogador a que a foto pertence
+        /// </summary>        
         public Jogador Player { get; set; }
-        // NOTA: O nome dos models deviam estar no plural para evitar atrofios na nomenclatura.
-        // ex: Agora se o nome do model fosse Jogadores já podia fazer public Jogadores Jogador
-        // Só não alterei para não fazer confusões depois no momento em que alguém faça pull ou merge no GIT
-        // ass: Gonçalo
+        
     }
 }
