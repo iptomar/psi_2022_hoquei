@@ -48,12 +48,17 @@ namespace Hoquei.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Adicionar([Bind("JogoId,Local,Data,Clube_Casa,Clube_Fora,Foto")] Jogo jogo, DateTime jogoDate, int GolosCasa, int GolosFora)
+        public async Task<IActionResult> Adicionar([Bind("JogoId,Local,Data,Clube_Casa,Clube_Fora,Escalao,GolosCasa, GolosFora, Capitao_Casa, Capitao_Fora")] Jogo jogo, DateTime Date, int GolosCasa, int GolosFora, Clube Clube_Casa, Clube Clube_Fora, Jogador Capitao_Casa, Jogador Capitao_Fora, Jogador Marcadores)
         {
 
-            jogo.Data = jogoDate;
+            jogo.Data = Date;
             jogo.GolosCasa = GolosCasa;
             jogo.GolosFora = GolosFora;
+            jogo.Capitao_Casa = Capitao_Casa;
+            jogo.Capitao_Fora = Capitao_Fora;
+            jogo.Clube_Casa = Clube_Casa;
+            jogo.Clube_Fora = Clube_Fora;
+            jogo.ListaDeMarcadores.Add(Marcadores);
 
             if (ModelState.IsValid)
             {

@@ -10,6 +10,8 @@ namespace Hoquei.Models
     /// <summary>
     /// Descrição de um Clube
     /// </summary>
+    /// 
+    
     public class Clube
     {
         /// <summary>
