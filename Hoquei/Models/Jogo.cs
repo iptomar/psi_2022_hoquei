@@ -52,13 +52,13 @@ namespace Hoquei.Models
         /// Golos da equipa visitada
         /// </summary>
         [Required]
-        public string GolosCasa { get; set; }
+        public int GolosCasa { get; set; }
 
         /// <summary>
         /// Golos da equipa visitante
         /// </summary>
         [Required]
-        public string GolosFora { get; set; }
+        public int GolosFora { get; set; }
 
         /// <summary>
         /// Lista de mardadores

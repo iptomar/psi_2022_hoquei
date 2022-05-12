@@ -1,0 +1,41 @@
+﻿@model Hoquei.Models.Jogador
+
+@{ ViewData["Title"] = "Details"; }
+
+<h1>Detalhes</h1>
+
+<div>
+    <hr />
+    <div style="float:left; margin-right:20px;  margin-top:10px; border:4px solid black">
+        <img src="~/fotos/@Html.DisplayFor(model => model.Foto)"
+             width="200" />
+    </div>
+    <div style="line-height:2;  ">
+        <b> Número de Federado:</b>
+        @Html.DisplayFor(model => model.Num_Fed) <br />
+
+        <b> Nome:</b>
+        @Html.DisplayFor(model => model.Name)<br />
+
+        <b> Número Camisola:</b>
+        @Html.DisplayFor(model => model.Num_Cam)<br />
+
+        <b> Data de Nascimento:</b>
+        @Html.TextBoxFor(model => model.Data_Nasc, "{0:dd/MM/yyyy}")<br />
+
+        <b> Foto:</b>
+        @Html.DisplayFor(model => model.Foto)<br />
+
+
+
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Num_Fed">Editar</a>
+    </div>
+
+    <div>
+        <a class="nav-link text-dark" asp-action="Index">Voltar</a>
+    </div>
+
+
+

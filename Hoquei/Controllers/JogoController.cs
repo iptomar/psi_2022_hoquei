@@ -1,4 +1,5 @@
 ﻿using Hoquei.Data;
+using Hoquei.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -47,37 +48,43 @@ namespace Hoquei.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Adicionar([Bind("JogoId,Local,Data,Clube_Casa,Clube_Fora,Foto")] Jogador jogador, IFormFile imgFile, DateTime bornDate, int numeroCamisola)
+        public async Task<IActionResult> Adicionar([Bind("JogoId,Local,Data,Clube_Casa,Clube_Fora,Foto")] Jogo jogo, DateTime jogoDate, int GolosCasa, int GolosFora)
         {
 
-            jogador.Foto = imgFile.FileName;
-            jogador.Data_Nasc = bornDate;
-            jogador.Num_Cam = numeroCamisola;
-
-            //_webhost.WebRootPath vai ter o path para a pasta wwwroot
-            var saveimg = Path.Combine(_caminho.WebRootPath, "fotos", imgFile.FileName);
-
-            var imgext = Path.GetExtension(imgFile.FileName);
-
-            if (imgext == ".jpg" || imgext == ".png" || imgext == ".JPG" || imgext == ".PNG")
-            {
-                using (var uploadimg = new FileStream(saveimg, FileMode.Create))
-                {
-                    await imgFile.CopyToAsync(uploadimg);
-
-                }
-            }
+            jogo.Data = jogoDate;
+            jogo.GolosCasa = GolosCasa;
+            jogo.GolosFora = GolosFora;
 
             if (ModelState.IsValid)
             {
-                _context.Add(jogador);
+                _context.Add(jogo);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
 
             }
-            return View(jogador);
+            return View(jogo);
 
+        }
+
+        // GET: Jogador/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var jogo = await _context.Jogo
+                .Where(f => f.JogoId == id)
+                .OrderByDescending(f => f.Data)
+                .FirstOrDefaultAsync(m => m.JogoId == id);
+            if (jogo == null)
+            {
+                return NotFound();
+            }
+
+            return View(jogo);
         }
     }
 }
