@@ -109,7 +109,7 @@ namespace Hoquei.Controllers
             Jogador capitao_foraEscolhido = _context.Jogador.Find(Capitao_ForaEscolhido);
             jogo.Capitao_Fora = capitao_foraEscolhido;
 
-            // avalia se o array com a lista de marcadores 
+            // avalia se o array com a lista de marcadores  
             if (Marcadores.Length == 0)
             {
                 //É gerada uma mensagem de erro
