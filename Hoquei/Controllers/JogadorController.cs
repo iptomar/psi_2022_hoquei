@@ -35,7 +35,9 @@ namespace Hoquei.Controllers
         }
         public async Task<IActionResult> IndexAsync()
         {
-            return View(await _context.Jogador.ToListAsync());
+            var aux = _context.Jogador.Include(j => j.Foto);
+            //return View(await _context.Jogador.ToListAsync());
+            return View(await aux.ToListAsync());
         }
 
         // GET: Jogadores/Adicionar
@@ -91,14 +93,16 @@ namespace Hoquei.Controllers
                     flagErro = true;
 
                 }
-                if (!flagErro) { 
-                    
-                }
-                _context.Add(jogador);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (!flagErro) {
+                    //processo de guardar foto do disco
+                    using var fileFoto = new FileStream(nomeImg, FileMode.Create);
+                    await imgFile.CopyToAsync(fileFoto);
 
-                 
+                    _context.Add(jogador);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+    
             }
             return View(jogador);
         }

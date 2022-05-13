@@ -16,14 +16,14 @@ namespace Hoquei.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// Nome do ficheiro com a fotografia do hotel
+        /// Nome do ficheiro com a fotografia do Jogador
         /// </summary>
         public string Nome { get; set; }
 
-        /// <summary>
-        /// Path para a foto
-        /// </summary>
-        public string Path { get; set; }
+        ///// <summary>
+        ///// Path para a foto
+        ///// </summary>
+        //public string Path { get; set; }
 
         /// <summary>
         /// Descricao da foto
