@@ -14,8 +14,6 @@ namespace Hoquei.Models
     {
         public Jogo()
         {
-            ListaDeClubes = new HashSet<Clube>();
-            ListaDeJogadores = new HashSet<Jogador>();
             ListaDeMarcadores = new HashSet<Jogador>();
         }
         /// <summary>
@@ -78,15 +76,6 @@ namespace Hoquei.Models
         [Required]
         public Jogador Capitao_Fora { get; set; }
 
-        /// <summary>
-        /// Lista da Clubes
-        /// </summary>
-        public ICollection<Clube> ListaDeClubes { get; set; }
-
-        /// <summary>
-        /// lista de jogadores
-        /// </summary>
-        public ICollection<Jogador> ListaDeJogadores { get; set; }
 
         /// <summary>
         /// lista de marcadores

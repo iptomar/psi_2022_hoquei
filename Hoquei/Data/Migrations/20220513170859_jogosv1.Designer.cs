@@ -4,14 +4,16 @@ using Hoquei.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hoquei.Data.Migrations
 {
     [DbContext(typeof(HoqueiDB))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220513170859_jogosv1")]
+    partial class jogosv1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,11 +105,16 @@ namespace Hoquei.Data.Migrations
                     b.Property<string>("Foto")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("JogoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("JogoId");
 
                     b.ToTable("Clube");
                 });
@@ -132,6 +139,9 @@ namespace Hoquei.Data.Migrations
                     b.Property<int?>("JogoId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("JogoId1")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -142,6 +152,8 @@ namespace Hoquei.Data.Migrations
                     b.HasKey("Num_Fed");
 
                     b.HasIndex("JogoId");
+
+                    b.HasIndex("JogoId1");
 
                     b.ToTable("Jogador");
                 });
@@ -360,11 +372,22 @@ namespace Hoquei.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Hoquei.Models.Clube", b =>
+                {
+                    b.HasOne("Hoquei.Models.Jogo", null)
+                        .WithMany("ListaDeClubes")
+                        .HasForeignKey("JogoId");
+                });
+
             modelBuilder.Entity("Hoquei.Models.Jogador", b =>
                 {
                     b.HasOne("Hoquei.Models.Jogo", null)
-                        .WithMany("ListaDeMarcadores")
+                        .WithMany("ListaDeJogadores")
                         .HasForeignKey("JogoId");
+
+                    b.HasOne("Hoquei.Models.Jogo", null)
+                        .WithMany("ListaDeMarcadores")
+                        .HasForeignKey("JogoId1");
                 });
 
             modelBuilder.Entity("Hoquei.Models.Jogo", b =>
@@ -447,6 +470,10 @@ namespace Hoquei.Data.Migrations
 
             modelBuilder.Entity("Hoquei.Models.Jogo", b =>
                 {
+                    b.Navigation("ListaDeClubes");
+
+                    b.Navigation("ListaDeJogadores");
+
                     b.Navigation("ListaDeMarcadores");
                 });
 #pragma warning restore 612, 618
