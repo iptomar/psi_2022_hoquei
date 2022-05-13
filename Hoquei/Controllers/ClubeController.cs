@@ -33,13 +33,14 @@ namespace Hoquei.Controllers
             _caminho = caminho;
             _userManager = userManager;
         }
+
         public async Task<IActionResult> IndexAsync()
         {
             return View(await _context.ListaDeClubes.ToListAsync());
         }
 
         // GET: Clubes/Adicionar
-        public IActionResult Adicionar()
+        public IActionResult Create()
         {
             //ViewBag.ListaDeClubes = _context.ListaDeClubes.OrderBy(c => c.Nome).ToList();
             return View();
@@ -49,7 +50,7 @@ namespace Hoquei.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Adicionar([Bind("Id,Nome,Data_Fundacao,FotografiasID")] Clube clube, IFormFile imgFile, DateTime bornDate)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Data_Fundacao,FotografiasID")] Clube clube, IFormFile imgFile, DateTime bornDate)
         {
 
             clube.FotografiasID = imgFile.FileName;
@@ -180,7 +181,7 @@ namespace Hoquei.Controllers
             return View(novoClube);
         }
 
-        // GET: Categorias/Delete/5
+        // GET: ClubController/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -198,7 +199,7 @@ namespace Hoquei.Controllers
             return View(clubes);
         }
 
-        // POST: Categorias/Delete/5
+        // POST: ClubController/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

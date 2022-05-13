@@ -6,20 +6,17 @@
 </head>
 <h1>Lista de Clubes</h1>
 <br />
-
 <p>
-    <a class="btn btn-primary" asp-action="Create">Criar Clube</a>
+    <a class="btn btn-primary" asp-action="Create">Adicionar Clube</a>
 </p>
-
 @foreach (var item in Model) {
 
 <div class="Clube">
-    <a asp-action="Edit" asp-route-id="@item.Id">
-        <div class="overlay">
-            <div class="text">
-                @Html.DisplayFor(modelItem => item.Nome)
-            </div>
-        </div>
+    <a asp-action="Details" asp-route-id="@item.Id">
+        <img src="~/clubefotos/@Html.DisplayFor(modelItem => item.FotografiasID)"  width="300" height="175"/>
+       
+            <h1>@Html.DisplayFor(modelItem => item.Nome)</h1>
+       
     </a>
 </div>}
 

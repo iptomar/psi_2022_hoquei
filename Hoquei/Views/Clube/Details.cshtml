@@ -1,79 +1,28 @@
 ﻿@model Hoquei.Models.Clube
 
-@{ ViewData["Title"] = @Model.Nome; }
+@{ ViewData["Title"] = "Details"; }
 
 <h1>@Model.Nome</h1>
 <br />
-<br />
 
-<div>
-    @foreach (var item in Model.ListaDeJogadores)
-    {
-<div class="Jogador">
-    <a asp-action="Details" asp-controller="Componentes" asp-route-id="@item.Num_Fed">
-        <img class="FotoComponente" src="~/fotos/@Html.DisplayFor(modelItem => item.Foto)" />
-        <div class="overlay">
-            <div class="text">
-                @Html.DisplayFor(modelItem => item.Name)
-            </div>
-        </div>
-    </a>
+<div class="Clube">
+    <div style="float:left; margin-right:20px;  margin-top:10px; border:4px solid black">
+        <img src="~/clubefotos/@Html.DisplayFor(model => model.FotografiasID)"
+             width="250" height="175" />
+    </div>
 
-</div>}
+    <div style="line-height:2;  ">
+        <b> Data de Fundação:</b>
+        @Html.DisplayFor(model => model.Data_Fundacao)<br />
+
+        <b>Jogadores: </b>
+
+        @foreach (var item in Model.ListaDeJogadores)
+        {
+<a asp-controller="Clube" asp-action="Details" asp-route-id="@item.Num_Fed" style="margin-right:5px;">@item.Name</a>}
+
+    </div>
 </div>
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
 <br />
 <br />
 <br />
@@ -81,6 +30,11 @@
 <br />
 <br />
 
+<a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Editar</a>
+
+<a class="btn btn-danger"  asp-action="Delete" asp-route-id="@Model.Id">Apagar</a>
+
+<br />
 <a class="btn btn-primary" asp-action="Index">Voltar</a>
 
 

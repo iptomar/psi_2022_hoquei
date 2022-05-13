@@ -3,26 +3,35 @@
 @{
     ViewData["Title"] = @Html.DisplayFor(model => model.Nome);
 }
-@if (User.IsInRole("Gestor")) {
-<h1>Apagar</h1>
 
-<h3>Tem a certeza que pretende apagar?</h3>
+<h1>Tem a certeza que pretende apagar este Clube?</h1>
 <div>
 
     <hr />
 
-    <h1>Clube: </h1>
+    <h4>Clube: @Html.DisplayFor(model => model.Nome)</h4>
+
+    <div style="float:left; margin-right:20px;  margin-top:10px; border:4px solid black">
+        <img src="~/clubefotos/@Html.DisplayFor(model => model.FotografiasID)"
+             width="500" height="300" />
+    </div>
+
     <br />
-
-    <h4>@Html.DisplayFor(model => model.Nome)</h4>
-
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
     <br />
     <br />
 
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Cancelar</a>
+        <input type="submit" value="Delete" class="btn btn-danger" />
+
+        <br />
+        <br />
+        <a class="btn btn-primary" asp-action="Index">Cancelar</a>
     </form>
 </div>
-}
