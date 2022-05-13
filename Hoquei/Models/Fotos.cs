@@ -19,6 +19,11 @@ namespace Hoquei.Models
         /// Nome do ficheiro com a fotografia do Jogador
         /// </summary>
         public string Nome { get; set; }
+        // NOTA: recomendo que quando forem tirar prints para as fotos
+        // dos jogadores as tirem segundo as seguintes medidas:
+        // a altura convém ser 10px maior do que a largura e só deverá
+        // ter a cara do moço
+        // ASS: Gonçalo
 
         ///// <summary>
         ///// Path para a foto
