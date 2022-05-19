@@ -49,14 +49,14 @@
                 <input required type="number" name="GolosFora" min="1" max="99" maxlength="2" placeholder="1" />
                 <span asp-validation-for="GolosFora" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label class="control-label">Marcadores</label>
                 @foreach (Jogador item in ViewBag.ListaDeMarcadores)
                 {
                     <br /> <input type="checkbox" value="@item.Num_Fed" name="Marcadores" /> @item.Name}
-            </div>
+            </div>*@
             <div class="form-group">
-                <label class="control-label">Capitão Da Equipa da Casa</label>
+                <label class="control-label">Capitao da Casa</label>
                 @foreach (Jogador item in ViewBag.ListaDeJogadores)
                 {
                     <br /> <input type="checkbox" value="@item.Num_Fed" name="Capitao_CasaEscolhido" /> @item.Name}
