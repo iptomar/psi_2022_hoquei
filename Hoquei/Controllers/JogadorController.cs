@@ -135,10 +135,14 @@ namespace Hoquei.Controllers
                 return NotFound();
             }
 
-            var jogadores = await _context.Jogador.FindAsync(id);
+            //var jogadores = await _context.Jogador.FindAsync(id);
+
+            //adicionar ao jogador a foto dele
+            var jogadores = await _context.Jogador.Include(j => j.Foto).Where(j => j.Num_Fed == id).FirstOrDefaultAsync();
+
             if (jogadores == null)
             {
-                return NotFound();
+                return View("Index");
             }
             return View(jogadores);
         }
@@ -150,40 +154,70 @@ namespace Hoquei.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Num_Fed,Name,Num_Cam,Data_Nasc,Alcunha,Foto")] Jogador novoJogador, IFormFile imgFile, DateTime bornDate, int numeroCamisola)
         {
-
-            var jogador = await _context.Jogador.FindAsync(id);
-
-            if (imgFile != null)
+            string nomeImg = "";
+            bool flagErro = false;
+            if (ModelState.IsValid)
             {
-                //novoJogador.Foto = imgFile.FileName; change this!!!!
+            
+                var jogador = await _context.Jogador.Include(j => j.Foto).Where(j => j.Num_Fed == id).FirstOrDefaultAsync();
 
-                //_webhost.WebRootPath vai ter o path para a pasta wwwroot
-                var saveimg = Path.Combine(_caminho.WebRootPath, "fotos", imgFile.FileName);
-
-                var imgext = Path.GetExtension(imgFile.FileName);
-
-                if (imgext == ".jpg" || imgext == ".png" || imgext == ".JPG" || imgext == ".PNG")
+                //significa que adicionámos uma foto nova
+                if (imgFile != null)
                 {
-                    using (var uploadimg = new FileStream(saveimg, FileMode.Create))
+                    //apagamos a foto antiga da base de dados
+                    var fotoAntiga = jogador.Foto;
+                    _context.Foto.Remove(fotoAntiga);
+
+                    //apagamos a foto antiga do disco
+                    var removerDisco = Path.Combine(_caminho.WebRootPath, "fotos", fotoAntiga.Nome);
+                    System.IO.File.Delete(removerDisco);
+
+                    //processar a nova imagem
+                    var imgext = Path.GetExtension(imgFile.FileName);
+
+                    if (imgext == ".jpg" || imgext == ".png" || imgext == ".jpeg")
                     {
-                        await imgFile.CopyToAsync(uploadimg);
+                        Fotos foto = new Fotos();
+                        //definir novo nome da fotografia
+                        Guid g;
+                        g = Guid.NewGuid();
+
+                        nomeImg = jogador.Num_Fed + "" + g.ToString();
+
+                        //determinar a extensão do nome da imagem
+                        string extensao = Path.GetExtension(imgFile.FileName).ToLower();
+
+                        // agora, consigo ter o nome final do ficheiro
+                        nomeImg = nomeImg + extensao;
+                        foto.Nome = nomeImg;
+
+                        // associar este ficheiro aos dados da Fotografia do jogador
+                        jogador.Foto = foto;
+
+                        string localizacaoFicheiro = _caminho.WebRootPath;
+                        nomeImg = Path.Combine(localizacaoFicheiro, "fotos", nomeImg);
+                    }
+                    else
+                    {
+                        //se foram adicionados ficheiros inválidos
+                        //adicionar msg de erro
+                        ModelState.AddModelError("", "Os ficheiros adicionados não são válidos");
+                        flagErro = true;
 
                     }
                 }
-            }
-            else
-            {
-                Jogador jogador1 = _context.Jogador.Find(novoJogador.Num_Fed);
+                else //significa que não alterámos a foto
+                {
+                    Jogador jogador1 = _context.Jogador.Find(novoJogador.Num_Fed);
 
-                _context.Entry<Jogador>(jogador1).State = EntityState.Detached;
+                    _context.Entry<Jogador>(jogador1).State = EntityState.Detached;
 
 
-                novoJogador.Foto = jogador1.Foto;
-            }
+                    novoJogador.Foto = jogador1.Foto;
+                }
 
-            /***************************************************/
-            if (ModelState.IsValid)
-            {
+                /***************************************************/
+
                 try
                 {
 
@@ -194,9 +228,9 @@ namespace Hoquei.Controllers
                     jogador.Foto = novoJogador.Foto;
 
 
- 
+
                     _context.Update(jogador);
-                   
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -215,6 +249,7 @@ namespace Hoquei.Controllers
             }
             return View(novoJogador);
         }
+
         private bool JogadorExists(int id)
         {
             return _context.Jogador.Any(e => e.Num_Fed == id);
