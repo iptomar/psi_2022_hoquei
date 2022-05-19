@@ -26,7 +26,8 @@ namespace Hoquei.Models
         /// <summary>
         /// Nome do Jogador
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "O Nome é de preenchimento obrigatório")]
+        [StringLength(60, ErrorMessage = "O {0} não pode ter mais de {1} caracteres.")]
         public string Nome { get; set; }
 
         /// <summary>

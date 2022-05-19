@@ -34,19 +34,39 @@ namespace Hoquei.Controllers
             _userManager = userManager;
         }
 
+
+        // GET: Clube
         public async Task<IActionResult> IndexAsync()
         {
             return View(await _context.ListaDeClubes.ToListAsync());
         }
 
-        // GET: Clubes/Adicionar
+        // GET: Clubes/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var clube = await _context.ListaDeClubes.Include(f => f.ListaDeJogadores)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (clube == null)
+            {
+                return NotFound();
+            }
+
+            return View(clube);
+        }
+
+        // GET: Clubes/Create
         public IActionResult Create()
         {
             //ViewBag.ListaDeClubes = _context.ListaDeClubes.OrderBy(c => c.Nome).ToList();
             return View();
         }
 
-        // POST: Clubes/Adicionar
+        // POST: Clubes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -71,30 +91,11 @@ namespace Hoquei.Controllers
             {
                 _context.Add(clube);
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction(nameof(Index));
 
             }
             return View(clube);
 
-        }
-
-        // GET: Clubes/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var clube = await _context.ListaDeClubes.Include(f => f.ListaDeJogadores)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (clube == null)
-            {
-                return NotFound();
-            }
-
-            return View(clube);
         }
 
         // GET: Clubes/Edit/5
@@ -158,8 +159,6 @@ namespace Hoquei.Controllers
                     clube.Data_Fundacao = bornDate;
                     clube.FotografiasID = novoClube.FotografiasID;
 
-
- 
                     _context.Update(clube);
                    
                     await _context.SaveChangesAsync();

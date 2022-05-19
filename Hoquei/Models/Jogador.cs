@@ -27,7 +27,8 @@ namespace Hoquei.Models
         /// <summary>
         /// Nome do Jogador
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "O Nome é de preenchimento obrigatório")]
+        [StringLength(60, ErrorMessage = "O {0} não pode ter mais de {1} caracteres.")]
         public string Name { get; set; }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace Hoquei.Models
         // ********************************************************
 
         /// <summary>
-        /// Lista de categorias dos componentes
+        /// Lista de clubes dos jogadores
         /// </summary>
         public ICollection<Clube> ListaDeClubes { get; set; }
 

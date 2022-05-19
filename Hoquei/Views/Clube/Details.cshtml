@@ -17,10 +17,22 @@
 
         <b>Jogadores: </b>
 
-        @foreach (var item in Model.ListaDeJogadores)
-        {
-<a asp-controller="Clube" asp-action="Details" asp-route-id="@item.Num_Fed" style="margin-right:5px;">@item.Name</a>}
+        <div>
+            @foreach (var item in Model.ListaDeJogadores)
+            {
+            <div class="Jogador">
+                <a asp-action="Details" asp-controller="Jogador" asp-route-id="@item.Num_Fed">
+                    <img class="FotoJogador" src="~/fotos/@Html.DisplayFor(modelItem => item.Foto)" />
+                    <div class="overlay">
+                        <div class="text">
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </div>
+                    </div>
+                </a>
 
+            </div>
+            }
+        </div>
     </div>
 </div>
 <br />
