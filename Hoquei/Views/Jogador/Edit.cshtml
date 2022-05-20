@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Num_Cam" class="control-label">Número da Camisola</label>
-                <input required type="number" name="numeroCamisola" min="1" max="99" maxlength="2" placeholder="1" />
+                <input required type="number" asp-for="Num_Cam" min="1" max="99" maxlength="2" placeholder="1" />
                 <span asp-validation-for="Num_Cam" class="text-danger"></span>
             </div>
             <div class="form-group">

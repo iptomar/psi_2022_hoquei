@@ -156,6 +156,7 @@ namespace Hoquei.Controllers
         {
             string nomeImg = "";
             bool flagErro = false;
+
             if (ModelState.IsValid)
             {
             
@@ -205,45 +206,49 @@ namespace Hoquei.Controllers
                         flagErro = true;
 
                     }
+                    if (!flagErro)
+                    {
+                        jogador.Name = novoJogador.Name;
+                        jogador.Num_Cam = novoJogador.Num_Cam;
+                        jogador.Data_Nasc = bornDate;
+                        jogador.Alcunha = novoJogador.Alcunha;
+
+                        try { 
+                            //processo de guardar foto do disco
+                            using var fileFoto = new FileStream(nomeImg, FileMode.Create);
+                            await imgFile.CopyToAsync(fileFoto);
+
+                            _context.Update(jogador);
+                            await _context.SaveChangesAsync();
+                            return RedirectToAction(nameof(Index));
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError("", ex.GetBaseException().ToString());
+                        }
+                    }
+
                 }
                 else //significa que não alterámos a foto
                 {
-                    Jogador jogador1 = _context.Jogador.Find(novoJogador.Num_Fed);
-
-                    _context.Entry<Jogador>(jogador1).State = EntityState.Detached;
-
-
-                    novoJogador.Foto = jogador1.Foto;
-                }
-
-                /***************************************************/
-
-                try
-                {
-
                     jogador.Name = novoJogador.Name;
                     jogador.Num_Cam = novoJogador.Num_Cam;
                     jogador.Data_Nasc = bornDate;
                     jogador.Alcunha = novoJogador.Alcunha;
-                    jogador.Foto = novoJogador.Foto;
-
-
-
-                    _context.Update(jogador);
-
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!JogadorExists(jogador.Num_Fed))
+                    novoJogador.Foto = jogador.Foto;
+                    try
                     {
-                        return NotFound();
+                        _context.Update(jogador);
+
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        throw;
+                        ModelState.AddModelError("", ex.GetBaseException().ToString());
                     }
                 }
+
+                /***************************************************/
 
                 return RedirectToAction(nameof(Index));
             }
