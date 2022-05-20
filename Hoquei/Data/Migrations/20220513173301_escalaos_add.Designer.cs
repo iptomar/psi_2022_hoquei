@@ -4,14 +4,16 @@ using Hoquei.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hoquei.Data.Migrations
 {
     [DbContext(typeof(HoqueiDB))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220513173301_escalaos_add")]
+    partial class escalaos_add
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,15 +99,13 @@ namespace Hoquei.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Designacao")
+                    b.Property<string>("designacao")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("escalaoId")
-                        .HasColumnType("int");
+                    b.Property<string>("escalao")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("escalaoId");
 
                     b.ToTable("Campeonato");
                 });
@@ -123,33 +123,6 @@ namespace Hoquei.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Escalao");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            designacao = "infantis"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            designacao = "iniciados"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            designacao = "juvenis"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            designacao = "juniores"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            designacao = "seniores"
-                        });
                 });
 
             modelBuilder.Entity("Hoquei.Models.Jogador", b =>
@@ -352,15 +325,6 @@ namespace Hoquei.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("Hoquei.Models.Campeonato", b =>
-                {
-                    b.HasOne("Hoquei.Models.Escalao", "escalao")
-                        .WithMany()
-                        .HasForeignKey("escalaoId");
-
-                    b.Navigation("escalao");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
