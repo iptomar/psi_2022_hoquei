@@ -90,68 +90,6 @@ namespace Hoquei.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Hoquei.Models.Campeonato", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Designacao")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("escalaoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("escalaoId");
-
-                    b.ToTable("Campeonato");
-                });
-
-            modelBuilder.Entity("Hoquei.Models.Escalao", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("designacao")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Escalao");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            designacao = "infantis"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            designacao = "iniciados"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            designacao = "juvenis"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            designacao = "juniores"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            designacao = "seniores"
-                        });
-                });
-
             modelBuilder.Entity("Hoquei.Models.Fotos", b =>
                 {
                     b.Property<int>("Id")
@@ -210,7 +148,6 @@ namespace Hoquei.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CC")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DataNascimento")
@@ -220,19 +157,12 @@ namespace Hoquei.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NumTele")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserNameId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -373,15 +303,6 @@ namespace Hoquei.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("Hoquei.Models.Campeonato", b =>
-                {
-                    b.HasOne("Hoquei.Models.Escalao", "escalao")
-                        .WithMany()
-                        .HasForeignKey("escalaoId");
-
-                    b.Navigation("escalao");
                 });
 
             modelBuilder.Entity("Hoquei.Models.Jogador", b =>
