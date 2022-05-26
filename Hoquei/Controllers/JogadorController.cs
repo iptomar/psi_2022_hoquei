@@ -87,7 +87,7 @@ namespace Hoquei.Controllers
             if (ClubeEscolhido.Length == 0)
             {
                 //É gerada uma mensagem de erro
-                ModelState.AddModelError("", "É necessário selecionar pelo menos uma categoria.");
+                ModelState.AddModelError("", "É necessário selecionar pelo menos um Clube.");
                 // gerar a lista Categorias que podem ser associadas ao componente
                 ViewBag.ListaDeClubes = _context.ListaDeClubes.OrderBy(c => c.Id).ToList();
                 // devolver controlo à View
@@ -98,7 +98,7 @@ namespace Hoquei.Controllers
             if (ClubeEscolhido.Length < 1)
             {
                 //É gerada uma mensagem de erro
-                ModelState.AddModelError("", "Selecione apenas uma categoria.");
+                ModelState.AddModelError("", "Selecione apenas um Clube.");
                 // gerar a lista Categorias que podem ser associadas ao Componente
                 ViewBag.ListaDeClubes = _context.ListaDeClubes.OrderBy(c => c.Id).ToList();
                 // devolver controlo à View

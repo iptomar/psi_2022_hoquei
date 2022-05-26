@@ -51,7 +51,7 @@ namespace Hoquei.Models
 
 
         /// <summary>
-        /// Foto do carro
+        /// Foto do Jogador
         /// </summary>
         public string Foto { get; set; }
 

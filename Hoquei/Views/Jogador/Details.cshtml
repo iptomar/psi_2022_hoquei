@@ -21,17 +21,17 @@
         @Html.DisplayFor(model => model.Num_Cam)<br />
 
         <b> Data de Nascimento:</b>
-        @Html.TextBoxFor(model => model.Data_Nasc, "{0:dd/MM/yyyy}")<br />
+        @Html.TextBoxFor(model => model.Data_Nasc)<br />
 
-        <b> Foto:</b>
-        @Html.DisplayFor(model => model.Foto)<br />
+        @*<b> Foto:</b>
+            @Html.DisplayFor(model => model.Foto)<br />*@
 
 
         <b>Clube: </b>
 
         @foreach (var item in Model.ListaDeClubes)
         {
-    <a asp-controller="Clube" asp-action="Details" asp-route-id="@item.Id" style="margin-right:5px;">@item.Nome</a>}
+            <a asp-controller="Clube" asp-action="Details" asp-route-id="@item.Id" style="margin-right:5px;">@item.Nome</a>}
 
 
     </div>
@@ -42,6 +42,6 @@
     <div>
         <a class="nav-link text-dark" asp-action="Index">Voltar</a>
     </div>
-
+</div>
 
 

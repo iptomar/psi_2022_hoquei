@@ -8,10 +8,10 @@
 <div class="Clube">
     <div style="float:left; margin-right:20px;  margin-top:10px; border:4px solid black">
         <img src="~/clubefotos/@Html.DisplayFor(model => model.FotografiasID)"
-             width="250" height="175" />
+             width="200" />
     </div>
 
-    <div style="line-height:2;  ">
+    <div class="detalhes" @*style="line-height:2;"*@ >
         <b> Data de Fundação:</b>
         @Html.DisplayFor(model => model.Data_Fundacao)<br />
 
@@ -22,7 +22,6 @@
             {
             <div class="Jogador">
                 <a asp-action="Details" asp-controller="Jogador" asp-route-id="@item.Num_Fed">
-                    <img class="FotoJogador" src="~/fotos/@Html.DisplayFor(modelItem => item.Foto)" />
                     <div class="overlay">
                         <div class="text">
                             @Html.DisplayFor(modelItem => item.Name)

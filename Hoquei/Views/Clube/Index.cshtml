@@ -2,21 +2,28 @@
 
 @{ ViewData["Title"] = "Index"; }
 <head>
-    <link rel="stylesheet" href="~/css/ImagensFilmes.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
+
+<link rel="stylesheet" href="~/css/ImagensClubes.css" />
+
 <h1>Lista de Clubes</h1>
+
 <br />
+
 <p>
     <a class="btn btn-primary" asp-action="Create">Adicionar Clube</a>
 </p>
 @foreach (var item in Model) {
 
-<div class="Clube">
+<div class="Componente">
     <a asp-action="Details" asp-route-id="@item.Id">
-        <img src="~/clubefotos/@Html.DisplayFor(modelItem => item.FotografiasID)"  width="300" height="175"/>
-       
-            <h1>@Html.DisplayFor(modelItem => item.Nome)</h1>
-       
+        <img class="FotoComponente" src="~/clubefotos/@Html.DisplayFor(modelItem => item.FotografiasID)"/>
+        <div class="overlay">
+            <div class="text">
+                @Html.DisplayFor(modelItem => item.Nome)
+            </div>
+        </div>       
     </a>
 </div>}
 
