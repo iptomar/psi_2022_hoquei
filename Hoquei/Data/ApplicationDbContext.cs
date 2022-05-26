@@ -44,6 +44,13 @@ namespace Hoquei.Data
         {
             base.OnModelCreating(modelbuilder);
 
+            modelbuilder.Entity<Escalao>().HasData(
+                new Escalao { Id = 1, designacao = "infantis" },
+                new Escalao { Id = 2, designacao = "iniciados" },
+                new Escalao { Id = 3, designacao = "juvenis" },
+                new Escalao { Id = 4, designacao = "juniores" },
+                new Escalao { Id = 5, designacao = "seniores"}
+                );
             //modelbuilder.Entity<Jogador>().HasOne(j => j.Foto).WithOne(f => f.).HasForeignKey<Fotos>(b => b.JogadorFK);
 
 
@@ -67,6 +74,8 @@ namespace Hoquei.Data
            
         public DbSet<User> User { get; set; }
         public DbSet<Jogador> Jogador { get; set; }
+        public DbSet<Campeonato> Campeonato { get; set; }
+        public DbSet<Escalao> Escalao { get; set; }
         public DbSet<Fotos> Foto { get; set; }
     }
             

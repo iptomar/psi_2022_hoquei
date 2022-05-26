@@ -4,19 +4,21 @@ using Hoquei.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hoquei.Data.Migrations
 {
     [DbContext(typeof(HoqueiDB))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220429180517_User_id")]
+    partial class User_id
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.16")
+                .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Hoquei.Data.ApplicationUser", b =>
@@ -90,86 +92,6 @@ namespace Hoquei.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Hoquei.Models.Campeonato", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Designacao")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("escalaoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("escalaoId");
-
-                    b.ToTable("Campeonato");
-                });
-
-            modelBuilder.Entity("Hoquei.Models.Escalao", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("designacao")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Escalao");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            designacao = "infantis"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            designacao = "iniciados"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            designacao = "juvenis"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            designacao = "juniores"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            designacao = "seniores"
-                        });
-                });
-
-            modelBuilder.Entity("Hoquei.Models.Fotos", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Descricao")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nome")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Foto");
-                });
-
             modelBuilder.Entity("Hoquei.Models.Jogador", b =>
                 {
                     b.Property<int>("Num_Fed")
@@ -184,8 +106,8 @@ namespace Hoquei.Data.Migrations
                     b.Property<DateTime>("Data_Nasc")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FotoId")
-                        .HasColumnType("int");
+                    b.Property<string>("Foto")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -195,9 +117,6 @@ namespace Hoquei.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Num_Fed");
-
-                    b.HasIndex("FotoId")
-                        .IsUnique();
 
                     b.ToTable("Jogador");
                 });
@@ -210,7 +129,6 @@ namespace Hoquei.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CC")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DataNascimento")
@@ -220,16 +138,12 @@ namespace Hoquei.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NumTele")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserNameId")
@@ -375,26 +289,6 @@ namespace Hoquei.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Hoquei.Models.Campeonato", b =>
-                {
-                    b.HasOne("Hoquei.Models.Escalao", "escalao")
-                        .WithMany()
-                        .HasForeignKey("escalaoId");
-
-                    b.Navigation("escalao");
-                });
-
-            modelBuilder.Entity("Hoquei.Models.Jogador", b =>
-                {
-                    b.HasOne("Hoquei.Models.Fotos", "Foto")
-                        .WithOne("Player")
-                        .HasForeignKey("Hoquei.Models.Jogador", "FotoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Foto");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -444,11 +338,6 @@ namespace Hoquei.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Hoquei.Models.Fotos", b =>
-                {
-                    b.Navigation("Player");
                 });
 #pragma warning restore 612, 618
         }
