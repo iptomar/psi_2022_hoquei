@@ -1,21 +1,59 @@
 ﻿@model IEnumerable<Hoquei.Models.Jogador>
 
 @{ ViewData["Title"] = "Index"; }
+
 <head>
     <link rel="stylesheet" href="~/css/ImagensFilmes.css" />
 </head>
 <h1>Lista de Jogadores</h1>
 
-@foreach (var item in Model) {
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Num_Fed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Alcunha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data_Nasc)
+            </th>
 
-<div class="Carro">
-    <a asp-action="Details" asp-route-id="@item.Num_Fed">
-        <div class="overlay">
-            <div class="text">
-                @Html.DisplayFor(modelItem => item.Name)
-            </div>
-        </div>
-    </a>
-</div>}
+            <th>
+                @Html.DisplayNameFor(model => model.Foto)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Num_Fed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Alcunha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data_Nasc)
+                </td>
+                <td>
+                    <img src="~/fotos/@item.Foto.Nome" style="height:75px; width:65px"/>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Num_Fed">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.Num_Fed">Detalhes</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 

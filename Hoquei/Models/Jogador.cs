@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,7 +14,7 @@ namespace Hoquei.Models
     public class Jogador
     {
         /// <summary>
-        /// Identificador do jogador
+        /// Identificador Federativo do jogador
         /// </summary>
         [Key]
         public int Num_Fed { get; set; }
@@ -43,9 +44,26 @@ namespace Hoquei.Models
         public string Alcunha { get; set; }
 
 
+
+        // criação da FK que referencia as fotos ao Jogador a que pertencem 
+        [ForeignKey(nameof(Fotos))]
+        public int FotoId { get; set; }
+        public Fotos Foto { get; set; }
+        // NOTA: O nome dos models deviam estar no plural para evitar atrofios na nomenclatura.
+        // ex: Agora como o nome do model é Fotos já posso fazer public Fotos Foto
+        // Só não alterei nos outros para não haver confusões depois no momento em que alguém faça pull ou merge no GIT
+        // ass: Gonçalo
+
+        /*
         /// <summary>
-        /// Foto do carro
+        /// Foto do jogador
         /// </summary>
         public string Foto { get; set; }
+
+        /// <summary>
+        /// Foto do Jogador
+        /// </summary>
+        public Fotos Foto { get; set; }
+        */
     }
 }
