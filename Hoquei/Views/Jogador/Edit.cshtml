@@ -1,8 +1,7 @@
 ﻿@model Hoquei.Models.Jogador
 
-@{
-    ViewData["Title"] = "Edit";
-}
+@{ ViewData["Title"] = "Edit";
+                string selecionado = ""; }
 
 <h1>Edit</h1>
 
@@ -37,6 +36,16 @@
                 <input type="file" name="imgFile" class="form-control" />
                 <span asp-validation-for="Foto" class="text-danger"></span>
             </div>
+
+            @* listar as categorias, e confrontar essa lista com as categorias a que a lição está associada *@
+            @foreach (Clube item in ViewBag.ListaDeClubes)
+            {
+                if (Model.ListaDeClubes.Contains(item)) { selecionado = "checked"; }
+
+                    <br /> <input type="checkbox" value="@item.Id" name="ClubeEscolhido" @selecionado /> @item.Name
+                    selecionado = "";
+
+            }
 
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

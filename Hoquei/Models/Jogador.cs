@@ -12,6 +12,12 @@ namespace Hoquei.Models
     /// </summary>
     public class Jogador
     {
+        public Jogador()
+        {
+            // inicializar a lista de Clubes do Jogador
+            ListaDeClubes = new HashSet<Clube>();
+        }
+
         /// <summary>
         /// Identificador do jogador
         /// </summary>
@@ -47,5 +53,10 @@ namespace Hoquei.Models
         /// Foto do carro
         /// </summary>
         public string Foto { get; set; }
+
+        /// <summary>
+        /// Lista de clubes dos jogadores
+        /// </summary>
+        public ICollection<Clube> ListaDeClubes { get; set; }
     }
 }
