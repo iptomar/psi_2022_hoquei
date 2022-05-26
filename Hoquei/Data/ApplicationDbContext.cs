@@ -77,6 +77,9 @@ namespace Hoquei.Data
         public DbSet<Campeonato> Campeonato { get; set; }
         public DbSet<Escalao> Escalao { get; set; }
         public DbSet<Fotos> Foto { get; set; }
+        public DbSet<Jogador> ListaDeJogadores{ get; set; }
+        public DbSet<Clube> Clube { get; set; }
+        public DbSet<Jogo> Jogo { get; set; }
     }
             
         

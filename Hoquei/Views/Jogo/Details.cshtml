@@ -1,0 +1,64 @@
+﻿@model Hoquei.Models.Jogo
+
+@{ ViewData["Title"] = "Details"; }
+
+<h1>Detalhes do Jogo</h1>
+
+<div>
+    <hr />
+    <div style="line-height:2;  ">
+        <b> Local do Jogo:</b>
+        @Html.DisplayFor(model => model.Local) <br />
+
+        <b> Data do Jogo:</b>
+        @Html.TextBoxFor(model => model.Data, "{0:dd/MM/yyyy}")<br />
+
+        <b> Clube da Casa:</b>
+        @*@Html.DisplayFor(model => model.Clube_Casa.Name)<br />*@
+
+        <a asp-controller="Clube" asp-action="Details" asp-route-id="@Model.Clube_Casa.Id" style="margin-right:5px;">@Model.Clube_Casa.Name</a>
+        <br />
+        <b> Clube Visitante:</b>
+        @*@Html.DisplayFor(model => model.Clube_Fora.Name)<br />*@
+
+        <a asp-controller="Clube" asp-action="Details" asp-route-id="@Model.Clube_Fora.Id" style="margin-right:5px;">@Model.Clube_Fora.Name</a>
+        <br />
+        <b> Escalão: </b>
+        @Html.DisplayFor(model => model.Escalao)<br />
+
+        <b> Golos Casa:</b>
+        @Html.DisplayFor(model => model.GolosCasa)<br />
+
+        <b> Golos Visistante:</b>
+        @Html.DisplayFor(model => model.GolosFora)<br />
+
+        <b> Capitao da Equipa da Casa:</b>
+        @*@Html.DisplayFor(model => model.Capitao_Casa.Name)<br />*@
+
+        <a asp-controller="Jogador" asp-action="Details" asp-route-id="@Model.Capitao_Casa.Num_Fed" style="margin-right:5px;">@Model.Capitao_Casa.Name</a>
+        <br />
+
+        <b> Capitao da Equipa Visitante:</b>
+        @*@Html.DisplayFor(model => model.Capitao_Fora.Name)<br />*@
+
+        <a asp-controller="Jogador" asp-action="Details" asp-route-id="@Model.Capitao_Fora.Num_Fed" style="margin-right:5px;">@Model.Capitao_Fora.Name</a>
+        <br />
+
+        <b> Marcadores: </b>
+
+        @foreach (var item in Model.ListaDeMarcadores)
+        {
+            <a asp-controller="Jogador" asp-action="Details" asp-route-id="@item.Num_Fed" style="margin-right:5px;">@item.Name</a>}
+
+    </div>
+    </div>
+    @*<div>
+        <a asp-action="Edit" asp-route-id="@Model.Num_Fed">Editar</a>
+    </div>*@
+
+    <div>
+        <a class="nav-link text-dark" asp-action="Index">Voltar</a>
+    </div>
+
+
+
