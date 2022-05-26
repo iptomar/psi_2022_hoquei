@@ -53,63 +53,69 @@ namespace Hoquei.Controllers
         public async Task<IActionResult> Adicionar([Bind("JogoId,Local,Data,Clube_Casa,Clube_Fora,Escalao,GolosCasa, GolosFora, Capitao_Casa, Capitao_Fora")] Jogo jogo, DateTime Date, int GolosCasa, int GolosFora, int Clube_CasaEscolhido, int Clube_ForaEscolhido, int Capitao_CasaEscolhido, int Capitao_ForaEscolhido, int[] Marcadores)
         {
 
-            // avalia se o array com a lista de clubes escolhidos está vazio ou não
-            if (Clube_CasaEscolhido != 0)
+            //avalia se o array com a lista de clubes escolhidos está vazio ou não
+            if (Clube_CasaEscolhido == 0)
             {
                 //É gerada uma mensagem de erro
-                //ModelState.AddModelError("", "É necessário selecionar um clube.");
-                // gerar a lista clubes
+                ModelState.AddModelError("", "É necessário selecionar um clube.");
+                // gerar as listas
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
-
-                Clube clube_casa = _context.Clube.Find(Clube_CasaEscolhido); 
-                jogo.Clube_Casa = clube_casa;
+                ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
 
                 // devolver controlo à View
                 return View(jogo);
             }
 
-            
+            Clube clube_casaEscolhido = _context.Clube.Find(Clube_CasaEscolhido);
+            jogo.Clube_Casa = clube_casaEscolhido;
 
-            //// avalia se o array com a lista de clubes escolhidos está vazio ou não
-            //if (Clube_ForaEscolhido == 0)
-            //{
-            //    //É gerada uma mensagem de erro
-            //    ModelState.AddModelError("", "É necessário selecionar um clube.");
-            //    // gerar a lista clubes
-            //    ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
-            //    // devolver controlo à View
-            //    return View(jogo);
-            //}
+
+            // avalia se o array com a lista de clubes escolhidos está vazio ou não
+            if (Clube_ForaEscolhido == 0)
+            {
+                //É gerada uma mensagem de erro
+                ModelState.AddModelError("", "É necessário selecionar um clube.");
+                // gerar as listas
+                ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
+                ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                // devolver controlo à View
+                return View(jogo);
+            }
 
             Clube clube_foraEscolhido = _context.Clube.Find(Clube_ForaEscolhido);
             jogo.Clube_Fora = clube_foraEscolhido;
 
             // avalia se o array com a lista de jogadores escolhidos está vazio ou não
-            if (Capitao_CasaEscolhido != 0)
+            if (Capitao_CasaEscolhido == 0)
             {
                 //É gerada uma mensagem de erro
-                //ModelState.AddModelError("", "É necessário selecionar um jogador.");
-                // gerar a lista clubes
+                ModelState.AddModelError("", "É necessário selecionar o Capitão da Equipa da casa.");
+                // gerar as listas
+                ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-                
-                Jogador capitao_casaEscolhido = _context.Jogador.Find(Capitao_CasaEscolhido);
-                jogo.Capitao_Casa = capitao_casaEscolhido;
+                ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+
                 // devolver controlo à View
                 return View(jogo);
             }
 
-            
+            Jogador capitao_casaEscolhido = _context.Jogador.Find(Capitao_CasaEscolhido);
+            jogo.Capitao_Casa = capitao_casaEscolhido;
 
             // avalia se o array com a lista de jogadores escolhidos está vazio ou não
-            //if (Capitao_ForaEscolhido != 0)
-            //{
-            //    //É gerada uma mensagem de erro
-            //    ModelState.AddModelError("", "É necessário selecionar um jogador.");
-            //    // gerar a lista clubes
-            //    ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-            //    // devolver controlo à View
-            //    return View(jogo);
-            //}
+            if (Capitao_ForaEscolhido == 0)
+            {
+                //É gerada uma mensagem de erro
+                ModelState.AddModelError("", "É necessário selecionar o Capitão da Equipa da casa.");
+                // gerar a lista clubes
+                ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
+                ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                // devolver controlo à View
+                return View(jogo);
+            }
 
             Jogador capitao_foraEscolhido = _context.Jogador.Find(Capitao_ForaEscolhido);
             jogo.Capitao_Fora = capitao_foraEscolhido;
@@ -119,7 +125,9 @@ namespace Hoquei.Controllers
             {
                 //É gerada uma mensagem de erro
                 ModelState.AddModelError("", "É necessário selecionar pelo menos um marcador.");
-                // gerar a lista Marcas que podem ser associadas ao carro
+                // gerar as listas
+                ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
+                ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 // devolver controlo à View
                 return View(jogo);
@@ -136,22 +144,26 @@ namespace Hoquei.Controllers
                 listaDeMarcadoresEscolhidos.Add(marcador);
             }
 
-            // adicionar a lista ao objeto de "carro"
+            // adicionar a lista ao objeto de jogo
             jogo.ListaDeMarcadores = listaDeMarcadoresEscolhidos;
 
             jogo.Data = Date;
             jogo.GolosCasa = GolosCasa;
             jogo.GolosFora = GolosFora;
 
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 _context.Add(jogo);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
 
-            }
-            return View(jogo);
+            //}
+            //ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
+            //ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+            //ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+            //return View(jogo);
+            
 
         }
 
@@ -171,6 +183,9 @@ namespace Hoquei.Controllers
             {
                 return NotFound();
             }
+            ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
+            ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+            ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
 
             return View(jogo);
         }

@@ -13,7 +13,7 @@ namespace Hoquei.Models
     public class Jogo
     {
         public Jogo()
-        {
+        { 
             ListaDeMarcadores = new HashSet<Jogador>();
         }
         /// <summary>

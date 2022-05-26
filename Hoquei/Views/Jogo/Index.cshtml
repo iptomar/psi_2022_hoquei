@@ -1,18 +1,18 @@
-﻿@model IEnumerable<Hoquei.Models.Jogador>
+﻿@model IEnumerable<Hoquei.Models.Jogo>
 
 @{ ViewData["Title"] = "Index"; }
 <head>
     <link rel="stylesheet" href="~/css/ImagensFilmes.css" />
 </head>
-<h1>Lista de Jogadores</h1>
+<h1>Lista de Jogos</h1>
 
 @foreach (var item in Model) {
 
 <div class="Carro">
-    <a asp-action="Details" asp-route-id="@item.Num_Fed">
+    <a asp-action="Details" asp-route-id="@item.JogoId">
         <div class="overlay">
             <div class="text">
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.JogoId)
             </div>
         </div>
     </a>

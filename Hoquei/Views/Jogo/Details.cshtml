@@ -1,37 +1,60 @@
-﻿@model Hoquei.Models.Jogador
+﻿@model Hoquei.Models.Jogo
 
 @{ ViewData["Title"] = "Details"; }
 
-<h1>Detalhes</h1>
+<h1>Detalhes do Jogo</h1>
 
 <div>
     <hr />
-    <div style="float:left; margin-right:20px;  margin-top:10px; border:4px solid black">
-        <img src="~/fotos/@Html.DisplayFor(model => model.Foto)"
-             width="200" />
-    </div>
     <div style="line-height:2;  ">
-        <b> Número de Federado:</b>
-        @Html.DisplayFor(model => model.Num_Fed) <br />
+        <b> Local do Jogo:</b>
+        @Html.DisplayFor(model => model.Local) <br />
 
-        <b> Nome:</b>
-        @Html.DisplayFor(model => model.Name)<br />
+        <b> Data do Jogo:</b>
+        @Html.TextBoxFor(model => model.Data, "{0:dd/MM/yyyy}")<br />
 
-        <b> Número Camisola:</b>
-        @Html.DisplayFor(model => model.Num_Cam)<br />
+        <b> Clube da Casa:</b>
+        @*@Html.DisplayFor(model => model.Clube_Casa.Name)<br />*@
 
-        <b> Data de Nascimento:</b>
-        @Html.TextBoxFor(model => model.Data_Nasc, "{0:dd/MM/yyyy}")<br />
+        <a asp-controller="Clube" asp-action="Details" asp-route-id="@Model.Clube_Casa.Id" style="margin-right:5px;">@Model.Clube_Casa.Name</a>
+        <br />
+        <b> Clube Visitante:</b>
+        @*@Html.DisplayFor(model => model.Clube_Fora.Name)<br />*@
 
-        <b> Foto:</b>
-        @Html.DisplayFor(model => model.Foto)<br />
+        <a asp-controller="Clube" asp-action="Details" asp-route-id="@Model.Clube_Fora.Id" style="margin-right:5px;">@Model.Clube_Fora.Name</a>
+        <br />
+        <b> Escalão: </b>
+        @Html.DisplayFor(model => model.Escalao)<br />
 
+        <b> Golos Casa:</b>
+        @Html.DisplayFor(model => model.GolosCasa)<br />
 
+        <b> Golos Visistante:</b>
+        @Html.DisplayFor(model => model.GolosFora)<br />
+
+        <b> Capitao da Equipa da Casa:</b>
+        @*@Html.DisplayFor(model => model.Capitao_Casa.Name)<br />*@
+
+        <a asp-controller="Jogador" asp-action="Details" asp-route-id="@Model.Capitao_Casa.Num_Fed" style="margin-right:5px;">@Model.Capitao_Casa.Name</a>
+        <br />
+
+        <b> Capitao da Equipa Visitante:</b>
+        @*@Html.DisplayFor(model => model.Capitao_Fora.Name)<br />*@
+
+        <a asp-controller="Jogador" asp-action="Details" asp-route-id="@Model.Capitao_Fora.Num_Fed" style="margin-right:5px;">@Model.Capitao_Fora.Name</a>
+        <br />
+
+        <b> Marcadores: </b>
+
+        @foreach (var item in Model.ListaDeMarcadores)
+        {
+            <a asp-controller="Jogador" asp-action="Details" asp-route-id="@item.Num_Fed" style="margin-right:5px;">@item.Name</a>}
 
     </div>
-    <div>
+    </div>
+    @*<div>
         <a asp-action="Edit" asp-route-id="@Model.Num_Fed">Editar</a>
-    </div>
+    </div>*@
 
     <div>
         <a class="nav-link text-dark" asp-action="Index">Voltar</a>

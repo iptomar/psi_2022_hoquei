@@ -41,7 +41,7 @@ namespace Hoquei.Controllers
         // GET: Clube/Adicionar
         public IActionResult Adicionar()
         {
-            //ViewBag.ListaDeClubes = _context.ListaDeClubes.OrderBy(c => c.Name).ToList();
+            //ViewBag.Clube = _context.Clube.OrderBy(c => c.Name).ToList();
             return View();
         }
 
