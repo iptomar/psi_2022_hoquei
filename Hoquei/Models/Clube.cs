@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace Hoquei.Models
 {
+
+
     /// <summary>
     /// Descrição de um Clube
     /// </summary>
@@ -14,6 +16,11 @@ namespace Hoquei.Models
     
     public class Clube
     {
+        public Clube()
+        {
+            ListaDeJogadores = new HashSet<Jogador>();
+        }
+
         /// <summary>
         /// Identificador do Clube
         /// </summary>
@@ -36,5 +43,12 @@ namespace Hoquei.Models
         /// Foto do carro
         /// </summary>
         public string Foto { get; set; }
+
+        // um clube está associado a 5 jogadores
+        // um clube tem uma lista de jogadores
+        /// <summary>
+        /// Lista dos jogadores que são da clube
+        /// </summary>
+        public ICollection<Jogador> ListaDeJogadores { get; set; }
     }
 }

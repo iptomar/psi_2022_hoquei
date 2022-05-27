@@ -43,7 +43,7 @@ namespace Hoquei.Controllers
         // GET: Jogadores/Adicionar
         public IActionResult Adicionar()
         {
-            //ViewBag.ListaDeJogadores = _context.ListaDeJogadores.OrderBy(c => c.Name).ToList();
+            ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Name).ToList();
             return View();
         }
 
@@ -58,6 +58,7 @@ namespace Hoquei.Controllers
 
             if (ModelState.IsValid) { 
                 //jogador.Foto = imgFile.;
+                jogador.ListaDeClubes = null;
                 jogador.Data_Nasc = bornDate;
                 jogador.Num_Cam = numeroCamisola;
 
@@ -118,13 +119,17 @@ namespace Hoquei.Controllers
             var jogador = await _context.Jogador
                 .Where(f => f.Num_Fed == id)
                 .OrderByDescending(f => f.Num_Fed)
+                .Include(fc => fc.ListaDeClubes)
                 .FirstOrDefaultAsync(m => m.Num_Fed == id);
             if (jogador == null)
             {
                 return NotFound();
             }
 
+            ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Name).ToList();
+            
             return View(jogador);
+
         }
 
         // GET: User/Edit/5
@@ -135,15 +140,21 @@ namespace Hoquei.Controllers
                 return NotFound();
             }
 
+           // var jogadores = await _context.Jogador
+           //                                        .Include(l => l.ListaDeClubes)
+           //                                       .FirstOrDefaultAsync(m => m.Num_Fed == id);
+
             //var jogadores = await _context.Jogador.FindAsync(id);
 
             //adicionar ao jogador a foto dele
-            var jogadores = await _context.Jogador.Include(j => j.Foto).Where(j => j.Num_Fed == id).FirstOrDefaultAsync();
+            var jogadores = await _context.Jogador.Include(j => j.Foto, j.ListaDeClubes).Where(j => j.Num_Fed == id).FirstOrDefaultAsync();
+
 
             if (jogadores == null)
             {
                 return View("Index");
             }
+            ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Name).ToList();
             return View(jogadores);
         }
 
@@ -152,7 +163,8 @@ namespace Hoquei.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Num_Fed,Name,Num_Cam,Data_Nasc,Alcunha,Foto")] Jogador novoJogador, IFormFile imgFile, DateTime bornDate, int numeroCamisola)
+        public async Task<IActionResult> Edit(int id, [Bind("Num_Fed,Name,Num_Cam,Data_Nasc,Clube,Alcunha,Foto")] Jogador novoJogador,
+            IFormFile imgFile, DateTime bornDate, int[] ClubeEscolhido)
         {
             string nomeImg = "";
             bool flagErro = false;
@@ -160,7 +172,80 @@ namespace Hoquei.Controllers
             if (ModelState.IsValid)
             {
             
-                var jogador = await _context.Jogador.Include(j => j.Foto).Where(j => j.Num_Fed == id).FirstOrDefaultAsync();
+                var jogador = await _context.Jogador.Include(j => j.Foto, j.ListaDeClubes).Where(j => j.Num_Fed == id).FirstOrDefaultAsync();
+                
+                // obter a lista dos IDs das Clubes associadas ao jogador, antes da edição
+                var oldListaClubes = jogador.ListaDeClubes
+                                           .Select(c => c.Id)
+                                           .ToList();
+                // avaliar se o utilizador alterou alguma categoria associada ao componente
+            // adicionadas -> lista de categorias adicionadas
+            // retiradas   -> lista de categorias retiradas
+            var adicionadas = ClubeEscolhido.Except(oldListaClubes);
+            var retiradas = oldListaClubes.Except(ClubeEscolhido.ToList());
+
+            // se alguma Category foi adicionada ou retirada
+            // é necessário alterar a lista de categorias 
+            // associada à Lesson
+            if (adicionadas.Any() || retiradas.Any())
+            {
+
+                if (retiradas.Any())
+                {
+                    // retirar a Category 
+                    foreach (int oldClube in retiradas)
+                    {
+                        var clubToRemove = jogador.ListaDeClubes.FirstOrDefault(c => c.Id == oldClube);
+                        jogador.ListaDeClubes.Remove(clubToRemove);
+                    }
+                }
+                if (adicionadas.Any())
+                {
+                    // adicionar a Categoria 
+                    foreach (int newClub in adicionadas)
+                    {
+                        var clubToAdd = await _context.Clube.FirstOrDefaultAsync(c => c.Id == newClub);
+                        jogador.ListaDeClubes.Add(clubToAdd);
+                    }
+                }
+            }
+
+            // avalia se o array com a lista de categorias escolhidas associadas ao Componente está vazio ou não
+            if (ClubeEscolhido.Length == 0)
+            {
+                //É gerada uma mensagem de erro
+                ModelState.AddModelError("", "É necessário selecionar pelo menos um clube.");
+                // gerar a lista clubes que podem ser associadas ao jogador
+                ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
+                // devolver controlo à View
+                return View(novoJogador);
+            }
+
+            // avalia se o array com a lista de categorias escolhidas associadas ao Componente está vazio ou não
+            if (ClubeEscolhido.Length < 1)
+            {
+                //É gerada uma mensagem de erro
+                ModelState.AddModelError("", "Selecione apenas um clube.");
+                // gerar a lista Clubes que podem ser associadas ao Jogador
+                ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
+                // devolver controlo à View
+                return View(novoJogador);
+            }
+
+            // criar uma lista com os objetos escolhidos das Clubes
+            List<Clube> listaDeClubesEscolhidas = new List<Clube>();
+            // Para cada objeto escolhido..
+            foreach (int item in ClubeEscolhido)
+            {
+                //procurar a categoria
+                Clube Clube = _context.Clube.Find(item);
+                // adicionar a Categoria à lista
+                listaDeClubesEscolhidas.Add(Clube);
+            }
+
+            // adicionar a lista ao objeto de "Componente"
+            novoJogador.ListaDeClubes = listaDeClubesEscolhidas;
+           
 
                 //significa que adicionámos uma foto nova
                 if (imgFile != null)
@@ -175,7 +260,7 @@ namespace Hoquei.Controllers
 
                     //processar a nova imagem
                     var imgext = Path.GetExtension(imgFile.FileName);
-
+                
                     if (imgext == ".jpg" || imgext == ".png" || imgext == ".jpeg")
                     {
                         Fotos foto = new Fotos();
@@ -184,6 +269,7 @@ namespace Hoquei.Controllers
                         g = Guid.NewGuid();
 
                         nomeImg = jogador.Num_Fed + "" + g.ToString();
+
 
                         //determinar a extensão do nome da imagem
                         string extensao = Path.GetExtension(imgFile.FileName).ToLower();
@@ -235,6 +321,7 @@ namespace Hoquei.Controllers
                     jogador.Num_Cam = novoJogador.Num_Cam;
                     jogador.Data_Nasc = bornDate;
                     jogador.Alcunha = novoJogador.Alcunha;
+
                     novoJogador.Foto = jogador.Foto;
                     try
                     {
