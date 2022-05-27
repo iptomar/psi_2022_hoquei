@@ -11,5 +11,5 @@ Sprint2:
   Término:  29 Maio  
 
 Sprint3:  
-  Começo:   2 Junho
+  Começo:   2 Junho  
   Término:  29 Junho(EXAME)
