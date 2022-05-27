@@ -4,19 +4,21 @@ using Hoquei.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hoquei.Data.Migrations
 {
     [DbContext(typeof(HoqueiDB))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220513170859_jogosv1")]
+    partial class jogosv1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.16")
+                .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Hoquei.Data.ApplicationUser", b =>
@@ -103,31 +105,18 @@ namespace Hoquei.Data.Migrations
                     b.Property<string>("Foto")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("JogoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("JogoId");
+
                     b.ToTable("Clube");
-                });
-
-            modelBuilder.Entity("Hoquei.Models.Fotos", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Descricao")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nome")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Foto");
                 });
 
             modelBuilder.Entity("Hoquei.Models.Jogador", b =>
@@ -144,10 +133,13 @@ namespace Hoquei.Data.Migrations
                     b.Property<DateTime>("Data_Nasc")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FotoId")
-                        .HasColumnType("int");
+                    b.Property<string>("Foto")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("JogoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("JogoId1")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -161,8 +153,7 @@ namespace Hoquei.Data.Migrations
 
                     b.HasIndex("JogoId");
 
-                    b.HasIndex("FotoId")
-                        .IsUnique();
+                    b.HasIndex("JogoId1");
 
                     b.ToTable("Jogador");
                 });
@@ -381,11 +372,22 @@ namespace Hoquei.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Hoquei.Models.Clube", b =>
+                {
+                    b.HasOne("Hoquei.Models.Jogo", null)
+                        .WithMany("ListaDeClubes")
+                        .HasForeignKey("JogoId");
+                });
+
             modelBuilder.Entity("Hoquei.Models.Jogador", b =>
                 {
                     b.HasOne("Hoquei.Models.Jogo", null)
-                        .WithMany("ListaDeMarcadores")
+                        .WithMany("ListaDeJogadores")
                         .HasForeignKey("JogoId");
+
+                    b.HasOne("Hoquei.Models.Jogo", null)
+                        .WithMany("ListaDeMarcadores")
+                        .HasForeignKey("JogoId1");
                 });
 
             modelBuilder.Entity("Hoquei.Models.Jogo", b =>
@@ -413,17 +415,6 @@ namespace Hoquei.Data.Migrations
                     b.Navigation("Clube_Casa");
 
                     b.Navigation("Clube_Fora");
-                });
-
-            modelBuilder.Entity("Hoquei.Models.Jogador", b =>
-                {
-                    b.HasOne("Hoquei.Models.Fotos", "Foto")
-                        .WithOne("Player")
-                        .HasForeignKey("Hoquei.Models.Jogador", "FotoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Foto");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -479,12 +470,11 @@ namespace Hoquei.Data.Migrations
 
             modelBuilder.Entity("Hoquei.Models.Jogo", b =>
                 {
-                    b.Navigation("ListaDeMarcadores");
-                });
+                    b.Navigation("ListaDeClubes");
 
-            modelBuilder.Entity("Hoquei.Models.Fotos", b =>
-                {
-                    b.Navigation("Player");
+                    b.Navigation("ListaDeJogadores");
+
+                    b.Navigation("ListaDeMarcadores");
                 });
 #pragma warning restore 612, 618
         }
