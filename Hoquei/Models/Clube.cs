@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace Hoquei.Models
 {
+
+
     /// <summary>
     /// Descrição de um Clube
     /// </summary>
