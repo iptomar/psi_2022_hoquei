@@ -16,7 +16,7 @@ namespace Hoquei.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.16")
+                .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Hoquei.Data.ApplicationUser", b =>
@@ -112,24 +112,6 @@ namespace Hoquei.Data.Migrations
                     b.ToTable("Clube");
                 });
 
-            modelBuilder.Entity("Hoquei.Models.Fotos", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Descricao")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nome")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Foto");
-                });
-
             modelBuilder.Entity("Hoquei.Models.Jogador", b =>
                 {
                     b.Property<int>("Num_Fed")
@@ -144,8 +126,8 @@ namespace Hoquei.Data.Migrations
                     b.Property<DateTime>("Data_Nasc")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FotoId")
-                        .HasColumnType("int");
+                    b.Property<string>("Foto")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("JogoId")
                         .HasColumnType("int");
@@ -160,9 +142,6 @@ namespace Hoquei.Data.Migrations
                     b.HasKey("Num_Fed");
 
                     b.HasIndex("JogoId");
-
-                    b.HasIndex("FotoId")
-                        .IsUnique();
 
                     b.ToTable("Jogador");
                 });
@@ -415,17 +394,6 @@ namespace Hoquei.Data.Migrations
                     b.Navigation("Clube_Fora");
                 });
 
-            modelBuilder.Entity("Hoquei.Models.Jogador", b =>
-                {
-                    b.HasOne("Hoquei.Models.Fotos", "Foto")
-                        .WithOne("Player")
-                        .HasForeignKey("Hoquei.Models.Jogador", "FotoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Foto");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -480,11 +448,6 @@ namespace Hoquei.Data.Migrations
             modelBuilder.Entity("Hoquei.Models.Jogo", b =>
                 {
                     b.Navigation("ListaDeMarcadores");
-                });
-
-            modelBuilder.Entity("Hoquei.Models.Fotos", b =>
-                {
-                    b.Navigation("Player");
                 });
 #pragma warning restore 612, 618
         }

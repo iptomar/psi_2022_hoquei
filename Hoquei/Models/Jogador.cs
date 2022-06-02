@@ -45,6 +45,10 @@ namespace Hoquei.Models
 
 
 
+
+
+
+
         // criação da FK que referencia as fotos ao Jogador a que pertencem 
         [ForeignKey(nameof(Fotos))]
         public int FotoId { get; set; }
@@ -65,5 +69,6 @@ namespace Hoquei.Models
         /// </summary>
         public Fotos Foto { get; set; }
         */
+
     }
 }

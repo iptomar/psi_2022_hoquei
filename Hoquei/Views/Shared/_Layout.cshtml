@@ -41,55 +41,28 @@
         </nav>
     </header>
     <div class="container">
+
+        <ul>
+        <li>
+            <a  asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        <li >
+            <a  asp-area="" asp-controller="User" asp-action="Index">Lista de utilizadores</a>
+        </li>
+        <li >
+            <a  asp-area="" asp-controller="Jogador" asp-action="Index">Lista de jogadores</a>
+        </li>
+        <li >
+            <a  asp-area="" asp-controller="Clube" asp-action="Index">Clubes</a>
+        </li>
+
+        <li>
+            <a  asp-area="" asp-controller="Jogo" asp-action="Index">Jogos</a>
+        </li>
+        </ul>
+
+
         <main role="main" class="pb-3">
-            <div class="sidenav">
-                <li class="nav-item">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" asp-area="" asp-controller="User" asp-action="Index">Lista de utilizadores</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Jogador" asp-action="Adicionar">Adicionar Jogador</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Jogador" asp-action="Index">Lista de jogadores</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" asp-area="" asp-controller="Campeonato" asp-action="Create">Adicionar campeonato</a>
-                </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Jogador" asp-action="Adicionar">Adicionar</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Jogador" asp-action="Index">Jogadores</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Clube" asp-action="Adicionar">Adicionar Clube</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Clube" asp-action="Index">Clubes</a>
-                        </li>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Jogo" asp-action="Adicionar">Adicionar Jogo</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Jogo" asp-action="Index">Jogos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
-            </div>
             @RenderBody()
         </main>
     </div>
