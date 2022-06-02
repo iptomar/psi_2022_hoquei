@@ -10,11 +10,10 @@
 
 <div class="Clube">
     <a asp-action="Details" asp-route-id="@item.Id">
-        <div class="overlay">
-            <div class="text">
-                @Html.DisplayFor(modelItem => item.Name)
-            </div>
-        </div>
+        <img src="~/clubefotos/@Html.DisplayFor(modelItem => item.Foto)" width="300" height="175" />
+
+        <h1>@Html.DisplayFor(modelItem => item.Name)</h1>
+
     </a>
 </div>}
 
