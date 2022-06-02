@@ -59,6 +59,8 @@ namespace Hoquei.Models
         [ForeignKey(nameof(Fotos))]
         public int FotoId { get; set; }
         public Fotos Foto { get; set; }
+
+        public ICollection<Clube> ListaDeClubes { get; set; }
         // NOTA: O nome dos models deviam estar no plural para evitar atrofios na nomenclatura.
         // ex: Agora como o nome do model é Fotos já posso fazer public Fotos Foto
         // Só não alterei nos outros para não haver confusões depois no momento em que alguém faça pull ou merge no GIT
