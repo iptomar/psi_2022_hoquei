@@ -147,7 +147,7 @@ namespace Hoquei.Controllers
             //var jogadores = await _context.Jogador.FindAsync(id);
 
             //adicionar ao jogador a foto dele
-            var jogadores = await _context.Jogador.Include(j => j.Foto, j.ListaDeClubes).Where(j => j.Num_Fed == id).FirstOrDefaultAsync();
+            var jogadores = await _context.Jogador.Include(j => j.Foto).Where(j => j.Num_Fed == id).FirstOrDefaultAsync();
 
 
             if (jogadores == null)
@@ -172,7 +172,7 @@ namespace Hoquei.Controllers
             if (ModelState.IsValid)
             {
             
-                var jogador = await _context.Jogador.Include(j => j.Foto, j.ListaDeClubes).Where(j => j.Num_Fed == id).FirstOrDefaultAsync();
+                var jogador = await _context.Jogador.Include(j => j.Foto).Where(j => j.Num_Fed == id).FirstOrDefaultAsync();
                 
                 // obter a lista dos IDs das Clubes associadas ao jogador, antes da edição
                 var oldListaClubes = jogador.ListaDeClubes
