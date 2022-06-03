@@ -19,17 +19,7 @@
 
             <div>
                 @foreach (var item in Model.ListaDeJogadores)
-                {
-    <div class="Jogador">
-        <a asp-action="Details" asp-controller="Jogador" asp-route-id="@item.Num_Fed">
-            <div class="overlay">
-                <div class="text">
-                    @Html.DisplayFor(modelItem => item.Name)
-                </div>
-            </div>
-        </a>
-
-    </div>            }
+                {<a asp-controller="Jogador" asp-action="Details" asp-route-id="@item.Num_Fed" style="margin-right:5px;">@item.Name</a> }
             </div>
         </div>
     </div>

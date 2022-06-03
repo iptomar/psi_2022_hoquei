@@ -7,7 +7,7 @@
 <div>
     <hr />
     <div style="float:left; margin-right:20px;  margin-top:10px; border:4px solid black">
-        <img src="~/fotos/@Html.DisplayFor(model => model.Foto)"
+        <img src="~/fotos/@Html.DisplayFor(model => model.Foto.Nome)"
              width="200" />
     </div>
     <div style="line-height:2;  ">
@@ -23,15 +23,16 @@
         <b> Data de Nascimento:</b>
         @Html.TextBoxFor(model => model.Data_Nasc, "{0:dd/MM/yyyy}")<br />
 
-        <b> Foto:</b>
-        @Html.DisplayFor(model => model.Foto)<br />
+
+
+
 
 
         <b>Clube: </b>
 
         @foreach (var item in Model.ListaDeClubes)
         {
-<a asp-controller="Clube" asp-action="Details" asp-route-id="@item.Id" style="margin-right:5px;">@item.Name</a>}
+            <a asp-controller="Clube" asp-action="Details" asp-route-id="@item.Id" style="margin-right:5px;">@item.Name</a>}
 
 
     </div>

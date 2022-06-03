@@ -51,7 +51,7 @@ namespace Hoquei.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Adicionar([Bind("Num_Fed,Name,Num_Cam,Data_Nasc,Alcunha,Foto")] Jogador jogador, IFormFile imgFile, DateTime bornDate, int numeroCamisola)
+        public async Task<IActionResult> Adicionar([Bind("Num_Fed,Name,Num_Cam,Data_Nasc,Clube,Alcunha,Foto")] Jogador jogador, IFormFile imgFile, DateTime bornDate, int numeroCamisola, int[] ClubeEscolhido)
         {
             string nomeImg = "";
             bool flagErro = false;
@@ -120,6 +120,7 @@ namespace Hoquei.Controllers
                 .Where(f => f.Num_Fed == id)
                 .OrderByDescending(f => f.Num_Fed)
                 .Include(fc => fc.ListaDeClubes)
+                .Include(f => f.Foto)
                 .FirstOrDefaultAsync(m => m.Num_Fed == id);
             if (jogador == null)
             {
@@ -147,7 +148,8 @@ namespace Hoquei.Controllers
             //var jogadores = await _context.Jogador.FindAsync(id);
 
             //adicionar ao jogador a foto dele
-            var jogadores = await _context.Jogador.Include(j => j.Foto).Where(j => j.Num_Fed == id).FirstOrDefaultAsync();
+            var jogadores = await _context.Jogador.Include(j => j.Foto).Include(l => l.ListaDeClubes)
+                                                  .Where(j => j.Num_Fed == id).FirstOrDefaultAsync();
 
 
             if (jogadores == null)
@@ -172,7 +174,7 @@ namespace Hoquei.Controllers
             if (ModelState.IsValid)
             {
             
-                var jogador = await _context.Jogador.Include(j => j.Foto).Where(j => j.Num_Fed == id).FirstOrDefaultAsync();
+                var jogador = await _context.Jogador.Include(l => l.ListaDeClubes).Include(j => j.Foto).Where(j => j.Num_Fed == id).FirstOrDefaultAsync();
                 
                 // obter a lista dos IDs das Clubes associadas ao jogador, antes da edição
                 var oldListaClubes = jogador.ListaDeClubes
