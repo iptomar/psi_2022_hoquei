@@ -1,4 +1,4 @@
-﻿@model Hoquei.Models.Jogador
+﻿@model Hoquei.Models.Jogo
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,38 +6,67 @@
 
 <h1>Edit</h1>
 
-<h4>Jogador</h4>
+<h4>Jogo</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="Local" class="control-label"></label>
+                <input asp-for="Local" class="form-control" />
+                <span asp-validation-for="Local" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Num_Cam" class="control-label"></label>
-                <input asp-for="Num_Cam" class="form-control" />
-                <span asp-validation-for="Num_Cam" class="text-danger"></span>
+                <label asp-for="Data" class="control-label"> Data do Jogo</label>
+                <input required type="datetime-local" name="Date" value="2010-01-01T00:01" min="1920-06-07T00:00" max="2011-06-14T00:00" />
+                <span asp-validation-for="Data" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Data_Nasc" class="control-label"> Data de Nascimento</label>
-                <input required type="datetime-local" name="bornDate" value="2010-01-01T00:01" min="1920-06-07T00:00" max="2011-06-14T00:00" />
-                <span asp-validation-for="Data_Nasc" class="text-danger"></span>
+                <label asp-for="Escalao" class="control-label"></label>
+                <input asp-for="Escalao" class="form-control" />
+                <span asp-validation-for="Escalao" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Alcunha" class="control-label"></label>
-                <input asp-for="Alcunha" class="form-control" />
-                <span asp-validation-for="Alcunha" class="text-danger"></span>
+                <label asp-for="GolosCasa" class="control-label">Golos da Equipa da Casa</label>
+                <input required type="number" name="GolosCasa" min="1" max="99" maxlength="2" placeholder="1" />
+                <span asp-validation-for="GolosCasa" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Foto" class="control-label"></label>
-                <input type="file" name="imgFile" class="form-control" />
-                <span asp-validation-for="Foto" class="text-danger"></span>
+                <label asp-for="GolosFora" class="control-label">Golos da Equipa Visitante</label>
+                <input required type="number" name="GolosFora" min="1" max="99" maxlength="2" placeholder="1" />
+                <span asp-validation-for="GolosFora" class="text-danger"></span>
             </div>
-
+            <div class="form-group">
+                <label class="control-label">Clube da Casa</label>
+                @foreach (Clube item in ViewBag.ListaDeClubes)
+                {
+                    <br /> <input type="checkbox" value="@item.Id" name="Clube_CasaEscolhido" /> @item.Name}
+            </div>
+            <div class="form-group">
+                <label class="control-label">Clube Visitante</label>
+                @foreach (Clube item in ViewBag.ListaDeClubes)
+                {
+                    <br /> <input type="checkbox" value="@item.Id" name="Clube_ForaEscolhido" /> @item.Name}
+            </div>
+            <div class="form-group">
+                <label class="control-label">Capitão da Casa</label>
+                @foreach (Jogador item in ViewBag.ListaDeJogadores)
+                {
+                    <br /> <input type="checkbox" value="@item.Num_Fed" name="Capitao_CasaEscolhido" /> @item.Name}
+            </div>
+            <div class="form-group">
+                <label class="control-label">Capitão Da Equipa Visitante</label>
+                @foreach (Jogador item in ViewBag.ListaDeJogadores)
+                {
+                    <br /> <input type="checkbox" value="@item.Num_Fed" name="Capitao_ForaEscolhido" /> @item.Name}
+            </div>
+            <div class="form-group">
+                <label class="control-label">Marcadores</label>
+                @foreach (Jogador item in ViewBag.ListaDeMarcadores)
+                {
+                    <br /> <input type="checkbox" value="@item.Num_Fed" name="Marcadores" /> @item.Name}
+            </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
