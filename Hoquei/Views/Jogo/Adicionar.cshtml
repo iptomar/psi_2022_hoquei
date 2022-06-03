@@ -34,12 +34,17 @@
                 {
                     <br /> <input type="checkbox" value="@item.Id" name="Clube_ForaEscolhido" /> @item.Name}
             </div>
-            <div class="form-group">
-                <label class="control-label">Escalao</label>
-                @foreach (Escalao item in ViewBag.ListaDeEscaloes)
-                {
-                    <br /> <input type="checkbox" value="@item.Id" name="Escalao_Escolhido" /> @item.designacao}
-            </div>
+            @*<div class="form-group">
+            <label class="control-label">Escalao</label>
+            @foreach (Escalao item in ViewBag.ListaDeEscaloes)
+            {
+                <br /> <input type="checkbox" value="@item.Id" name="Escalao_Escolhido" /> @item.designacao}
+        </div>*@
+        <div class="form-group">
+            <label asp-for="Escalao" class="control-label"></label>
+            <input asp-for="Escalao" class="form-control" />
+            <span asp-validation-for="Escalao" class="text-danger"></span>
+        </div>
             <div class="form-group">
                 <label asp-for="GolosCasa" class="control-label">Golos da Equipa da Casa</label>
                 <input required type="number" name="GolosCasa" min="1" max="99" maxlength="2" placeholder="1" />

@@ -266,8 +266,9 @@ namespace Hoquei.Data.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("EscalaoId")
-                        .HasColumnType("int");
+                    b.Property<string>("Escalao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("GolosCasa")
                         .HasColumnType("int");
@@ -288,8 +289,6 @@ namespace Hoquei.Data.Migrations
                     b.HasIndex("Clube_CasaId");
 
                     b.HasIndex("Clube_ForaId");
-
-                    b.HasIndex("EscalaoId");
 
                     b.ToTable("Jogo");
                 });
@@ -524,10 +523,6 @@ namespace Hoquei.Data.Migrations
                         .WithMany()
                         .HasForeignKey("Clube_ForaId");
 
-                    b.HasOne("Hoquei.Models.Escalao", "Escalao")
-                        .WithMany()
-                        .HasForeignKey("EscalaoId");
-
                     b.Navigation("Capitao_Casa");
 
                     b.Navigation("Capitao_Fora");
@@ -535,8 +530,6 @@ namespace Hoquei.Data.Migrations
                     b.Navigation("Clube_Casa");
 
                     b.Navigation("Clube_Fora");
-
-                    b.Navigation("Escalao");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

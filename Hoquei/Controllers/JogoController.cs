@@ -51,26 +51,26 @@ namespace Hoquei.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Adicionar([Bind("JogoId,Local,Data,Clube_Casa,Clube_Fora,Escalao,GolosCasa, GolosFora, Capitao_Casa, Capitao_Fora")] Jogo jogo, DateTime Date, int GolosCasa, int GolosFora, int Escalao_Escolhido, int Clube_CasaEscolhido, int Clube_ForaEscolhido, int Capitao_CasaEscolhido, int Capitao_ForaEscolhido, int[] Marcadores)
+        public async Task<IActionResult> Adicionar([Bind("JogoId,Local,Data,Clube_Casa,Clube_Fora,Escalao,GolosCasa, GolosFora, Capitao_Casa, Capitao_Fora")] Jogo jogo, DateTime Date, int GolosCasa, int GolosFora, string Escalao,/*int Escalao_Escolhido,*/ int Clube_CasaEscolhido, int Clube_ForaEscolhido, int Capitao_CasaEscolhido, int Capitao_ForaEscolhido, int[] Marcadores)
         {
 
-            //avalia se o array com a lista de clubes escolhidos está vazio ou não
-            if (Escalao_Escolhido == 0)
-            {
-                //É gerada uma mensagem de erro
-                ModelState.AddModelError("", "É necessário selecionar um escalao.");
-                // gerar as listas
-                ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
-                ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-                ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
-                ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
+            ////avalia se o array com a lista de clubes escolhidos está vazio ou não
+            //if (Escalao_Escolhido == 0)
+            //{
+            //    //É gerada uma mensagem de erro
+            //    ModelState.AddModelError("", "É necessário selecionar um escalao.");
+            //    // gerar as listas
+            //    ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
+            //    ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+            //    ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+            //    ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
 
-                // devolver controlo à View
-                return View(jogo);
-            }
+            //    // devolver controlo à View
+            //    return View(jogo);
+            //}
 
-            Escalao escalao = _context.Escalao.Find(Escalao_Escolhido);
-            jogo.Escalao = escalao;
+            //Escalao escalao = _context.Escalao.Find(Escalao_Escolhido);
+            //jogo.Escalao = escalao;
 
             //avalia se o array com a lista de clubes escolhidos está vazio ou não
             if (Clube_CasaEscolhido == 0)
@@ -170,7 +170,7 @@ namespace Hoquei.Controllers
 
             // adicionar a lista ao objeto de jogo
             jogo.ListaDeMarcadores = listaDeMarcadoresEscolhidos;
-
+            jogo.Escalao = Escalao;
             jogo.Data = Date;
             jogo.GolosCasa = GolosCasa;
             jogo.GolosFora = GolosFora;

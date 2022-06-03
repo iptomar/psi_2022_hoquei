@@ -50,7 +50,7 @@ namespace Hoquei.Models
         /// Escalão
         /// </summary>
         [Required]
-        public Escalao Escalao { get; set; }
+        public string Escalao { get; set; }
 
         /// <summary>
         /// Golos da equipa visitada
