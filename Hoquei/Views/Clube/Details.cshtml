@@ -20,7 +20,12 @@
         <div>
             @foreach (var item in Model.ListaDeJogadores)
             {
-            <div class="Jogador">
+
+                <a asp-controller="Jogador" asp-action="Details" asp-route-id="@item.Num_Fed" style="margin-right:5px;">@item.Name</a>
+
+
+
+                @*<div >
                 <a asp-action="Details" asp-controller="Jogador" asp-route-id="@item.Num_Fed">
                     <div class="overlay">
                         <div class="text">
@@ -29,7 +34,7 @@
                     </div>
                 </a>
 
-            </div>
+            </div>*@
             }
         </div>
     </div>

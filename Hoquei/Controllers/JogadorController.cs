@@ -37,7 +37,7 @@ namespace Hoquei.Controllers
             _userManager = userManager;
         }
 
-        // GET: Jogador
+        // GET: Jogador/ index
         public async Task<IActionResult> IndexAsync()
         {
             return View(await _context.Jogador.ToListAsync());
@@ -83,45 +83,46 @@ namespace Hoquei.Controllers
         public async Task<IActionResult> Adicionar([Bind("Num_Fed,Name,Num_Cam,Data_Nasc,Clube,Alcunha,Foto")] Jogador jogador, IFormFile imgFile, DateTime bornDate, int numeroCamisola, int[] ClubeEscolhido)
         {
 
-            // avalia se o array com a lista de categorias escolhidas associadas ao componente está vazio ou não
-            if (ClubeEscolhido.Length == 0)
-            {
-                //É gerada uma mensagem de erro
-                ModelState.AddModelError("", "É necessário selecionar pelo menos um Clube.");
-                // gerar a lista Categorias que podem ser associadas ao componente
-                ViewBag.ListaDeClubes = _context.ListaDeClubes.OrderBy(c => c.Id).ToList();
-                // devolver controlo à View
-                return View(jogador);
-            }
+            //// avalia se o array com a lista de categorias escolhidas associadas ao componente está vazio ou não
+            //if (ClubeEscolhido.Length == 0)
+            //{
+            //    //É gerada uma mensagem de erro
+            //    ModelState.AddModelError("", "É necessário selecionar pelo menos um Clube.");
+            //    // gerar a lista Categorias que podem ser associadas ao componente
+            //    ViewBag.ListaDeClubes = _context.ListaDeClubes.OrderBy(c => c.Id).ToList();
+            //    // devolver controlo à View
+            //    return View(jogador);
+            //}
 
-            // avalia se o array com a lista de categorias escolhidas associadas ao Componente está vazio ou não
-            if (ClubeEscolhido.Length < 1)
-            {
-                //É gerada uma mensagem de erro
-                ModelState.AddModelError("", "Selecione apenas um Clube.");
-                // gerar a lista Categorias que podem ser associadas ao Componente
-                ViewBag.ListaDeClubes = _context.ListaDeClubes.OrderBy(c => c.Id).ToList();
-                // devolver controlo à View
-                return View(jogador);
-            }
+            //// avalia se o array com a lista de categorias escolhidas associadas ao Componente está vazio ou não
+            //if (ClubeEscolhido.Length < 1)
+            //{
+            //    //É gerada uma mensagem de erro
+            //    ModelState.AddModelError("", "Selecione apenas um Clube.");
+            //    // gerar a lista Categorias que podem ser associadas ao Componente
+            //    ViewBag.ListaDeClubes = _context.ListaDeClubes.OrderBy(c => c.Id).ToList();
+            //    // devolver controlo à View
+            //    return View(jogador);
+            //}
 
-            // criar uma lista com os objetos escolhidos das Categorias
-            List<Clube> listaDeClubesEscolhidos = new List<Clube>();
-            // Para cada objeto escolhido..
-            foreach (int item in ClubeEscolhido)
-            {
-                //procurar a categoria
-                Clube clube = _context.ListaDeClubes.Find(item);
-                // adicionar a Categoria à lista
-                listaDeClubesEscolhidos.Add(clube);
-            }
+            //// criar uma lista com os objetos escolhidos das Categorias
+            //List<Clube> listaDeClubesEscolhidos = new List<Clube>();
+            //// Para cada objeto escolhido..
+            //foreach (int item in ClubeEscolhido)
+            //{
+            //    //procurar a categoria
+            //    Clube clube = _context.ListaDeClubes.Find(item);
+            //    // adicionar a Categoria à lista
+            //    listaDeClubesEscolhidos.Add(clube);
+            //}
 
-            // adicionar a lista ao objeto de "componente"
-            jogador.ListaDeClubes = listaDeClubesEscolhidos;
+            //// adicionar a lista ao objeto de "jogador"
+            //jogador.ListaDeClubes = listaDeClubesEscolhidos;
 
             jogador.Foto = imgFile.FileName;
             jogador.Data_Nasc = bornDate;
             jogador.Num_Cam = numeroCamisola;
+            
 
             //_webhost.WebRootPath vai ter o path para a pasta wwwroot
             var saveimg = Path.Combine(_caminho.WebRootPath, "fotos", imgFile.FileName);
@@ -213,7 +214,7 @@ namespace Hoquei.Controllers
 
                 if (retiradas.Any())
                 {
-                    // retirar a Category 
+                    // retirar o CLube 
                     foreach (int oldClube in retiradas)
                     {
                         var clubToRemove = jogador.ListaDeClubes.FirstOrDefault(c => c.Id == oldClube);
@@ -222,7 +223,7 @@ namespace Hoquei.Controllers
                 }
                 if (adicionadas.Any())
                 {
-                    // adicionar a Categoria 
+                    // adicionar o CLube 
                     foreach (int newClub in adicionadas)
                     {
                         var clubToAdd = await _context.ListaDeClubes.FirstOrDefaultAsync(c => c.Id == newClub);
