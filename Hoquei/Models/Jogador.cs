@@ -26,6 +26,11 @@ namespace Hoquei.Models
         public int Num_Fed { get; set; }
 
         /// <summary>
+        /// Identificador Federativo do jogador
+        /// </summary>
+        public int Numero_FederadoReal { get; set; }
+
+        /// <summary>
         /// Nome do Jogador
         /// </summary>
         [Required]
