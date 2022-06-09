@@ -34,6 +34,8 @@ namespace Hoquei.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
+
+            ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
             return View(await _context.Jogo.ToListAsync());
         }
 
