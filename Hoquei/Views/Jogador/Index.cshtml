@@ -1,30 +1,33 @@
 ﻿@model IEnumerable<Hoquei.Models.Jogador>
 
-@{ ViewData["Title"] = "Index"; }
+@{ ViewData["Title"] = "Campeonatos"; }
 
 <head>
     <link rel="stylesheet" href="~/css/ImagensFilmes.css" />
 </head>
 <h1>Lista de Jogadores</h1>
-<p><a asp-action="Adicionar">Adicionar Jogador</a></p>
+@if (User.IsInRole("Admin") || User.IsInRole("Utilizador")) { 
+    <p><a asp-action="Adicionar">Adicionar Jogador</a></p>
+    }
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Num_Fed)
+                Número de Federado
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Nome
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Alcunha)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Data_Nasc)
+                Data de Nascimento
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.Foto)
+               
+
             </th>
         </tr>
     </thead>
@@ -33,7 +36,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Num_Fed)
+                    @Html.DisplayFor(modelItem => item.Numero_FederadoReal)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
@@ -45,10 +48,12 @@
                     @Html.DisplayFor(modelItem => item.Data_Nasc)
                 </td>
                 <td>
-                    <img src="~/fotos/@item.Foto.Nome" style="height:75px; width:65px"/>
+                    <img src="~/fotos/@item.Foto.Nome" style="height:75px; width:65px" />
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Num_Fed">Editar</a> |
+                    @if (User.IsInRole("Admin") || User.IsInRole("Utilizador"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Num_Fed">Editar</a>}|
                     <a asp-action="Details" asp-route-id="@item.Num_Fed">Detalhes</a>
                 </td>
             </tr>

@@ -4,27 +4,62 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
+<h1>@Html.DisplayFor(model => model.Designacao)</h1>
+<h4>Jogos</h4>
 <div>
-    <h4>Campeonato</h4>
-    <hr />
-    <dl class="row">
-        @*<dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.designacao)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.designacao)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.escalao)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.escalao)
-        </dd>*@
-    </dl>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Equipa da casa
+                    </th>
+                    <th>
+                        Golos
+                    </th>
+                    <th>
+                        Equipa de fora
+
+                    <th>
+                        Local
+                    </th>
+                    <th>
+                        Data
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                    @foreach (var item in Model.ListaDeJogos)
+                    {
+                <tr>
+                    <td>
+                        <img src="~/clubefotos/@item.Clube_Casa.Foto" width="30" height="40">
+                        @Html.DisplayFor(modelItem => item.Clube_Casa.Name)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GolosCasa)  -  @Html.DisplayFor(modelItem => item.GolosFora)
+                    </td>
+                    <td>
+                        <img src="~/clubefotos/@item.Clube_Fora.Foto" width="30" height="40">
+                        @Html.DisplayFor(modelItem => item.Clube_Fora.Name)
+
+                    </td>
+                    
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Local);
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Data);
+                    </td>
+                </tr>
+                    
+                    }
+                
+                </tbody>
+            </table>
+    
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

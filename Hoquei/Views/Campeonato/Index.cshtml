@@ -1,44 +1,55 @@
 ﻿@model IEnumerable<Hoquei.Models.Campeonato>
 
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Campeonatos";
 }
 
 <h1>Lista de Campeonatos</h1>
 
 <p>
-    <a asp-action="Create">Adicionar Novo</a>
+
+
+
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create">Adicionar novo Campeonato</a>}
+
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Designacao)
+                @*@Html.DisplayNameFor(model => model.Designacao)*@
             </th>
             <th>
-                
-            @Html.DisplayNameFor(model => model.escalao.designacao)
-        </th>
-<th></th>
+
+                @*@Html.DisplayNameFor(model => model.escalao.designacao)*@
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Designacao)
-            </td>
-            <td>
-                
-            @Html.DisplayFor(modelItem => item.escalao.designacao)
-        </td>
-<td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
-               
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" >@Html.DisplayFor(modelItem => item.Designacao)</a>
+                </td>
+                <td>
+
+                    @Html.DisplayFor(modelItem => item.escalao.designacao)
+                </td>
+                <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                   
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
-    <a asp-action="Create" asp-controller="Escalaos">Adicionar Escalão</a>
+    @if (User.IsInRole("Admin")) { 
+        <a asp-action="Create" asp-controller="Escalaos">Adicionar Escalão</a>}
 </table>

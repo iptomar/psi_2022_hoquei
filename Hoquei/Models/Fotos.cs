@@ -25,11 +25,7 @@ namespace Hoquei.Models
         // ter a cara do moço
         // ASS: Gonçalo
 
-        ///// <summary>
-        ///// Path para a foto
-        ///// </summary>
-        //public string Path { get; set; }
-
+ 
         /// <summary>
         /// Descricao da foto
         /// </summary>
@@ -41,5 +37,10 @@ namespace Hoquei.Models
         /// </summary>        
         public Jogador Player { get; set; }
         
+        // <summary>
+        // Identifica o clube a que a foto pertence
+        // </summary>        
+        public Clube Club { get; set; }
+
     }
 }

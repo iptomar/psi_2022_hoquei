@@ -26,6 +26,11 @@ namespace Hoquei.Models
         public int Num_Fed { get; set; }
 
         /// <summary>
+        /// Identificador Federativo do jogador
+        /// </summary>
+        public int Numero_FederadoReal { get; set; }
+
+        /// <summary>
         /// Nome do Jogador
         /// </summary>
         [Required]
@@ -41,6 +46,7 @@ namespace Hoquei.Models
         /// Data de nascimento
         /// </summary>
         [Required]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime Data_Nasc { get; set; }
 
         /// <summary>
@@ -48,10 +54,6 @@ namespace Hoquei.Models
         /// </summary>
         [Required]
         public string Alcunha { get; set; }
-
-
-
-
 
 
 

@@ -83,6 +83,12 @@ namespace Hoquei.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var user = _userManager.Users.FirstOrDefault(m => m.UserName == Input.UserName);
+                if(user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Não existe uma conta com o nome de utilizador");
+                    return Page();
+                }
+                
                 if (user.LockoutEnabled)
                 {
                     user.LockoutEnabled = false;

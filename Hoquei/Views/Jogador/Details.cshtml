@@ -12,7 +12,7 @@
     </div>
     <div style="line-height:2;  ">
         <b> Número de Federado:</b>
-        @Html.DisplayFor(model => model.Num_Fed) <br />
+        @Html.DisplayFor(model => model.Numero_FederadoReal) <br />
 
         <b> Nome:</b>
         @Html.DisplayFor(model => model.Name)<br />
@@ -37,7 +37,8 @@
 
     </div>
     <div>
-        <a asp-action="Edit" asp-route-id="@Model.Num_Fed">Editar</a>
+        @if (User.IsInRole("Admin") || User.IsInRole("Utilizador")) { 
+            <a asp-action="Edit" asp-route-id="@Model.Num_Fed">Editar</a>}
     </div>
 
     <div>

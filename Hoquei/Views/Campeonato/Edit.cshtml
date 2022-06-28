@@ -19,7 +19,11 @@
                 <span asp-validation-for="Designacao" class="text-danger"></span>
             </div>
             <div class="form-group">
-                @Html.DropDownList("Escalao", new SelectList(ViewBag.data, "Id", "designacao"),@Model.escalao.designacao)
+              
+                    @Html.DropDownList("Escalao", new SelectList(ViewBag.data, "Id", "designacao"), @Model.escalao.designacao)
+               
+
+                
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

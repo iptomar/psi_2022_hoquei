@@ -1,5 +1,6 @@
 ﻿using Hoquei.Data;
 using Hoquei.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -41,6 +42,7 @@ namespace Hoquei.Controllers
         }
 
         // GET: Jogadores/Adicionar
+        [Authorize(Roles = "Admin,Utilizador")]
         public IActionResult Adicionar()
         {
             ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Name).ToList();
@@ -50,14 +52,16 @@ namespace Hoquei.Controllers
         // POST: Jogadores/Adicionar
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin,Utilizador")]
         [HttpPost]
-        public async Task<IActionResult> Adicionar([Bind("Num_Fed,Name,Num_Cam,Data_Nasc,Clube,Alcunha,Foto")] Jogador jogador, IFormFile imgFile, DateTime bornDate, int numeroCamisola, int[] ClubeEscolhido)
+        public async Task<IActionResult> Adicionar([Bind("Num_Fed,Numero_FederadoReal,Name,Num_Cam,Data_Nasc,Clube,Alcunha,Foto")] Jogador jogador, int Numero_FederadoReal, IFormFile imgFile, DateTime bornDate, int numeroCamisola, int[] ClubeEscolhido)
         {
             string nomeImg = "";
             bool flagErro = false;
 
-            if (ModelState.IsValid) { 
+            if (ModelState.IsValid) {
                 //jogador.Foto = imgFile.;
+                jogador.Numero_FederadoReal = Numero_FederadoReal;
                 jogador.ListaDeClubes = null;
                 jogador.Data_Nasc = bornDate;
                 jogador.Num_Cam = numeroCamisola;
@@ -109,6 +113,7 @@ namespace Hoquei.Controllers
         }
 
         // GET: Jogador/Details/5
+        
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -122,6 +127,7 @@ namespace Hoquei.Controllers
                 .Include(fc => fc.ListaDeClubes)
                 .Include(f => f.Foto)
                 .FirstOrDefaultAsync(m => m.Num_Fed == id);
+                
             if (jogador == null)
             {
                 return NotFound();
@@ -134,6 +140,7 @@ namespace Hoquei.Controllers
         }
 
         // GET: User/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -163,9 +170,10 @@ namespace Hoquei.Controllers
         // POST: User/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Num_Fed,Name,Num_Cam,Data_Nasc,Clube,Alcunha,Foto")] Jogador novoJogador,
+        public async Task<IActionResult> Edit(int id, [Bind("Num_Fed,Numero_FederadoReal,Name,Num_Cam,Data_Nasc,Clube,Alcunha,Foto")] Jogador novoJogador,int Numero_FederadoReal,
             IFormFile imgFile, DateTime bornDate, int[] ClubeEscolhido)
         {
             string nomeImg = "";
@@ -296,6 +304,7 @@ namespace Hoquei.Controllers
                     }
                     if (!flagErro)
                     {
+                        jogador.Numero_FederadoReal = novoJogador.Numero_FederadoReal;
                         jogador.Name = novoJogador.Name;
                         jogador.Num_Cam = novoJogador.Num_Cam;
                         jogador.Data_Nasc = bornDate;
@@ -319,6 +328,7 @@ namespace Hoquei.Controllers
                 }
                 else //significa que não alterámos a foto
                 {
+                    jogador.Numero_FederadoReal = novoJogador.Numero_FederadoReal;
                     jogador.Name = novoJogador.Name;
                     jogador.Num_Cam = novoJogador.Num_Cam;
                     jogador.Data_Nasc = bornDate;
