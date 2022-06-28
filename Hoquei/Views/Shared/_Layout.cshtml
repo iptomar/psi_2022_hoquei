@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Hoquei</title>
+    <title>@ViewData["Title"] - Hóquei Patins</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -31,6 +31,7 @@
                     }
 
                 
+
             </div>
         </nav>
     </header>
@@ -44,6 +45,7 @@
                 <li>
                     <a asp-area="" asp-controller="User" asp-action="Index">Lista de utilizadores</a>
                 </li> }
+
             <li>
                 <a asp-area="" asp-controller="Jogador" asp-action="Index">Lista de jogadores</a>
             </li>
@@ -54,11 +56,13 @@
             <li>
                 <a asp-area="" asp-controller="Jogo" asp-action="Index">Jogos</a>
             </li>
-            <li>
-                <a asp-area="" asp-controller="Campeonato" asp-action="Index">Campeonato</a>
-            </li>
-        </ul>
 
+
+            <li>
+                <a asp-area="" asp-controller="Campeonatos" asp-action="Index">Campeonatos</a>
+            </li>
+
+        </ul>
 
         <main role="main" class="pb-3">
             @RenderBody()

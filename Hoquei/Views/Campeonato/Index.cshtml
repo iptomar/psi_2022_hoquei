@@ -5,12 +5,16 @@
     ViewData["Title"] = "Campeonatos";
 }
 
-<h1>Index</h1>
+<h1>Lista de Campeonatos</h1>
 
 <p>
+
+
+
     @if (User.IsInRole("Admin"))
     {
         <a asp-action="Create">Adicionar novo Campeonato</a>}
+
 </p>
 <table class="table">
     <thead>

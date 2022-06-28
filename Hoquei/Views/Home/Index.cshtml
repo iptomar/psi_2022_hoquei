@@ -1,8 +1,40 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<Hoquei.Models.Jogo>
 
+@{ ViewData["Title"] = "Index"; }
+<head>
+    <link rel="stylesheet" href="~/css/ImagensFilmes.css" />
+</head>
+
+@*Nome do Site*@
 <div class="text-center">
-    <h1 class="display-4">Hóquei Patins</h1>
+
+    <h1 class="display-4" style="font-size: 100px;">Hóquei Patins</h1>
+    <img src="fotos/logohoquei.png" class="figure-img" />
+    <br />
+    <br />
+    <h2 class="display-4" style="font-size: 50px;">Bem vindo ao Hóquei Patins - Results</h2>
+    <br />
+    <h2 class="display-4" style="font-size: 25px;">O site onde pode ver os resultados das suas equipas favoritas</h2>
+
+
+
     
+
 </div>
+
+@*<h1>Lista de Jogos</h1>*@
+@foreach (var item in Model)
+{
+
+    <div class="Carro">
+        <a asp-action="Details" asp-route-id="@item.JogoId">
+            <div class="overlay">
+                <div class="text">
+                    @Html.DisplayFor(modelItem => item.JogoId)
+                </div>
+            </div>
+        </a>
+    </div>}
+
+
+
