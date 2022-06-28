@@ -6,7 +6,8 @@
 </head>
 <h1>Lista de Jogos</h1>
 <p>
-    <a asp-action="Adicionar">Adicionar Jogo</a>
+    @if(User.IsInRole("Admin")|| User.IsInRole("Utilizador")) { 
+    <a asp-action="Adicionar">Adicionar Jogo</a>}
 </p>
 <table class="table">
     <thead>

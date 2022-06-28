@@ -35,8 +35,7 @@ namespace Hoquei.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
-            return View(await _context.Jogo.ToListAsync());
-        }
+
 
             return View(await _context.Jogo.Include(c => c.Clube_Casa)
                                            .Include(c=> c.Clube_Fora)
@@ -62,7 +61,7 @@ namespace Hoquei.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
 
-        public async Task<IActionResult> Adicionar([Bind("JogoId,Local,Data,Clube_Casa,Clube_Fora,Escalao,GolosCasa, GolosFora, Capitao_Casa, Capitao_Fora, Campeonato")] Jogo jogo, DateTime Date, int GolosCasa, int GolosFora, string Escalao,/*int Escalao_Escolhido,*/ int Clube_CasaEscolhido, int Clube_ForaEscolhido, int Capitao_CasaEscolhido, int Capitao_ForaEscolhido, int[] MarcadoresCasa, int[] MarcadoresFora)
+        public async Task<IActionResult> Adicionar([Bind("JogoId,Local,Data,Clube_Casa,Clube_Fora,Escalao,GolosCasa, GolosFora, Capitao_Casa, Capitao_Fora, Campeonato")] Jogo jogo, DateTime Date, int GolosCasa, int GolosFora, string Escalao,/*int Escalao_Escolhido,*/ int Clube_CasaEscolhido, int Clube_ForaEscolhido, int Capitao_CasaEscolhido, int Capitao_ForaEscolhido, int[] MarcadoresCasa, int[] MarcadoresFora, int Campeonato)
         {
 
             ////avalia se o array com a lista de clubes escolhidos está vazio ou não
@@ -181,7 +180,7 @@ namespace Hoquei.Controllers
 
 
             Campeonato campeonato = _context.Campeonato.Find(Campeonato);
-            jogo.Campeonato = campeonato;
+            jogo.Campeonatos = campeonato;
 
             //if(_context.Classificacoes.Where(f => f.Clube == Clube_ca){
 
@@ -252,7 +251,8 @@ namespace Hoquei.Controllers
             }
 
             // adicionar a lista ao objeto de jogo
-            jogo.ListaDeMarcadores = listaDeMarcadoresEscolhidos;
+            jogo.ListaDeMarcadoresCasa = listaDeMarcadoresCasaEscolhidos;
+            jogo.ListaDeMarcadoresFora = listaDeMarcadoresForaEscolhidos;
             jogo.Data = Date;
             jogo.GolosCasa = GolosCasa;
             jogo.GolosFora = GolosFora;

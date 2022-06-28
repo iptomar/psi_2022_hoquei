@@ -21,15 +21,11 @@ namespace Hoquei.Models
         /// <summary>
         /// Nome do campeonato
         /// </summary>
-
-        /// <summary>
-        /// Nome do campeonato
-        /// </summary>
         public string Designacao { get; set; }
         /// <summary>
         /// Referência para o escalão a que o campeonato pertence
         /// </summary>
-        //public Escalao escalao { get; set; }
+        public Escalao escalao { get; set; }
         /// <summary>
         /// Lista de jogos presentes no jogo
         /// </summary>
