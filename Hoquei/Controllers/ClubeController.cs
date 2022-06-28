@@ -1,5 +1,6 @@
 ﻿using Hoquei.Data;
 using Hoquei.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -37,7 +38,7 @@ namespace Hoquei.Controllers
         {
             return View(await _context.Clube.ToListAsync());
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Clube/Adicionar
         public IActionResult Adicionar()
         {
@@ -49,6 +50,7 @@ namespace Hoquei.Controllers
         // POST: Clube/Adicionar
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Adicionar([Bind("Id,Name,Data_Fundacao,Foto")] Clube clube, IFormFile imgFile, DateTime bornDate)
         {
@@ -106,6 +108,7 @@ namespace Hoquei.Controllers
         }
 
         // GET: Clubes/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -128,6 +131,7 @@ namespace Hoquei.Controllers
         // POST: Clubes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Data_Fundacao,Foto")] Clube novoClube, IFormFile imgFile, DateTime bornDate, int[] jogadorEscolhido)
@@ -250,6 +254,7 @@ namespace Hoquei.Controllers
         }
 
         // GET: ClubController/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -268,6 +273,7 @@ namespace Hoquei.Controllers
         }
 
         // POST: ClubController/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

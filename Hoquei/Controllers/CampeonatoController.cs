@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Hoquei.Data;
 using Hoquei.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hoquei.Controllers
 {
@@ -51,7 +52,7 @@ namespace Hoquei.Controllers
 
             return View(campeonato);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Campeonatoes/Create
         public IActionResult Create()
         {
@@ -63,6 +64,7 @@ namespace Hoquei.Controllers
         // POST: Campeonatoes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Designacao")] Campeonato campeonato)
@@ -77,7 +79,7 @@ namespace Hoquei.Controllers
             }
             return View(campeonato);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Campeonatoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -99,6 +101,7 @@ namespace Hoquei.Controllers
         // POST: Campeonatoes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Designacao")] Campeonato campeonato)

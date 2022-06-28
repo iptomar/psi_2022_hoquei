@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hoquei.Data;
 using Hoquei.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hoquei.Controllers
 {
@@ -29,6 +30,7 @@ namespace Hoquei.Controllers
 
 
         // GET: Escalaos/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -37,6 +39,7 @@ namespace Hoquei.Controllers
         // POST: Escalaos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,designacao")] Escalao escalao)

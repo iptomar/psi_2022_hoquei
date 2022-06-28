@@ -1,5 +1,6 @@
 ﻿using Hoquei.Data;
 using Hoquei.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +41,7 @@ namespace Hoquei.Controllers
                                            //.Include(c => c.)
                                            .ToListAsync()) ;
         }
-
+        [Authorize]
         // GET: Jogo/Adicionar
         public IActionResult Adicionar()
         {
@@ -51,7 +52,7 @@ namespace Hoquei.Controllers
             ViewBag.ListaCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
             return View();
         }
-
+        [Authorize]
         // POST: Jogo/Adicionar
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -218,7 +219,7 @@ namespace Hoquei.Controllers
 
             return View(jogo);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Jogo/Edit
         public async Task<IActionResult> EditAsync(int? id)
         {
@@ -233,7 +234,7 @@ namespace Hoquei.Controllers
             ViewBag.ListaCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
             return View(jogo);
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: User/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
