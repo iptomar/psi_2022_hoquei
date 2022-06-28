@@ -13,8 +13,9 @@ namespace Hoquei.Models
     public class Jogo
     {
         public Jogo()
-        { 
-            ListaDeMarcadores = new HashSet<Jogador>();
+        {
+            ListaDeMarcadoresCasa = new HashSet<Jogador>();
+            ListaDeMarcadoresFora = new HashSet<Jogador>();
         }
         /// <summary>
         /// Identificador do jogo
@@ -32,6 +33,7 @@ namespace Hoquei.Models
         /// Data do Jogo
         /// </summary>
         [Required]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime Data { get; set; }
 
         /// <summary>
@@ -70,11 +72,22 @@ namespace Hoquei.Models
         [Required]
         public Jogador Capitao_Fora { get; set; }
 
-        
         /// <summary>
-        /// lista de marcadores
+        /// Capitao da equipa da casa
         /// </summary>
-        public ICollection<Jogador> ListaDeMarcadores { get; set; }
+        [Required]
+        public Campeonato Campeonato { get; set; }
+
+
+        /// <summary>
+        /// lista de marcadores casa
+        /// </summary>
+        public ICollection<Jogador> ListaDeMarcadoresCasa { get; set; }
+
+        /// <summary>
+        /// lista de marcadores fora
+        /// </summary>
+        public ICollection<Jogador> ListaDeMarcadoresFora { get; set; }
 
     }
 }
