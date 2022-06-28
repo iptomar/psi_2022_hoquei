@@ -49,15 +49,16 @@ namespace Hoquei.Data
                 new Escalao { Id = 2, designacao = "Iniciados" },
                 new Escalao { Id = 3, designacao = "Juvenis" },
                 new Escalao { Id = 4, designacao = "Juniores" },
-                new Escalao { Id = 5, designacao = "Seniores"}
+                new Escalao { Id = 5, designacao = "Seniores" }
                 );
-            //modelbuilder.Entity<Jogador>().HasOne(j => j.Foto).WithOne(f => f.).HasForeignKey<Fotos>(b => b.JogadorFK);
-
             
+
+
             modelbuilder.Entity<IdentityRole>().HasData(
              new IdentityRole { Id = "u", Name = "Utilizador", NormalizedName = "UTILIZADOR" },
              new IdentityRole { Id = "a", Name = "Admin", NormalizedName = "ADMIN" }
              );
+            
 
 
         }

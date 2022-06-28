@@ -142,9 +142,11 @@ namespace Hoquei.Controllers
             var items = _context.Escalao.ToList();
             ViewBag.data = items;
 
-            var campeonato = await _context.Campeonato.FirstOrDefaultAsync(i => i.Id == id);
+            //var campeonato = await _context.Campeonato.FirstOrDefaultAsync(i => i.Id == id);
 
-           // var campeonato = await _context.Campeonato.Include(e => e.escalao).FirstOrDefaultAsync(i => i.Id == id);
+           var campeonato = await _context.Campeonato.Include(e => e.escalao).FirstOrDefaultAsync(i => i.Id == id);
+            
+       
             if (campeonato == null)
             {
                 return NotFound();
@@ -170,11 +172,11 @@ namespace Hoquei.Controllers
                 ////Verificar se os dados da dropdown foram alterados
                 ////caso não tenham sido alterados a view retorna o nome do escalão
                 ////caso tenha sido alterado a view retorna o id do escalao em formato string ex. "1"
-                //int number;
-                //if (Int32.TryParse(Request.Form["Escalao"], out number))
-                //{
-                //    campeonato.escalao = await _context.Escalao.FindAsync(number);
-                //}
+                int number;
+                if (Int32.TryParse(Request.Form["Escalao"], out number))
+                {
+                    campeonato.escalao = await _context.Escalao.FindAsync(number);
+                }
 
 
                 try

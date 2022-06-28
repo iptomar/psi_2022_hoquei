@@ -2,7 +2,7 @@
 
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Campeonatos";
 }
 
 <h1>Index</h1>
@@ -10,17 +10,17 @@
 <p>
     @if (User.IsInRole("Admin"))
     {
-        <a asp-action="Create">Create New</a>}
+        <a asp-action="Create">Adicionar novo Campeonato</a>}
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Designacao)
+                @*@Html.DisplayNameFor(model => model.Designacao)*@
             </th>
             <th>
 
-                @Html.DisplayNameFor(model => model.escalao.designacao)
+                @*@Html.DisplayNameFor(model => model.escalao.designacao)*@
             </th>
             <th></th>
         </tr>
