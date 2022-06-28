@@ -46,6 +46,7 @@ namespace Hoquei.Models
         /// Data de nascimento
         /// </summary>
         [Required]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime Data_Nasc { get; set; }
 
         /// <summary>
@@ -53,12 +54,6 @@ namespace Hoquei.Models
         /// </summary>
         [Required]
         public string Alcunha { get; set; }
-
-
-
-
-
-
 
         // criação da FK que referencia as fotos ao Jogador a que pertencem 
         [ForeignKey(nameof(Fotos))]

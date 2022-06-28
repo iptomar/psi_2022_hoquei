@@ -68,14 +68,22 @@
                     <br /> <input type="checkbox" value="@item.Num_Fed" name="Capitao_ForaEscolhido" /> @item.Name}
             </div>
             <div class="form-group">
+
                 <label class="control-label">Campeonato</label>
                 @foreach (Campeonato item in ViewBag.ListaDeCampeonatos)
                 {
                     <br /> <input type="checkbox" value="@item.Id" name="Campeonato" /> @item.Designacao}
             </div>
             <div class="form-group">
-                <label class="control-label">Marcadores</label>
-                @foreach (Jogador item in ViewBag.ListaDeMarcadores)
+
+                <label class="control-label">Marcadores Fora</label>
+                @foreach (Jogador item in ViewBag.ListaDeMarcadoresFora)
+                {
+                    <br /> <input type="checkbox" value="@item.Num_Fed" name="Marcadores" /> @item.Name}
+            </div>
+            <div class="form-group">
+                <label class="control-label">Marcadores Casa</label>
+                @foreach (Jogador item in ViewBag.ListaDeMarcadoresCasa)
                 {
                     <br /> <input type="checkbox" value="@item.Num_Fed" name="Marcadores" /> @item.Name}
             </div>

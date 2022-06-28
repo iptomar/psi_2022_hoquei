@@ -38,10 +38,16 @@ namespace Hoquei.Models
         [Required]
         public DateTime Data_Fundacao { get; set; }
 
-        /// <summary>
-        /// Foto do carro
-        /// </summary>
-        public string Foto { get; set; }
+        ///// <summary>
+        ///// Foto do carro
+        ///// </summary>
+        //public string Foto { get; set; }
+
+        // criação da FK que referencia as fotos ao Clube a que pertencem 
+        [ForeignKey(nameof(Fotos))]
+        public int FotoId { get; set; }
+        public Fotos Foto { get; set; }
+
 
         public ICollection<Jogador> ListaDeJogadores { get; set; }
     }
