@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Hoquei</title>
+    <title>@ViewData["Title"] - Hóquei Patins</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -21,14 +21,13 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                  
                     </ul>
                     <ul class="navbar-nav">
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item "><a class="nav-link text-white" asp-action="Details" asp-controller="Utilizadores" asp-route-userName="@User.Identity.Name" title="Manage">Olá @User.Identity.Name!</a> @* User.Identity.Name --> devolve o UserName  *@</li>
-                                    
-                            <li class=" nav-item" ><a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">SAIR</a></li>
+
+                            <li class=" nav-item"><a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">SAIR</a></li>
                         }
                         else
                         {
@@ -65,7 +64,6 @@
             </li>
 
         </ul>
-
 
         <main role="main" class="pb-3">
             @RenderBody()
