@@ -356,7 +356,7 @@ namespace Hoquei.Controllers
             if (MarcadoresCasa.Length == 0)
             {
                 //É gerada uma mensagem de erro
-                ModelState.AddModelError("", "É necessário selecionar pelo menos um marcadorcasa.");
+                ModelState.AddModelError("", "É necessário selecionar pelo menos um marcador casa.");
                 // gerar as listas
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
@@ -386,7 +386,7 @@ namespace Hoquei.Controllers
             if (MarcadoresFora.Length == 0)
             {
                 //É gerada uma mensagem de erro
-                ModelState.AddModelError("", "É necessário selecionar pelo menos um marcadorcasa.");
+                ModelState.AddModelError("", "É necessário selecionar pelo menos um marcador fora.");
                 // gerar as listas
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
