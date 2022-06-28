@@ -46,6 +46,7 @@ namespace Hoquei.Models
         /// Data de nascimento
         /// </summary>
         [Required]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime Data_Nasc { get; set; }
 
         /// <summary>

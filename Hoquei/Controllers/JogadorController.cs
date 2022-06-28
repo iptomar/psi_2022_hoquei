@@ -123,6 +123,7 @@ namespace Hoquei.Controllers
                 .Include(fc => fc.ListaDeClubes)
                 .Include(f => f.Foto)
                 .FirstOrDefaultAsync(m => m.Num_Fed == id);
+                
             if (jogador == null)
             {
                 return NotFound();
