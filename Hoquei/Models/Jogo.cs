@@ -32,6 +32,7 @@ namespace Hoquei.Models
         /// Data do Jogo
         /// </summary>
         [Required]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime Data { get; set; }
 
         /// <summary>
