@@ -17,8 +17,14 @@
                 <input asp-for="Designacao" class="form-control" />
                 <span asp-validation-for="Designacao" class="text-danger"></span>
             </div>
+            @*<div class="form-group">
+                @Html.DropDownList("Escalao", new SelectList(ViewBag.data, "Id", "designacao"))
+            </div>*@
             <div class="form-group">
-            @Html.DropDownList("Escalao",new SelectList(ViewBag.data, "Id", "designacao"))
+                <label class="control-label">Clubes Participantes</label>
+                @foreach (Clube item in ViewBag.ListaDeClubes)
+                {
+                    <br /> <input type="checkbox" value="@item.Id" name="Clubes" /> @item.Name}
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

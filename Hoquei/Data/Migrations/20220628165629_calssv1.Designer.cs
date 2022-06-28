@@ -4,14 +4,16 @@ using Hoquei.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hoquei.Data.Migrations
 {
     [DbContext(typeof(HoqueiDB))]
-    partial class HoqueiDBModelSnapshot : ModelSnapshot
+    [Migration("20220628165629_calssv1")]
+    partial class calssv1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,7 +117,12 @@ namespace Hoquei.Data.Migrations
                     b.Property<string>("Designacao")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("escalaoId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("escalaoId");
 
                     b.ToTable("Campeonato");
                 });
@@ -518,6 +525,15 @@ namespace Hoquei.Data.Migrations
                         .HasForeignKey("ListaDeJogadoresNum_Fed")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Hoquei.Models.Campeonato", b =>
+                {
+                    b.HasOne("Hoquei.Models.Escalao", "escalao")
+                        .WithMany()
+                        .HasForeignKey("escalaoId");
+
+                    b.Navigation("escalao");
                 });
 
             modelBuilder.Entity("Hoquei.Models.Classificacoes", b =>
