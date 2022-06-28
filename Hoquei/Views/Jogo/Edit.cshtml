@@ -24,36 +24,36 @@
             </div>
             <div class="form-group">
                 <label asp-for="Escalao" class="control-label"></label>
-                <input asp-for="Escalao" class="form-control"/>
+                <input asp-for="Escalao" class="form-control" />
                 <span asp-validation-for="Escalao" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="GolosCasa" class="control-label">Golos da Equipa da Casa</label>
-                <input required type="number" name="GolosCasa"  min="1" max="99" maxlength="2" placeholder="1" />
+                <input required type="number" name="GolosCasa" min="1" max="99" maxlength="2" placeholder="1" />
                 <span asp-validation-for="GolosCasa" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="GolosFora" class="control-label">Golos da Equipa Visitante</label>
-                <input required type="number" name="GolosFora"  min="1" max="99" maxlength="2" placeholder="1" />
+                <input required type="number" name="GolosFora" min="1" max="99" maxlength="2" placeholder="1" />
                 <span asp-validation-for="GolosFora" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">Clube da Casa</label>
                 @foreach (Clube item in ViewBag.ListaDeClubes)
                 {
-                    <br /> <input type="checkbox" value="@item.Id" name="Clube_CasaEscolhido"  /> @item.Name}
+                    <br /> <input type="checkbox" value="@item.Id" name="Clube_CasaEscolhido" /> @item.Name}
             </div>
             <div class="form-group">
                 <label class="control-label">Clube Visitante</label>
                 @foreach (Clube item in ViewBag.ListaDeClubes)
                 {
-                    <br /> <input type="checkbox" value="@item.Id" name="Clube_ForaEscolhido"  /> @item.Name}
+                    <br /> <input type="checkbox" value="@item.Id" name="Clube_ForaEscolhido" /> @item.Name}
             </div>
             <div class="form-group">
                 <label class="control-label">Capitão da Casa</label>
                 @foreach (Jogador item in ViewBag.ListaDeJogadores)
                 {
-                    <br /> <input type="checkbox" value="@item.Num_Fed" name="Capitao_CasaEscolhido"  /> @item.Name}
+                    <br /> <input type="checkbox" value="@item.Num_Fed" name="Capitao_CasaEscolhido" /> @item.Name}
             </div>
             <div class="form-group">
                 <label class="control-label">Capitão Da Equipa Visitante</label>
@@ -62,10 +62,16 @@
                     <br /> <input type="checkbox" value="@item.Num_Fed" name="Capitao_ForaEscolhido" /> @item.Name}
             </div>
             <div class="form-group">
-                <label class="control-label">Marcadores</label>
-                @foreach (Jogador item in ViewBag.ListaDeMarcadores)
+                <label class="control-label">Marcadores Casa</label>
+                @foreach (Jogador item in ViewBag.ListaDeMarcadoresCasa)
                 {
-                    <br /> <input type="checkbox" value="@item.Num_Fed" name="Marcadores"  /> @item.Name}
+                    <br /> <input type="checkbox" value="@item.Num_Fed" name="MarcadoresCasa" /> @item.Name}
+            </div>
+            <div class="form-group">
+                <label class="control-label">Marcadores Fora</label>
+                @foreach (Jogador item in ViewBag.ListaDeMarcadoresFora)
+                {
+                    <br /> <input type="checkbox" value="@item.Num_Fed" name="MarcadoresFora" /> @item.Name}
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

@@ -44,7 +44,8 @@ namespace Hoquei.Controllers
         {
             ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
             ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-            ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+            ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+            ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
             ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
             return View();
         }
@@ -64,7 +65,7 @@ namespace Hoquei.Controllers
             //    // gerar as listas
             //    ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
             //    ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-            //    ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+            //    ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
             //    ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
 
             //    // devolver controlo à View
@@ -82,7 +83,8 @@ namespace Hoquei.Controllers
                 // gerar as listas
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-                ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
 
                 // devolver controlo à View
@@ -101,7 +103,8 @@ namespace Hoquei.Controllers
                 // gerar as listas
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-                ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
                 // devolver controlo à View
                 return View(jogo);
@@ -118,7 +121,8 @@ namespace Hoquei.Controllers
                 // gerar as listas
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-                ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
 
                 // devolver controlo à View
@@ -136,7 +140,8 @@ namespace Hoquei.Controllers
                 // gerar a lista clubes
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-                ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
                 // devolver controlo à View
                 return View(jogo);
@@ -149,29 +154,33 @@ namespace Hoquei.Controllers
             if (Marcadores.Length == 0)
             {
                 //É gerada uma mensagem de erro
-                ModelState.AddModelError("", "É necessário selecionar pelo menos um marcador.");
+                ModelState.AddModelError("", "É necessário selecionar pelo menos um marcadorcasa.");
                 // gerar as listas
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-                ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
                 // devolver controlo à View
                 return View(jogo);
             }
 
             // criar uma lista com os objetos escolhidos dos jogadores
-            List<Jogador> listaDeMarcadoresEscolhidos = new List<Jogador>();
+            List<Jogador> listaDeMarcadoresCasaEscolhidos = new List<Jogador>();
+            List<Jogador> listaDeMarcadoresForaEscolhidos = new List<Jogador>();
             // Para cada objeto escolhido..
             foreach (int item in Marcadores)
             {
                 //procurar o jogador
                 Jogador marcador = _context.ListaDeJogadores.Find(item);
                 // adicionar o jogador à lista
-                listaDeMarcadoresEscolhidos.Add(marcador);
+                listaDeMarcadoresCasaEscolhidos.Add(marcador);
+                listaDeMarcadoresForaEscolhidos.Add(marcador);
             }
 
             // adicionar a lista ao objeto de jogo
-            jogo.ListaDeMarcadores = listaDeMarcadoresEscolhidos;
+            jogo.ListaDeMarcadoresCasa = listaDeMarcadoresCasaEscolhidos;
+            jogo.ListaDeMarcadoresFora = listaDeMarcadoresForaEscolhidos;
             jogo.Escalao = Escalao;
             jogo.Data = Date;
             jogo.GolosCasa = GolosCasa;
@@ -187,7 +196,7 @@ namespace Hoquei.Controllers
             //}
             //ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
             //ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-            //ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+            //ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
             //return View(jogo);
             
 
@@ -211,7 +220,8 @@ namespace Hoquei.Controllers
             }
             ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
             ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-            ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+            ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+            ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
 
             return View(jogo);
         }
@@ -221,7 +231,8 @@ namespace Hoquei.Controllers
         {
             ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
             ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-            ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+            ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+            ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
             return View();
         }
 
@@ -230,7 +241,7 @@ namespace Hoquei.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("JogoId, Local, Data, Clube_Casa, Clube_Fora, Escalao, GolosCasa, GolosFora, Capitao_Casa, Capitao_Fora")] Jogo jogo, DateTime Date, int GolosCasa, int GolosFora, int Clube_CasaEscolhido, int Clube_ForaEscolhido, int Capitao_CasaEscolhido, int Capitao_ForaEscolhido, int[] Marcadores)
+        public async Task<IActionResult> Edit(int id, [Bind("JogoId, Local, Data, Clube_Casa, Clube_Fora, Escalao, GolosCasa, GolosFora, Capitao_Casa, Capitao_Fora")] Jogo jogo, DateTime Date, int GolosCasa, int GolosFora, int Clube_CasaEscolhido, int Clube_ForaEscolhido, int Capitao_CasaEscolhido, int Capitao_ForaEscolhido, int[] MarcadoresCasa, int[] MarcadoresFora)
         {
 
             //avalia se o array com a lista de clubes escolhidos está vazio ou não
@@ -241,7 +252,8 @@ namespace Hoquei.Controllers
                 // gerar as listas
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-                ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
 
                 // devolver controlo à View
                 return View(jogo);
@@ -259,7 +271,8 @@ namespace Hoquei.Controllers
                 // gerar as listas
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-                ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 // devolver controlo à View
                 return View(jogo);
             }
@@ -275,7 +288,8 @@ namespace Hoquei.Controllers
                 // gerar as listas
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-                ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
 
                 // devolver controlo à View
                 return View(jogo);
@@ -292,7 +306,8 @@ namespace Hoquei.Controllers
                 // gerar a lista clubes
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-                ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 // devolver controlo à View
                 return View(jogo);
             }
@@ -301,31 +316,63 @@ namespace Hoquei.Controllers
             jogo.Capitao_Fora = capitao_foraEscolhido;
 
             // avalia se o array com a lista de marcas escolhidas associadas ao carro está vazio ou não
-            if (Marcadores.Length == 0)
+            if (MarcadoresCasa.Length == 0)
             {
                 //É gerada uma mensagem de erro
-                ModelState.AddModelError("", "É necessário selecionar pelo menos um marcador.");
+                ModelState.AddModelError("", "É necessário selecionar pelo menos um marcadorcasa.");
                 // gerar as listas
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-                ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 // devolver controlo à View
                 return View(jogo);
             }
 
             // criar uma lista com os objetos escolhidos dos jogadores
-            List<Jogador> listaDeMarcadoresEscolhidos = new List<Jogador>();
+            List<Jogador> listaDeMarcadoresCasaEscolhidos = new List<Jogador>();
+            List<Jogador> listaDeMarcadoresForaEscolhidos = new List<Jogador>();
             // Para cada objeto escolhido..
-            foreach (int item in Marcadores)
+            foreach (int item in MarcadoresCasa)
+            {
+                //procurar o jogador
+                Jogador marcadorcasa = _context.ListaDeJogadores.Find(item);
+                // adicionar o jogador à lista
+                listaDeMarcadoresCasaEscolhidos.Add(marcadorcasa);
+                
+            }
+
+
+
+
+            // avalia se o array com a lista de marcas escolhidas associadas ao carro está vazio ou não
+            if (MarcadoresFora.Length == 0)
+            {
+                //É gerada uma mensagem de erro
+                ModelState.AddModelError("", "É necessário selecionar pelo menos um marcadorcasa.");
+                // gerar as listas
+                ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
+                ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                // devolver controlo à View
+                return View(jogo);
+            }
+            // Para cada objeto escolhido..
+            foreach (int item in MarcadoresFora)
             {
                 //procurar o jogador
                 Jogador marcador = _context.ListaDeJogadores.Find(item);
                 // adicionar o jogador à lista
-                listaDeMarcadoresEscolhidos.Add(marcador);
+                listaDeMarcadoresForaEscolhidos.Add(marcador);
             }
 
+
+
+
             // adicionar a lista ao objeto de jogo
-            jogo.ListaDeMarcadores = listaDeMarcadoresEscolhidos;
+            jogo.ListaDeMarcadoresCasa = listaDeMarcadoresCasaEscolhidos;
+            jogo.ListaDeMarcadoresFora = listaDeMarcadoresForaEscolhidos;
 
             jogo.Data = Date;
             jogo.GolosCasa = GolosCasa;
@@ -347,7 +394,8 @@ namespace Hoquei.Controllers
                 jogo1.GolosFora = jogo.GolosFora;
                 jogo1.Capitao_Casa = jogo.Capitao_Casa;
                 jogo1.Capitao_Fora = jogo.Capitao_Fora;
-                jogo1.ListaDeMarcadores = jogo.ListaDeMarcadores;
+                jogo1.ListaDeMarcadoresCasa = jogo.ListaDeMarcadoresCasa;
+                jogo1.ListaDeMarcadoresFora = jogo.ListaDeMarcadoresFora;
 
                 _context.Update(jogo1);
 
@@ -369,7 +417,8 @@ namespace Hoquei.Controllers
             //}
             ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
             ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-            ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+            ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+            ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
             return View(jogo);
         }
 

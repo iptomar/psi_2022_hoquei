@@ -395,7 +395,7 @@ namespace Hoquei.Data.Migrations
             modelBuilder.Entity("Hoquei.Models.Jogador", b =>
                 {
                     b.HasOne("Hoquei.Models.Jogo", null)
-                        .WithMany("ListaDeMarcadores")
+                        .WithMany("ListaDeMarcadoresCasa")
                         .HasForeignKey("JogoId");
                 });
 
@@ -479,7 +479,7 @@ namespace Hoquei.Data.Migrations
 
             modelBuilder.Entity("Hoquei.Models.Jogo", b =>
                 {
-                    b.Navigation("ListaDeMarcadores");
+                    b.Navigation("ListaDeMarcadoresCasa");
                 });
 #pragma warning restore 612, 618
         }

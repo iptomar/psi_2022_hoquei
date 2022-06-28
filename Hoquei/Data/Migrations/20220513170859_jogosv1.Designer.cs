@@ -386,7 +386,7 @@ namespace Hoquei.Data.Migrations
                         .HasForeignKey("JogoId");
 
                     b.HasOne("Hoquei.Models.Jogo", null)
-                        .WithMany("ListaDeMarcadores")
+                        .WithMany("ListaDeMarcadoresCasa")
                         .HasForeignKey("JogoId1");
                 });
 
@@ -474,7 +474,7 @@ namespace Hoquei.Data.Migrations
 
                     b.Navigation("ListaDeJogadores");
 
-                    b.Navigation("ListaDeMarcadores");
+                    b.Navigation("ListaDeMarcadoresCasa");
                 });
 #pragma warning restore 612, 618
         }

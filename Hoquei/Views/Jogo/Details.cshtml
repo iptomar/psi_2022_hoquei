@@ -63,7 +63,7 @@
                 @Html.DisplayFor(model => model.Escalao)
             </td>
             <td>
-                @foreach (var item in Model.ListaDeMarcadores)
+                @foreach (var item in Model.ListaDeMarcadoresCasa)
                 {
                     <a asp-controller="Jogador" asp-action="Details" asp-route-id="@item.Num_Fed" style="margin-right: 5em;">@item.Name</a>}
             </td>
@@ -95,7 +95,7 @@
                 <a asp-controller="Jogador" asp-action="Details" asp-route-id="@Model.Capitao_Fora.Num_Fed" style="margin-right:5px;">@Model.Capitao_Fora.Name </a>
             </td>
             <td>
-                @foreach (var item in Model.ListaDeMarcadores)
+                @foreach (var item in Model.ListaDeMarcadoresFora)
                 {
                     <a asp-controller="Jogador" asp-action="Details" asp-route-id="@item.Num_Fed" style="margin-right: 5em;">@item.Name</a>}
             </td>
