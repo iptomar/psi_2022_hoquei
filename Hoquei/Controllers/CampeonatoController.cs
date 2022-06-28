@@ -22,6 +22,7 @@ namespace Hoquei.Controllers
 
         // GET: Campeonatoes
         public async Task<IActionResult> Index()
+
         {
             return View(await _context.Campeonato.ToListAsync());
             //return View(await _context.Campeonato.Include(l => l.escalao).ToListAsync());
@@ -30,26 +31,26 @@ namespace Hoquei.Controllers
         // GET: Campeonatoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var campeonato = await _context.Campeonato.Include(c => c.ListaDeJogos)
-                                                      .ThenInclude(a => a.Clube_Casa)
-                                                      .Include(c => c.ListaDeJogos)
-                                                      .ThenInclude(b => b.Clube_Fora)
-                                                      .FirstOrDefaultAsync(m => m.Id == id);
+            //var campeonato = await _context.Campeonato.Include(c => c.ListaDeJogos)
+            //                                          .ThenInclude(a => a.Clube_Casa)
+            //                                          .Include(c => c.ListaDeJogos)
+            //                                          .ThenInclude(b => b.Clube_Fora)
+            //                                          .FirstOrDefaultAsync(m => m.Id == id);
 
-            List<Jogo> jogos = new List<Jogo>();
-            jogos = campeonato.ListaDeJogos.ToList();
+            //List<Jogo> jogos = new List<Jogo>();
+            //jogos = campeonato.ListaDeJogos.ToList();
 
-            if (campeonato == null)
-            {
-                return NotFound();
-            }
-
-            return View(campeonato);
+            //if (campeonato == null)
+            //{
+            //    return NotFound();
+            //}
+            ViewBag.ListaDeClassificacoes = _context.Classificacoes.Where(i => i.Campeonato_Id.Id == id).ToList();
+            return View(await _context.Campeonato.ToListAsync());
         }
 
         // GET: Campeonatoes/Create

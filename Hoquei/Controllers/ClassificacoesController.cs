@@ -22,7 +22,7 @@ namespace Hoquei.Controllers
         // GET: Calssificacoes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Classificacoes.Include(c => c.Clube).Include(c => c.Campeonato_Id).ToListAsync());
+            return View(await _context.Classificacoes.Include(c => c.Clube).Include(c => c.Campeonato_Id).OrderBy(c => c.Campeonato_Id).ThenByDescending(c => c.Pontos).ToListAsync());
         }
 
 
@@ -33,13 +33,14 @@ namespace Hoquei.Controllers
             {
                 return NotFound();
             }
-            var classificacoes = await _context.Classificacoes.FirstOrDefaultAsync();
+            var classificacoes = await _context.Classificacoes.FindAsync(id);
 
 
             if (classificacoes == null)
             {
                 return View("Index");
             }
+
             return View(classificacoes);
         }
 
