@@ -197,7 +197,7 @@ namespace Hoquei.Controllers
             //classificacoes2.Clube = clube_foraEscolhido;
             //classificacoes2.Golos_Marcados = GolosFora;
             //classificacoes2.Golos_Sofridos = GolosCasa;
-            
+
             ////pontos 
             //if(GolosCasa > GolosFora) { 
             //    classificacoes1.Pontos = classificacoes1.Pontos + 3;
@@ -211,7 +211,7 @@ namespace Hoquei.Controllers
             //    classificacoes1.Pontos = classificacoes1.Pontos + 1;
             //    classificacoes2.Pontos = classificacoes2.Pontos + 1;
             //}
-              
+
             //// avalia se o array com a lista de marcas escolhidas associadas ao carro está vazio ou não
             //if (MarcadoresCasa.Length == 0)
             //{
@@ -226,6 +226,31 @@ namespace Hoquei.Controllers
             //    // devolver controlo à View
             //    return View(jogo);
             //}
+
+            Classificacoes classificacao1 = _context.Classificacoes.Where(i => i.Campeonato_Id.Id == campeonato.Id)
+                                                       .Where(j => j.Clube == jogo.Clube_Casa).FirstOrDefault();
+
+            Classificacoes classificacao2 = _context.Classificacoes.Where(i => i.Campeonato_Id.Id == campeonato.Id)
+                                                       .Where(j => j.Clube == jogo.Clube_Fora).FirstOrDefault();
+
+            if (GolosCasa > GolosFora)
+            {
+                classificacao1.Pontos = classificacao1.Pontos + 3;
+            }
+            if (GolosCasa < GolosFora)
+            {
+                classificacao2.Pontos = classificacao2.Pontos + 3;
+            }
+            else
+            {
+                classificacao1.Pontos = classificacao1.Pontos + 1;
+                classificacao2.Pontos = classificacao2.Pontos + 1;
+            }
+
+            classificacao1.Golos_Marcados = GolosCasa;
+            classificacao2.Golos_Sofridos = GolosFora;
+            classificacao1.Golos_Marcados = GolosFora;
+            classificacao2.Golos_Sofridos = GolosCasa;
 
             // criar uma lista com os objetos escolhidos dos jogadores
             List<Jogador> listaDeMarcadoresCasaEscolhidos = new List<Jogador>();
@@ -262,6 +287,8 @@ namespace Hoquei.Controllers
             champ.ListaDeJogos.Add(jogo);
             try
             {
+                _context.Add(classificacao1);
+                _context.Add(classificacao2);
                 _context.Add(jogo);
                 await _context.SaveChangesAsync();
 
