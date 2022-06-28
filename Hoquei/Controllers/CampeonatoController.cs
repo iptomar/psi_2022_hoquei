@@ -19,7 +19,7 @@ namespace Hoquei.Controllers
         {
             _context = context;
         }
-
+        
         // GET: Campeonatoes
         public async Task<IActionResult> Index()
         {
@@ -35,8 +35,15 @@ namespace Hoquei.Controllers
                 return NotFound();
             }
 
-            var campeonato = await _context.Campeonato
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var campeonato = await _context.Campeonato.Include(c =>c.ListaDeJogos)
+                                                      .ThenInclude(a => a.Clube_Casa)
+                                                      .Include(c => c.ListaDeJogos)
+                                                      .ThenInclude(b => b.Clube_Fora)
+                                                      .FirstOrDefaultAsync(m => m.Id == id);
+
+            List < Jogo >  jogos= new List<Jogo>();
+            jogos = campeonato.ListaDeJogos.ToList();
+
             if (campeonato == null)
             {
                 return NotFound();
@@ -48,8 +55,7 @@ namespace Hoquei.Controllers
         // GET: Campeonatoes/Create
         public IActionResult Create()
         {
-            var items = _context.Escalao.ToList();
-            ViewBag.data = items;
+            ViewBag.data =  _context.Escalao.ToList();
             //ViewBag.data = _context.Escalao.OrderBy(e => e.Id).ToListAsync();
             return View();
         }

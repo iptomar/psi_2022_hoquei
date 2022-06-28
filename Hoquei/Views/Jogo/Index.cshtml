@@ -6,16 +6,70 @@
 </head>
 <h1>Lista de Jogos</h1>
 <p><a asp-action="Adicionar">Criar novo</a></p>
-@foreach (var item in Model) {
 
 <div class="Carro">
-    <a asp-action="Details" asp-route-id="@item.JogoId">
         <div class="overlay">
             <div class="text">
-                @Html.DisplayFor(modelItem => item.JogoId)
-            </div>
+    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Resultado
+                            </th>
+                            <th>
+                                Golos
+                            </th>
+                            <th>
+                            @Html.DisplayNameFor(model => model.Data)
+                            </th>
+                            <th>
+                                Local
+                            </th>
+                            <th>
+                                Local
+                            </th>
+
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>
+                                <img src="~/clubefotos/@item.Clube_Casa.Foto" width="30" height="40">
+                                @Html.DisplayFor(modelItem => item.Clube_Casa.Name)
+                                
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GolosCasa)  -  @Html.DisplayFor(modelItem => item.GolosFora)
+                            </td>
+                            <td>
+                                <img src="~/clubefotos/@item.Clube_Fora.Foto" width="30" height="40">
+                                @Html.DisplayFor(modelItem => item.Clube_Fora.Name)
+                                
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Data);
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Local);
+                            </td>
+       
+
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.JogoId">Editar</a> |
+                                <a asp-action="Details" asp-route-id="@item.JogoId">Detalhes</a>
+                            </td>
+                        </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </a>
         </div>
-    </a>
-</div>}
 
 

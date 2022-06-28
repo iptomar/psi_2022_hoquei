@@ -34,7 +34,11 @@ namespace Hoquei.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
-            return View(await _context.Jogo.ToListAsync());
+
+            return View(await _context.Jogo.Include(c => c.Clube_Casa)
+                                           .Include(c=> c.Clube_Fora)
+                                           //.Include(c => c.)
+                                           .ToListAsync()) ;
         }
 
         // GET: Jogo/Adicionar
@@ -44,6 +48,7 @@ namespace Hoquei.Controllers
             ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
             ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
             ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
+            ViewBag.ListaCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
             return View();
         }
 
@@ -170,25 +175,25 @@ namespace Hoquei.Controllers
 
             // adicionar a lista ao objeto de jogo
             jogo.ListaDeMarcadores = listaDeMarcadoresEscolhidos;
-            jogo.Escalao = Escalao;
             jogo.Data = Date;
             jogo.GolosCasa = GolosCasa;
             jogo.GolosFora = GolosFora;
 
-            //if (ModelState.IsValid)
-            //{
+            //adicionar o jogo criado ao campeonato
+            Campeonato champ = await _context.Campeonato.FindAsync(int.Parse(Request.Form["Campeonato"]));
+            champ.ListaDeJogos.Add(jogo);
+            try
+            {
                 _context.Add(jogo);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
-
-            //}
-            //ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
-            //ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-            //ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
-            //return View(jogo);
-            
-
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("", e.ToString());
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         // GET: Jogador/Details/5
@@ -215,12 +220,18 @@ namespace Hoquei.Controllers
         }
 
         // GET: Jogo/Edit
-        public IActionResult Edit()
+        public async Task<IActionResult> EditAsync(int? id)
         {
             ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
             ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
             ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
-            return View();
+            Jogo jogo = _context.Jogo.Find(id);
+            Campeonato champ = await _context.Campeonato.FirstOrDefaultAsync(l => l.ListaDeJogos.Contains(jogo));
+            if(champ != null) { 
+            ViewBag.CampeonatoSelec = champ.Designacao;
+            }
+            ViewBag.ListaCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
+            return View(jogo);
         }
 
         // POST: User/Edit/5
@@ -340,7 +351,6 @@ namespace Hoquei.Controllers
                 jogo1.Data = Date;
                 jogo1.Clube_Casa = jogo.Clube_Casa;
                 jogo1.Clube_Fora = jogo.Clube_Fora;
-                jogo1.Escalao = jogo.Escalao;
                 jogo1.GolosCasa = jogo.GolosCasa;
                 jogo1.GolosFora = jogo.GolosFora;
                 jogo1.Capitao_Casa = jogo.Capitao_Casa;
