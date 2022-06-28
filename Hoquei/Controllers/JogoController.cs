@@ -226,15 +226,52 @@ namespace Hoquei.Controllers
             return View(jogo);
         }
 
-        // GET: Jogo/Edit
-        public IActionResult Edit()
+        //// GET: Jogo/Edit
+        //public IActionResult Edit()
+        //{
+        //    ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
+        //    ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+        //    ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+        //    ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+        //    return View();
+        //}
+
+        // GET: Jogo/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            // var jogadores = await _context.Jogador
+            //                                        .Include(l => l.ListaDeClubes)
+            //                                       .FirstOrDefaultAsync(m => m.Num_Fed == id);
+
+            //var jogadores = await _context.Jogador.FindAsync(id);
+
+            //adicionar ao jogador a foto dele
+            var jogos = await _context.Jogo.Include(l => l.ListaDeMarcadoresCasa)
+                                           .Include(l => l.ListaDeMarcadoresCasa)
+                                           .Include(l => l.Capitao_Fora)
+                                           .Include(l => l.Capitao_Casa)
+                                           .FirstOrDefaultAsync(m => m.JogoId == id);
+
+
+
+            if (jogos == null)
+            {
+                return View("Index");
+            }
             ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
             ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
             ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
             ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
-            return View();
+            return View(jogos);
         }
+
+
+
 
         // POST: User/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
