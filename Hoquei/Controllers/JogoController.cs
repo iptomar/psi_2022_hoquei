@@ -47,6 +47,8 @@ namespace Hoquei.Controllers
             ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
             ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
             ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
+            ViewBag.ListaDeCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
+            ViewBag.ListaDeClassificacoes = _context.Classificacoes.OrderBy(c => c.Clube).ToList();
             return View();
         }
 
@@ -54,7 +56,8 @@ namespace Hoquei.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Adicionar([Bind("JogoId,Local,Data,Clube_Casa,Clube_Fora,Escalao,GolosCasa, GolosFora, Capitao_Casa, Capitao_Fora")] Jogo jogo, DateTime Date, int GolosCasa, int GolosFora, string Escalao,/*int Escalao_Escolhido,*/ int Clube_CasaEscolhido, int Clube_ForaEscolhido, int Capitao_CasaEscolhido, int Capitao_ForaEscolhido, int[] MarcadoresCasa, int[] MarcadoresFora)
+
+        public async Task<IActionResult> Adicionar([Bind("JogoId,Local,Data,Clube_Casa,Clube_Fora,Escalao,GolosCasa, GolosFora, Capitao_Casa, Capitao_Fora, Campeonato")] Jogo jogo, DateTime Date, int GolosCasa, int GolosFora, string Escalao,/*int Escalao_Escolhido,*/ int Clube_CasaEscolhido, int Clube_ForaEscolhido, int Capitao_CasaEscolhido, int Capitao_ForaEscolhido, int[] MarcadoresCasa, int[] MarcadoresFora)
         {
 
             ////avalia se o array com a lista de clubes escolhidos está vazio ou não
@@ -86,6 +89,7 @@ namespace Hoquei.Controllers
                 ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
+                ViewBag.ListaDeCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
 
                 // devolver controlo à View
                 return View(jogo);
@@ -106,6 +110,7 @@ namespace Hoquei.Controllers
                 ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
+                ViewBag.ListaDeCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
                 // devolver controlo à View
                 return View(jogo);
             }
@@ -124,6 +129,7 @@ namespace Hoquei.Controllers
                 ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
+                ViewBag.ListaDeCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
 
                 // devolver controlo à View
                 return View(jogo);
@@ -143,13 +149,65 @@ namespace Hoquei.Controllers
                 ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
+                ViewBag.ListaDeCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
                 // devolver controlo à View
                 return View(jogo);
             }
 
+
             Jogador capitao_foraEscolhido = _context.Jogador.Find(Capitao_ForaEscolhido);
             jogo.Capitao_Fora = capitao_foraEscolhido;
 
+
+            // avalia se o array com a lista de jogadores escolhidos está vazio ou não
+            if (Campeonato == 0)
+            {
+                //É gerada uma mensagem de erro
+                ModelState.AddModelError("", "É necessário selecionar o Campeonato.");
+                // gerar a lista campeonatos
+                ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
+                ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
+                ViewBag.ListaDeCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
+                // devolver controlo à View
+                return View(jogo);
+            }
+
+
+            Campeonato campeonato = _context.Campeonato.Find(Campeonato);
+            jogo.Campeonato = campeonato;
+
+            //if(_context.Classificacoes.Where(f => f.Clube == Clube_ca){
+
+            //}
+
+            //Classificacoes classificacoes1 = new Classificacoes();
+            //classificacoes1.Campeonato_Id = campeonato;
+            //classificacoes1.Clube = clube_casaEscolhido;
+            //classificacoes1.Golos_Marcados = GolosCasa;
+            //classificacoes1.Golos_Sofridos = GolosFora;
+
+            //Classificacoes classificacoes2 = new Classificacoes();
+            //classificacoes2.Campeonato_Id = campeonato;
+            //classificacoes2.Clube = clube_foraEscolhido;
+            //classificacoes2.Golos_Marcados = GolosFora;
+            //classificacoes2.Golos_Sofridos = GolosCasa;
+            
+            ////pontos 
+            //if(GolosCasa > GolosFora) { 
+            //    classificacoes1.Pontos = classificacoes1.Pontos + 3;
+            //}
+            //if (GolosCasa < GolosFora)
+            //{
+            //    classificacoes2.Pontos = classificacoes2.Pontos + 3;
+            //}
+            //else
+            //{
+            //    classificacoes1.Pontos = classificacoes1.Pontos + 1;
+            //    classificacoes2.Pontos = classificacoes2.Pontos + 1;
+            //}
+              
             //// avalia se o array com a lista de marcas escolhidas associadas ao carro está vazio ou não
             //if (MarcadoresCasa.Length == 0)
             //{
@@ -196,6 +254,7 @@ namespace Hoquei.Controllers
             jogo.GolosCasa = GolosCasa;
             jogo.GolosFora = GolosFora;
 
+
             //if (ModelState.IsValid)
             //{
             _context.Add(jogo);
@@ -230,8 +289,11 @@ namespace Hoquei.Controllers
             }
             ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
             ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+            ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
+            ViewBag.ListaDeCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
             ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
             ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+
 
             return View(jogo);
         }
@@ -275,9 +337,12 @@ namespace Hoquei.Controllers
             }
             ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
             ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+            ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
+            ViewBag.ListaDeCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();  
             ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
             ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
             return View(jogos);
+
         }
 
 
@@ -299,6 +364,8 @@ namespace Hoquei.Controllers
                 // gerar as listas
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
+                ViewBag.ListaDeCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
 
@@ -318,6 +385,8 @@ namespace Hoquei.Controllers
                 // gerar as listas
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
+                ViewBag.ListaDeCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 // devolver controlo à View
@@ -335,6 +404,8 @@ namespace Hoquei.Controllers
                 // gerar as listas
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
+                ViewBag.ListaDeCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
 
@@ -353,6 +424,8 @@ namespace Hoquei.Controllers
                 // gerar a lista clubes
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
+                ViewBag.ListaDeCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 // devolver controlo à View
@@ -370,6 +443,8 @@ namespace Hoquei.Controllers
                 // gerar as listas
                 ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+                ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
+                ViewBag.ListaDeCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
                 ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
                 // devolver controlo à View
@@ -464,8 +539,11 @@ namespace Hoquei.Controllers
             //}
             ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
             ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
+            ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
+            ViewBag.ListaDeCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
             ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
             ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+
             return View(jogo);
         }
 

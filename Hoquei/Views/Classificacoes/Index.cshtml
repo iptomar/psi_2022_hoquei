@@ -1,34 +1,39 @@
-﻿@model Hoquei.Models.Campeonato
+﻿@model IEnumerable<Hoquei.Models.Classificacoes>
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Index";
 }
 
-<h1>Classificaçôes</h1>
+<h1>Index</h1>
+
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                Campeonato
+                @Html.DisplayNameFor(model => model.Campeonato_Id.Designacao)
             </th>
             <th>
-                Clube
+
+                @Html.DisplayNameFor(model => model.Clube.Name)
             </th>
             <th>
-                Pontos
+
+                @Html.DisplayNameFor(model => model.Pontos)
             </th>
             <th>
-                Golos Marcados
+
+                @Html.DisplayNameFor(model => model.Golos_Marcados)
             </th>
             <th>
-                Golos Sofridos
+
+                @Html.DisplayNameFor(model => model.Golos_Sofridos)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (Classificacoes item in ViewBag.ListaDeClassificacoes)
+        @foreach (var item in Model)
         {
             <tr>
                 <td>
@@ -47,7 +52,7 @@
                     @Html.DisplayFor(modelItem => item.Golos_Sofridos)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id_TabelaDeClassificacoes">Edit</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id_TabelaDeClassificacoes">Edit</a>
                 </td>
             </tr>
         }

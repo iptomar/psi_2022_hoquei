@@ -4,14 +4,16 @@ using Hoquei.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hoquei.Data.Migrations
 {
     [DbContext(typeof(HoqueiDB))]
-    partial class HoqueiDBModelSnapshot : ModelSnapshot
+    [Migration("20220628165629_calssv1")]
+    partial class calssv1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,7 +117,12 @@ namespace Hoquei.Data.Migrations
                     b.Property<string>("Designacao")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("escalaoId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("escalaoId");
 
                     b.ToTable("Campeonato");
                 });
@@ -164,8 +171,8 @@ namespace Hoquei.Data.Migrations
                     b.Property<DateTime>("Data_Fundacao")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FotoId")
-                        .HasColumnType("int");
+                    b.Property<string>("Foto")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -174,10 +181,6 @@ namespace Hoquei.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CampeonatoId");
-
-                    b.HasIndex("FotoId")
-                        .IsUnique();
-
 
                     b.ToTable("Clube");
                 });
@@ -262,9 +265,6 @@ namespace Hoquei.Data.Migrations
                     b.Property<int?>("JogoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("JogoId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -281,8 +281,6 @@ namespace Hoquei.Data.Migrations
                         .IsUnique();
 
                     b.HasIndex("JogoId");
-
-                    b.HasIndex("JogoId1");
 
                     b.ToTable("Jogador");
                 });
@@ -529,6 +527,15 @@ namespace Hoquei.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Hoquei.Models.Campeonato", b =>
+                {
+                    b.HasOne("Hoquei.Models.Escalao", "escalao")
+                        .WithMany()
+                        .HasForeignKey("escalaoId");
+
+                    b.Navigation("escalao");
+                });
+
             modelBuilder.Entity("Hoquei.Models.Classificacoes", b =>
                 {
                     b.HasOne("Hoquei.Models.Campeonato", "Campeonato_Id")
@@ -551,17 +558,6 @@ namespace Hoquei.Data.Migrations
                         .HasForeignKey("CampeonatoId");
                 });
 
-            modelBuilder.Entity("Hoquei.Models.Clube", b =>
-                {
-                    b.HasOne("Hoquei.Models.Fotos", "Foto")
-                        .WithOne("Club")
-                        .HasForeignKey("Hoquei.Models.Clube", "FotoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Foto");
-                });
-
             modelBuilder.Entity("Hoquei.Models.Jogador", b =>
                 {
                     b.HasOne("Hoquei.Models.Fotos", "Foto")
@@ -571,12 +567,8 @@ namespace Hoquei.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Hoquei.Models.Jogo", null)
-                        .WithMany("ListaDeMarcadoresCasa")
+                        .WithMany("ListaDeMarcadores")
                         .HasForeignKey("JogoId");
-
-                    b.HasOne("Hoquei.Models.Jogo", null)
-                        .WithMany("ListaDeMarcadoresFora")
-                        .HasForeignKey("JogoId1");
 
                     b.Navigation("Foto");
                 });
@@ -678,16 +670,12 @@ namespace Hoquei.Data.Migrations
 
             modelBuilder.Entity("Hoquei.Models.Fotos", b =>
                 {
-                    b.Navigation("Club");
-
                     b.Navigation("Player");
                 });
 
             modelBuilder.Entity("Hoquei.Models.Jogo", b =>
                 {
-                    b.Navigation("ListaDeMarcadoresCasa");
-
-                    b.Navigation("ListaDeMarcadoresFora");
+                    b.Navigation("ListaDeMarcadores");
                 });
 #pragma warning restore 612, 618
         }

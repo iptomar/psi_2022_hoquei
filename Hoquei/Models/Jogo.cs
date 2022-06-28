@@ -78,6 +78,12 @@ namespace Hoquei.Models
         [Required]
         public Jogador Capitao_Fora { get; set; }
 
+        /// <summary>
+        /// Capitao da equipa da casa
+        /// </summary>
+        [Required]
+        public Campeonato Campeonato { get; set; }
+
 
         /// <summary>
         /// lista de marcadores casa

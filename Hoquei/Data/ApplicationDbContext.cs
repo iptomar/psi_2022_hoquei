@@ -80,6 +80,7 @@ namespace Hoquei.Data
         public DbSet<Jogador> ListaDeJogadores{ get; set; }
         public DbSet<Clube> Clube { get; set; }
         public DbSet<Jogo> Jogo { get; set; }
+        public DbSet<Classificacoes> Classificacoes { get; set; }
     }
             
         
