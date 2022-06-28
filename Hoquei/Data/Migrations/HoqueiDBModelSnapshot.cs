@@ -230,11 +230,17 @@ namespace Hoquei.Data.Migrations
                     b.Property<int?>("JogoId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("JogoId1")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Num_Cam")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Numero_FederadoReal")
                         .HasColumnType("int");
 
                     b.HasKey("Num_Fed");
@@ -243,6 +249,8 @@ namespace Hoquei.Data.Migrations
                         .IsUnique();
 
                     b.HasIndex("JogoId");
+
+                    b.HasIndex("JogoId1");
 
                     b.ToTable("Jogador");
                 });
@@ -513,8 +521,12 @@ namespace Hoquei.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Hoquei.Models.Jogo", null)
-                        .WithMany("ListaDeMarcadores")
+                        .WithMany("ListaDeMarcadoresCasa")
                         .HasForeignKey("JogoId");
+
+                    b.HasOne("Hoquei.Models.Jogo", null)
+                        .WithMany("ListaDeMarcadoresFora")
+                        .HasForeignKey("JogoId1");
 
                     b.Navigation("Foto");
                 });
@@ -606,7 +618,9 @@ namespace Hoquei.Data.Migrations
 
             modelBuilder.Entity("Hoquei.Models.Jogo", b =>
                 {
-                    b.Navigation("ListaDeMarcadores");
+                    b.Navigation("ListaDeMarcadoresCasa");
+
+                    b.Navigation("ListaDeMarcadoresFora");
                 });
 #pragma warning restore 612, 618
         }
