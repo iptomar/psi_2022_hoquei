@@ -5,8 +5,9 @@
     <link rel="stylesheet" href="~/css/ImagensFilmes.css" />
 </head>
 <h1>Lista de Jogos</h1>
+@if(User.IsInRole("Admin") || User.IsInRole("Utilizador")) { 
 <p><a asp-action="Adicionar">Criar novo</a></p>
-
+}
 <div class="Carro">
         <div class="overlay">
             <div class="text">
@@ -41,7 +42,7 @@
                             <td>
                                 <img src="~/clubefotos/@item.Clube_Casa.Foto" width="30" height="40">
                                 @Html.DisplayFor(modelItem => item.Clube_Casa.Name)
-                                
+
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.GolosCasa)  -  @Html.DisplayFor(modelItem => item.GolosFora)
@@ -49,7 +50,7 @@
                             <td>
                                 <img src="~/clubefotos/@item.Clube_Fora.Foto" width="30" height="40">
                                 @Html.DisplayFor(modelItem => item.Clube_Fora.Name)
-                                
+
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Data);
@@ -57,12 +58,13 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Local);
                             </td>
-       
 
+                            @if (User.IsInRole("Admin") || User.IsInRole("Utilizador"))
+                            {
                             <td>
                                 <a asp-action="Edit" asp-route-id="@item.JogoId">Editar</a> |
                                 <a asp-action="Details" asp-route-id="@item.JogoId">Detalhes</a>
-                            </td>
+                            </td>}
                         </tr>
                                 }
                             </tbody>
