@@ -53,23 +53,13 @@ namespace Hoquei.Data
                 );
             //modelbuilder.Entity<Jogador>().HasOne(j => j.Foto).WithOne(f => f.).HasForeignKey<Fotos>(b => b.JogadorFK);
 
+            
+            modelbuilder.Entity<IdentityRole>().HasData(
+             new IdentityRole { Id = "u", Name = "Utilizador", NormalizedName = "UTILIZADOR" },
+             new IdentityRole { Id = "a", Name = "Admin", NormalizedName = "ADMIN" }
+             );
 
-            //modelbuilder.Entity<IdentityRole>().HasData(
-            // new IdentityRole { Id = "u", Name = "Utilizador", NormalizedName = "UTILIZADOR" },
-            // new IdentityRole { Id = "a", Name = "Admin", NormalizedName = "ADMIN" }
-            // );
 
-            //  modelbuilder.Entity<User>().HasData(
-            //   new User { Id = 1, Nome = "Marisa Vieira", UserName = "MarVi", Email = "Marisa.Freitas@iol.pt", NumTele = "967197885", CC = "098446793", DataNascimento = new DateTime(2019, 4, 16) },
-            //   new User { Id = 2, Nome = "Fátima Ribeiro", UserName = "FáRibeiro", Email = "Fátima.Machado@gmail.com", NumTele = "963737476", CC = "098446795", DataNascimento = new DateTime(2019, 10, 10) },
-            //   new User { Id = 4, Nome = "Paula Silva", UserName = "Pauva", Email = "Paula.Lopes@iol.pt", NumTele = "967517256", CC = "098446801", DataNascimento = new DateTime(2011, 3, 22) },
-            //   new User { Id = 5, Nome = "Mariline Marques", UserName = "Mariques", Email = "Mariline.Martins@sapo.pt", NumTele = "967212144", CC = "098446804", DataNascimento = new DateTime(2008, 6, 8) },
-            //   new User { Id = 6, Nome = "Marcos Rocha", UserName = "Marcha", Email = "Marcos.Rocha@sapo.pt", NumTele = "962125638", CC = "098446807", DataNascimento = new DateTime(2012, 8, 21) },
-            //   new User { Id = 7, Nome = "Alexandre Vieira", UserName = "Alexeira", Email = "Alexandre.Dias@hotmail.com", NumTele = "961493756", CC = "098446809", DataNascimento = new DateTime(2010, 10, 1) },
-            //   new User { Id = 8, Nome = "Paula Soares", UserName = "Paulares", Email = "Paula.Vieira@clix.pt", NumTele = "961937768", CC = "098446811", DataNascimento = new DateTime(2010, 12, 11) },
-            //   new User { Id = 9, Nome = "Mariline Santos", UserName = "Marilintos", Email = "Mariline.Ribeiro@iol.pt", NumTele = "964106478", CC = "098446799", DataNascimento = new DateTime(2017, 3, 21) },
-            //   new User { Id = 10, Nome = "Roberto Pinto", UserName = "RoPinto", Email = "Roberto.Vieira@sapo.pt", NumTele = "964685937", CC = "098446812", DataNascimento = new DateTime(2018, 1, 4) }
-            //);
         }
            
         public DbSet<User> User { get; set; }

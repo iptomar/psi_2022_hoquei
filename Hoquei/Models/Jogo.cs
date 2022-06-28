@@ -49,12 +49,6 @@ namespace Hoquei.Models
         public Clube Clube_Fora { get; set; }
 
         /// <summary>
-        /// Escalão
-        /// </summary>
-        [Required]
-        public string Escalao { get; set; }
-
-        /// <summary>
         /// Golos da equipa visitada
         /// </summary>
         [Required]
@@ -82,7 +76,7 @@ namespace Hoquei.Models
         /// Capitao da equipa da casa
         /// </summary>
         [Required]
-        public Campeonato Campeonato { get; set; }
+        public Campeonato Campeonatos { get; set; }
 
 
         /// <summary>

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Hoquei.Data;
 using Hoquei.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hoquei.Controllers
 {
@@ -19,7 +20,7 @@ namespace Hoquei.Controllers
         {
             _context = context;
         }
-
+        
         // GET: Campeonatoes
         public async Task<IActionResult> Index()
 
@@ -36,11 +37,19 @@ namespace Hoquei.Controllers
             //    return NotFound();
             //}
 
-            //var campeonato = await _context.Campeonato.Include(c => c.ListaDeJogos)
-            //                                          .ThenInclude(a => a.Clube_Casa)
-            //                                          .Include(c => c.ListaDeJogos)
-            //                                          .ThenInclude(b => b.Clube_Fora)
-            //                                          .FirstOrDefaultAsync(m => m.Id == id);
+            var campeonato = await _context.Campeonato.Include(c =>c.ListaDeJogos)
+                                                      .ThenInclude(a => a.Clube_Casa)
+                                                      .Include(c => c.ListaDeJogos)
+                                                      .ThenInclude(b => b.Clube_Fora)
+                                                      .FirstOrDefaultAsync(m => m.Id == id);
+
+            List < Jogo >  jogos= new List<Jogo>();
+            jogos = campeonato.ListaDeJogos.ToList();
+
+            if (campeonato == null)
+            {
+                return NotFound();
+            }
 
             //List<Jogo> jogos = new List<Jogo>();
             //jogos = campeonato.ListaDeJogos.ToList();
@@ -52,12 +61,11 @@ namespace Hoquei.Controllers
             ViewBag.ListaDeClassificacoes = _context.Classificacoes.Where(i => i.Campeonato_Id.Id == id).ToList();
             return View(await _context.Campeonato.ToListAsync());
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Campeonatoes/Create
         public IActionResult Create()
         {
-            ViewBag.data = _context.Escalao.ToList();
-            ViewBag.ListaDeClubes = _context.Clube.ToList();
+            ViewBag.data =  _context.Escalao.ToList();
             //ViewBag.data = _context.Escalao.OrderBy(e => e.Id).ToListAsync();
 
             return View();
@@ -66,6 +74,7 @@ namespace Hoquei.Controllers
         // POST: Campeonatoes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Designacao")] Campeonato campeonato, int[] Clubes)
@@ -122,7 +131,7 @@ namespace Hoquei.Controllers
             }
             return View(campeonato);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Campeonatoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -146,6 +155,7 @@ namespace Hoquei.Controllers
         // POST: Campeonatoes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Designacao")] Campeonato campeonato)

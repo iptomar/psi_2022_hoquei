@@ -37,7 +37,8 @@
 
     </div>
     <div>
-        <a asp-action="Edit" asp-route-id="@Model.Num_Fed">Editar</a>
+        @if (User.IsInRole("Admin") || User.IsInRole("Utilizador")) { 
+            <a asp-action="Edit" asp-route-id="@Model.Num_Fed">Editar</a>}
     </div>
 
     <div>

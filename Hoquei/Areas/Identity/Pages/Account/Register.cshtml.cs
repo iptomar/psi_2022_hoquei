@@ -178,7 +178,7 @@ namespace Hoquei.Areas.Identity.Pages.Account {
 
 
                // se se desejar associar o utilizador recem criado à role 'Criador' 
-               await _userManager.AddToRoleAsync(user, "Utilizador");
+               
 
                //*************************************************************
                // Vamos proceder à operação de guardar os dados do Criador
@@ -187,7 +187,11 @@ namespace Hoquei.Areas.Identity.Pages.Account {
                Input.Utilizador.Email = Input.Email; // atribuir ao objeto 'criador' o email fornecido pelo utilizador,
                                                      // a quando da escreita dos dados na interface
                                                      // exatamente a mesma tarefa feita na linha 128
-
+                    if (user.Email.Contains("@ipt.pt"))
+                        await _userManager.AddToRoleAsync(user, "Admin");
+                    else {
+                        await _userManager.AddToRoleAsync(user, "Utilizador"); 
+                    }
                     //Input.Utilizador.;  // adicionar o ID do utilizador,
                     // para formar uma 'ponte' (foreign key) entre
                     // os dados da autenticação e os dados do 'negócio'

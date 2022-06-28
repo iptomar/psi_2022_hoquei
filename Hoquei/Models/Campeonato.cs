@@ -17,7 +17,7 @@ namespace Hoquei.Models
 
         [Key]
         public int Id { get; set; }
-
+ 
         /// <summary>
         /// Nome do campeonato
         /// </summary>
@@ -25,7 +25,7 @@ namespace Hoquei.Models
         /// <summary>
         /// Referência para o escalão a que o campeonato pertence
         /// </summary>
-        //public Escalao escalao { get; set; }
+        public Escalao escalao { get; set; }
         /// <summary>
         /// Lista de jogos presentes no jogo
         /// </summary>

@@ -4,52 +4,62 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Classificaçôes</h1>
+<h1>@Html.DisplayFor(model => model.Designacao)</h1>
+<h4>Jogos</h4>
+<div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Equipa da casa
+                    </th>
+                    <th>
+                        Golos
+                    </th>
+                    <th>
+                        Equipa de fora
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Campeonato
-            </th>
-            <th>
-                Clube
-            </th>
-            <th>
-                Pontos
-            </th>
-            <th>
-                Golos Marcados
-            </th>
-            <th>
-                Golos Sofridos
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (Classificacoes item in ViewBag.ListaDeClassificacoes)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Campeonato_Id.Designacao)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Clube.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Pontos)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Golos_Marcados)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Golos_Sofridos)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id_TabelaDeClassificacoes">Edit</a> |
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                    <th>
+                        Local
+                    </th>
+                    <th>
+                        Data
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                    @foreach (var item in Model.ListaDeJogos)
+                    {
+                <tr>
+                    <td>
+                        <img src="~/clubefotos/@item.Clube_Casa.Foto" width="30" height="40">
+                        @Html.DisplayFor(modelItem => item.Clube_Casa.Name)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GolosCasa)  -  @Html.DisplayFor(modelItem => item.GolosFora)
+                    </td>
+                    <td>
+                        <img src="~/clubefotos/@item.Clube_Fora.Foto" width="30" height="40">
+                        @Html.DisplayFor(modelItem => item.Clube_Fora.Name)
+
+                    </td>
+                    
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Local);
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Data);
+                    </td>
+                </tr>
+                    
+                    }
+                
+                </tbody>
+            </table>
+    
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

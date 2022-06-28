@@ -1,5 +1,6 @@
 ﻿using Hoquei.Data;
 using Hoquei.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -35,10 +36,13 @@ namespace Hoquei.Controllers
         public async Task<IActionResult> IndexAsync()
         {
 
-            ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
-            return View(await _context.Jogo.ToListAsync());
-        }
 
+            return View(await _context.Jogo.Include(c => c.Clube_Casa)
+                                           .Include(c=> c.Clube_Fora)
+                                           //.Include(c => c.)
+                                           .ToListAsync()) ;
+        }
+        [Authorize]
         // GET: Jogo/Adicionar
         public IActionResult Adicionar()
         {
@@ -51,13 +55,13 @@ namespace Hoquei.Controllers
             ViewBag.ListaDeClassificacoes = _context.Classificacoes.OrderBy(c => c.Clube).ToList();
             return View();
         }
-
+        [Authorize]
         // POST: Jogo/Adicionar
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
 
-        public async Task<IActionResult> Adicionar([Bind("JogoId,Local,Data,Clube_Casa,Clube_Fora,Escalao,GolosCasa, GolosFora, Capitao_Casa, Capitao_Fora, Campeonato")] Jogo jogo, DateTime Date, int GolosCasa, int GolosFora, string Escalao,/*int Escalao_Escolhido,*/ int Clube_CasaEscolhido, int Clube_ForaEscolhido, int Capitao_CasaEscolhido, int Capitao_ForaEscolhido, int[] MarcadoresCasa, int[] MarcadoresFora)
+        public async Task<IActionResult> Adicionar([Bind("JogoId,Local,Data,Clube_Casa,Clube_Fora,Escalao,GolosCasa, GolosFora, Capitao_Casa, Capitao_Fora, Campeonato")] Jogo jogo, DateTime Date, int GolosCasa, int GolosFora, string Escalao,/*int Escalao_Escolhido,*/ int Clube_CasaEscolhido, int Clube_ForaEscolhido, int Capitao_CasaEscolhido, int Capitao_ForaEscolhido, int[] MarcadoresCasa, int[] MarcadoresFora, int Campeonato)
         {
 
             ////avalia se o array com a lista de clubes escolhidos está vazio ou não
@@ -176,7 +180,7 @@ namespace Hoquei.Controllers
 
 
             Campeonato campeonato = _context.Campeonato.Find(Campeonato);
-            jogo.Campeonato = campeonato;
+            jogo.Campeonatos = campeonato;
 
             //if(_context.Classificacoes.Where(f => f.Clube == Clube_ca){
 
@@ -249,26 +253,25 @@ namespace Hoquei.Controllers
             // adicionar a lista ao objeto de jogo
             jogo.ListaDeMarcadoresCasa = listaDeMarcadoresCasaEscolhidos;
             jogo.ListaDeMarcadoresFora = listaDeMarcadoresForaEscolhidos;
-            jogo.Escalao = Escalao;
             jogo.Data = Date;
             jogo.GolosCasa = GolosCasa;
             jogo.GolosFora = GolosFora;
 
+            //adicionar o jogo criado ao campeonato
+            Campeonato champ = await _context.Campeonato.FindAsync(int.Parse(Request.Form["Campeonato"]));
+            champ.ListaDeJogos.Add(jogo);
+            try
+            {
+                _context.Add(jogo);
+                await _context.SaveChangesAsync();
 
-            //if (ModelState.IsValid)
-            //{
-            _context.Add(jogo);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
-
-            //}
-            //ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
-            //ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-            //ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
-            //return View(jogo);
-
-
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("", e.ToString());
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         // GET: Jogador/Details/5
@@ -337,17 +340,16 @@ namespace Hoquei.Controllers
             }
             ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
             ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-            ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
-            ViewBag.ListaDeCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();  
-            ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
-            ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
-            return View(jogos);
-
+            ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+            Jogo jogo = _context.Jogo.Find(id);
+            Campeonato champ = await _context.Campeonato.FirstOrDefaultAsync(l => l.ListaDeJogos.Contains(jogo));
+            if(champ != null) { 
+            ViewBag.CampeonatoSelec = champ.Designacao;
+            }
+            ViewBag.ListaCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
+            return View(jogo);
         }
-
-
-
-
+        [Authorize(Roles = "Admin")]
         // POST: User/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -511,7 +513,6 @@ namespace Hoquei.Controllers
                 jogo1.Data = Date;
                 jogo1.Clube_Casa = jogo.Clube_Casa;
                 jogo1.Clube_Fora = jogo.Clube_Fora;
-                jogo1.Escalao = jogo.Escalao;
                 jogo1.GolosCasa = jogo.GolosCasa;
                 jogo1.GolosFora = jogo.GolosFora;
                 jogo1.Capitao_Casa = jogo.Capitao_Casa;

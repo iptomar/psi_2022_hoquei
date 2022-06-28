@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Hoquei.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hoquei.Controllers
 {
@@ -27,11 +28,12 @@ namespace Hoquei.Controllers
         }
 
         // GET: UserController
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Index()
         {
             return View(await _context.User.ToListAsync());
         }
-
+        [Authorize(Roles = "Admin,Utilizador")]
         // GET: UserController/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -49,7 +51,7 @@ namespace Hoquei.Controllers
 
             return View(users);
         }
-
+        [Authorize(Roles = "Admin,Utilizador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -68,6 +70,7 @@ namespace Hoquei.Controllers
         // POST: User/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin,Utilizador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,UserName,NumTele,CC,DataNascimento,UserNameId,Email")] User user)
@@ -144,6 +147,7 @@ namespace Hoquei.Controllers
         /*---------------------------------------------------*/
 
         // GET: UserController/Delete/5
+        [Authorize(Roles = "Admin,Utilizador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -166,6 +170,7 @@ namespace Hoquei.Controllers
         }
 
         // POST: UserController/Delete/5
+        [Authorize(Roles = "Admin,Utilizador")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int? id)
