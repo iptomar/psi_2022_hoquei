@@ -10,7 +10,8 @@
 
 <div class="Clube">
     <a asp-action="Details" asp-route-id="@item.Id">
-        <img src="~/clubefotos/@Html.DisplayFor(modelItem => item.Foto)" width="300" height="175" />
+        <!--<img src="~/clubefotos/@Html.DisplayFor(modelItem => item.Foto)" width="300" height="175" />-->
+        <img src="~/fotos/@item.Foto.Nome" style="height:175px; width:300px" />
 
         <h1>@Html.DisplayFor(modelItem => item.Name)</h1>
 

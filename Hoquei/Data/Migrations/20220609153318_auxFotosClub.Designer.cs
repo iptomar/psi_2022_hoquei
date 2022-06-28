@@ -4,14 +4,16 @@ using Hoquei.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hoquei.Data.Migrations
 {
     [DbContext(typeof(HoqueiDB))]
-    partial class HoqueiDBModelSnapshot : ModelSnapshot
+    [Migration("20220609153318_auxFotosClub")]
+    partial class auxFotosClub
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,17 +137,14 @@ namespace Hoquei.Data.Migrations
                     b.Property<DateTime>("Data_Fundacao")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FotoId")
-                        .HasColumnType("int");
+                    b.Property<string>("Foto")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FotoId")
-                        .IsUnique();
 
                     b.ToTable("Clube");
                 });
@@ -493,17 +492,6 @@ namespace Hoquei.Data.Migrations
                     b.Navigation("escalao");
                 });
 
-            modelBuilder.Entity("Hoquei.Models.Clube", b =>
-                {
-                    b.HasOne("Hoquei.Models.Fotos", "Foto")
-                        .WithOne("Club")
-                        .HasForeignKey("Hoquei.Models.Clube", "FotoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Foto");
-                });
-
             modelBuilder.Entity("Hoquei.Models.Jogador", b =>
                 {
                     b.HasOne("Hoquei.Models.Fotos", "Foto")
@@ -599,8 +587,6 @@ namespace Hoquei.Data.Migrations
 
             modelBuilder.Entity("Hoquei.Models.Fotos", b =>
                 {
-                    b.Navigation("Club");
-
                     b.Navigation("Player");
                 });
 
