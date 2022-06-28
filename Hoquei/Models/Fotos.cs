@@ -41,5 +41,10 @@ namespace Hoquei.Models
         /// </summary>        
         public Jogador Player { get; set; }
         
+        // <summary>
+        // Identifica o clube a que a foto pertence
+        // </summary>        
+        public Clube Club { get; set; }
+
     }
 }

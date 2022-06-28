@@ -55,12 +55,6 @@ namespace Hoquei.Models
         [Required]
         public string Alcunha { get; set; }
 
-
-
-
-
-
-
         // criação da FK que referencia as fotos ao Jogador a que pertencem 
         [ForeignKey(nameof(Fotos))]
         public int FotoId { get; set; }

@@ -4,14 +4,16 @@ using Hoquei.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hoquei.Data.Migrations
 {
     [DbContext(typeof(HoqueiDB))]
-    partial class HoqueiDBModelSnapshot : ModelSnapshot
+    [Migration("20220609154142_addFotosClube")]
+    partial class addFotosClube
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,17 +232,11 @@ namespace Hoquei.Data.Migrations
                     b.Property<int?>("JogoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("JogoId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Num_Cam")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Numero_FederadoReal")
                         .HasColumnType("int");
 
                     b.HasKey("Num_Fed");
@@ -249,8 +245,6 @@ namespace Hoquei.Data.Migrations
                         .IsUnique();
 
                     b.HasIndex("JogoId");
-
-                    b.HasIndex("JogoId1");
 
                     b.ToTable("Jogador");
                 });
@@ -521,12 +515,8 @@ namespace Hoquei.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Hoquei.Models.Jogo", null)
-                        .WithMany("ListaDeMarcadoresCasa")
+                        .WithMany("ListaDeMarcadores")
                         .HasForeignKey("JogoId");
-
-                    b.HasOne("Hoquei.Models.Jogo", null)
-                        .WithMany("ListaDeMarcadoresFora")
-                        .HasForeignKey("JogoId1");
 
                     b.Navigation("Foto");
                 });
@@ -618,9 +608,7 @@ namespace Hoquei.Data.Migrations
 
             modelBuilder.Entity("Hoquei.Models.Jogo", b =>
                 {
-                    b.Navigation("ListaDeMarcadoresCasa");
-
-                    b.Navigation("ListaDeMarcadoresFora");
+                    b.Navigation("ListaDeMarcadores");
                 });
 #pragma warning restore 612, 618
         }
