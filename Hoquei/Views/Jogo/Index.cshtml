@@ -59,7 +59,7 @@
                 <a asp-controller="Jogo" asp-action="Details" asp-route-id="@item.Clube_Casa.Id" style="margin-right:5px;">@item.Clube_Casa.Name</a> @*Funcionando*@
             </td>
             <td>
-                @*<img src="~/clubefotos/@item.Clube_Casa.Foto" style="height:75px; width:65px" />*@
+                <img src="~/fotos/@item.Clube_Casa.Foto.Nome" width="30" height="40">
             </td>
             <td style="text-align: right">
                 @Html.DisplayFor(modelItem => item.GolosCasa)  @*Funcionando*@
@@ -71,7 +71,7 @@
                 @Html.DisplayFor(modelItem => item.GolosFora)  @*Funcionando*@
             </td>
             <td>
-                @*<img src="~/clubefotos/@item.Clube_Fora.Foto" style="height:75px; width:65px" />*@
+                <img src="~/fotos/@item.Clube_Fora.Foto.Nome" width="30" height="40">
             </td>
             <td>
                 <a asp-controller="Jogo" asp-action="Details" asp-route-id="@item.Clube_Fora.Id" style="margin-right:5px;">@item.Clube_Fora.Name</a> @*Funcionando*@
