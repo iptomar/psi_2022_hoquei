@@ -7,7 +7,7 @@
 <h1>Users</h1>
 
 <p>
-    <a asp-action="Create">Criar novo</a>
+     <a  asp-area="Identity" asp-page="/Account/Register">Adicionar User</a>
 </p>
 <table class="table">
     <thead>
@@ -57,7 +57,8 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Tem a certeza que quer apagar esta conta?')">Apagar</a>
+                @if (User.IsInRole("Admin")) { 
+                    <a asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Tem a certeza que quer apagar esta conta?')">Apagar</a>}
             </td>
         </tr>
         }

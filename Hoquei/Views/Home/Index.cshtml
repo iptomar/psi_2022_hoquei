@@ -1,8 +1,97 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<Hoquei.Models.Jogo>
 
+@{ ViewData["Title"] = "Index"; }
+<head>
+    <link rel="stylesheet" href="~/css/ImagensFilmes.css" />
+</head>
+
+@*Nome do Site*@
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <h1 class="display-4" style="font-size: 100px;">Hóquei Patins</h1>
+    <img src="fotos/logohoquei.png" class="figure-img" />
+    <br />
+    <br />
+    <h2 class="display-4" style="font-size: 50px;">Bem vindo ao Hóquei Patins - Results</h2>
+    <br />
+    <h2 class="display-4" style="font-size: 25px;">O site onde pode ver os resultados das suas equipas favoritas</h2>
+
+
+
+
+
 </div>
+
+@*<h1>Lista de Jogos</h1>*@
+<table class="table">
+    <thead>
+        <tr>
+            <!--<th>
+                Id do Jogo-->
+            @*Funcionando*@
+            <!--</th>-->
+            <th>
+                @Html.DisplayNameFor(model => model.Local)
+            </th>
+            <th>
+                Clube da Casa     @*Funcionando*@
+            </th>
+            <th>
+                Foto Casa
+            </th>
+            <th>
+                @*Golos Casa*@  @*Funcionando*@
+            </th>
+            <th>
+                Resultado
+            </th>
+            <th>
+                @*Golos Visitante*@  @*Funcionando*@
+            </th>
+            <th>
+                Foto Visitante
+            </th>
+            <th>
+                Clube Visitante         @*Funcionando*@
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <!--<td>
+                    <a asp-controller="Jogo" asp-action="Details" asp-route-id="@item.JogoId" style="margin-right:5px;">@item.JogoId</a>-->
+                @*@Html.DisplayFor(modelItem => item.JogoId)*@  @*Funcionando*@
+                <!--</td>-->
+                <td>
+                    @Html.DisplayFor(modelItem => item.Local)
+                </td>
+                <td>
+                    <a asp-controller="Jogo" asp-action="Details" asp-route-id="@item.Clube_Casa.Id" style="margin-right:5px;">@item.Clube_Casa.Name</a> @*Funcionando*@
+                </td>
+                <td>
+                    <img src="~/fotos/@item.Clube_Casa.Foto.Nome" style="height:75px; width:65px" />
+                </td>
+                <td style="text-align: right">
+                    @Html.DisplayFor(modelItem => item.GolosCasa)  @*Funcionando*@
+                </td>
+                <td style="text-align: center">
+                    <b style="text-align: center"> - </b>
+                </td>
+                <td style="text-align: left">
+                    @Html.DisplayFor(modelItem => item.GolosFora)  @*Funcionando*@
+                </td>
+                <td>
+                    <img src="~/fotos/@item.Clube_Fora.Foto.Nome" style="height:75px; width:65px" />
+                </td>
+                <td>
+                    <a asp-controller="Jogo" asp-action="Details" asp-route-id="@item.Clube_Fora.Id" style="margin-right:5px;">@item.Clube_Fora.Name</a> @*Funcionando*@
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+
+
+

@@ -1,0 +1,43 @@
+﻿@model Hoquei.Models.Classificacoes
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Classificacoes</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Pontos" class="control-label"></label>
+                <input asp-for="Pontos" class="form-control" />
+                <span asp-validation-for="Pontos" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Golos_Marcados" class="control-label"></label>
+                <input asp-for="Golos_Marcados" class="form-control" />
+                <span asp-validation-for="Golos_Marcados" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Golos_Sofridos" class="control-label"></label>
+                <input asp-for="Golos_Sofridos" class="form-control" />
+                <span asp-validation-for="Golos_Sofridos" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

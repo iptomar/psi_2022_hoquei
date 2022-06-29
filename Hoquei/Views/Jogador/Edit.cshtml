@@ -1,8 +1,7 @@
 ﻿@model Hoquei.Models.Jogador
 
-@{
-    ViewData["Title"] = "Edit";
-}
+@{ ViewData["Title"] = "Edit";
+                string selecionado = ""; }
 
 <h1>Edit</h1>
 
@@ -18,8 +17,13 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Num_Cam" class="control-label"></label>
-                <input asp-for="Num_Cam" class="form-control" />
+                <label asp-for="Numero_FederadoReal" class="control-label">Número de Federado</label>
+                <input required type="number" asp-for="Numero_FederadoReal" min="1" placeholder="1" />
+                <span asp-validation-for="Numero_FederadoReal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Num_Cam" class="control-label">Número da Camisola</label>
+                <input required type="number" asp-for="Num_Cam" min="1" max="99" maxlength="2" placeholder="1" />
                 <span asp-validation-for="Num_Cam" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -34,9 +38,19 @@
             </div>
             <div class="form-group">
                 <label asp-for="Foto" class="control-label"></label>
-                <input type="file" name="imgFile" class="form-control" />
+                <input type="file" name="imgFile" class="form-control" accept=".jpg,.jpeg,.png" />
                 <span asp-validation-for="Foto" class="text-danger"></span>
             </div>
+
+            @* listar as categorias, e confrontar essa lista com as categorias a que a lição está associada *@
+            @foreach (Clube item in ViewBag.ListaDeClubes)
+            {
+                if (Model.ListaDeClubes.Contains(item)) { selecionado = "checked"; }
+
+                <br /> <input type="checkbox" value="@item.Id" name="ClubeEscolhido" @selecionado /> @item.Name
+                selecionado = "";
+
+            }
 
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

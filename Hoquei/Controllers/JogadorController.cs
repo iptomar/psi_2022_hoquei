@@ -1,5 +1,6 @@
 ﻿using Hoquei.Data;
 using Hoquei.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -35,54 +36,84 @@ namespace Hoquei.Controllers
         }
         public async Task<IActionResult> IndexAsync()
         {
-            return View(await _context.Jogador.ToListAsync());
+            var aux = _context.Jogador.Include(j => j.Foto);
+            //return View(await _context.Jogador.ToListAsync());
+            return View(await aux.ToListAsync());
         }
 
         // GET: Jogadores/Adicionar
+        [Authorize(Roles = "Admin,Utilizador")]
         public IActionResult Adicionar()
         {
-            //ViewBag.ListaDeJogadores = _context.ListaDeJogadores.OrderBy(c => c.Name).ToList();
+            ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Name).ToList();
             return View();
         }
 
         // POST: Jogadores/Adicionar
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin,Utilizador")]
         [HttpPost]
-        public async Task<IActionResult> Adicionar([Bind("Num_Fed,Name,Num_Cam,Data_Nasc,Alcunha,Foto")] Jogador jogador, IFormFile imgFile, DateTime bornDate, int numeroCamisola)
+        public async Task<IActionResult> Adicionar([Bind("Num_Fed,Numero_FederadoReal,Name,Num_Cam,Data_Nasc,Clube,Alcunha,Foto")] Jogador jogador, int Numero_FederadoReal, IFormFile imgFile, DateTime bornDate, int numeroCamisola, int[] ClubeEscolhido)
         {
+            string nomeImg = "";
+            bool flagErro = false;
 
-            jogador.Foto = imgFile.FileName;
-            jogador.Data_Nasc = bornDate;
-            jogador.Num_Cam = numeroCamisola;
+            if (ModelState.IsValid) {
+                //jogador.Foto = imgFile.;
+                jogador.Numero_FederadoReal = Numero_FederadoReal;
+                jogador.ListaDeClubes = null;
+                jogador.Data_Nasc = bornDate;
+                jogador.Num_Cam = numeroCamisola;
 
-            //_webhost.WebRootPath vai ter o path para a pasta wwwroot
-            var saveimg = Path.Combine(_caminho.WebRootPath, "fotos", imgFile.FileName);
+                var imgext = Path.GetExtension(imgFile.FileName);
 
-            var imgext = Path.GetExtension(imgFile.FileName);
-
-            if (imgext == ".jpg" || imgext == ".png" || imgext == ".JPG" || imgext == ".PNG")
-            {
-                using (var uploadimg = new FileStream(saveimg, FileMode.Create))
+                if (imgext == ".jpg" || imgext == ".png" || imgext == ".jpeg")
                 {
-                    await imgFile.CopyToAsync(uploadimg);
+                    Fotos foto = new Fotos();
+                    //definir novo nome da fotografia
+                    Guid g;
+                    g = Guid.NewGuid();
+
+                    nomeImg = jogador.Num_Fed + "" + g.ToString();
+
+                    //determinar a extensão do nome da imagem
+                    string extensao = Path.GetExtension(imgFile.FileName).ToLower();
+
+                    // agora, consigo ter o nome final do ficheiro
+                    nomeImg = nomeImg + extensao;
+                    foto.Nome = nomeImg;
+
+                    // associar este ficheiro aos dados da Fotografia do jogador
+                    jogador.Foto = foto;
+
+                    string localizacaoFicheiro = _caminho.WebRootPath;
+                    nomeImg = Path.Combine(localizacaoFicheiro, "fotos", nomeImg);
+                }
+                else
+                {
+                    //se foram adicionados ficheiros inválidos
+                    //adicionar msg de erro
+                    ModelState.AddModelError("", "Os ficheiros adicionados não são válidos");
+                    flagErro = true;
 
                 }
-            }
+                if (!flagErro) {
+                    //processo de guardar foto do disco
+                    using var fileFoto = new FileStream(nomeImg, FileMode.Create);
+                    await imgFile.CopyToAsync(fileFoto);
 
-            if (ModelState.IsValid)
-            {
-                _context.Add(jogador);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
-
+                    _context.Add(jogador);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+    
             }
             return View(jogador);
-
         }
 
         // GET: Jogador/Details/5
+        
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -93,16 +124,23 @@ namespace Hoquei.Controllers
             var jogador = await _context.Jogador
                 .Where(f => f.Num_Fed == id)
                 .OrderByDescending(f => f.Num_Fed)
+                .Include(fc => fc.ListaDeClubes)
+                .Include(f => f.Foto)
                 .FirstOrDefaultAsync(m => m.Num_Fed == id);
+                
             if (jogador == null)
             {
                 return NotFound();
             }
 
+            ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Name).ToList();
+            
             return View(jogador);
+
         }
 
         // GET: User/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -110,86 +148,212 @@ namespace Hoquei.Controllers
                 return NotFound();
             }
 
-            var jogadores = await _context.Jogador.FindAsync(id);
+           // var jogadores = await _context.Jogador
+           //                                        .Include(l => l.ListaDeClubes)
+           //                                       .FirstOrDefaultAsync(m => m.Num_Fed == id);
+
+            //var jogadores = await _context.Jogador.FindAsync(id);
+
+            //adicionar ao jogador a foto dele
+            var jogadores = await _context.Jogador.Include(j => j.Foto).Include(l => l.ListaDeClubes)
+                                                  .Where(j => j.Num_Fed == id).FirstOrDefaultAsync();
+
+
             if (jogadores == null)
             {
-                return NotFound();
+                return View("Index");
             }
+            ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Name).ToList();
             return View(jogadores);
         }
 
         // POST: User/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Num_Fed,Name,Num_Cam,Data_Nasc,Alcunha,Foto")] Jogador novoJogador, IFormFile imgFile, DateTime bornDate, int numeroCamisola)
+        public async Task<IActionResult> Edit(int id, [Bind("Num_Fed,Numero_FederadoReal,Name,Num_Cam,Data_Nasc,Clube,Alcunha,Foto")] Jogador novoJogador,int Numero_FederadoReal,
+            IFormFile imgFile, DateTime bornDate, int[] ClubeEscolhido)
         {
+            string nomeImg = "";
+            bool flagErro = false;
 
-            var jogador = await _context.Jogador.FindAsync(id);
-
-            if (imgFile != null)
+            if (ModelState.IsValid)
             {
-                novoJogador.Foto = imgFile.FileName;
+            
+                var jogador = await _context.Jogador.Include(l => l.ListaDeClubes).Include(j => j.Foto).Where(j => j.Num_Fed == id).FirstOrDefaultAsync();
+                
+                // obter a lista dos IDs das Clubes associadas ao jogador, antes da edição
+                var oldListaClubes = jogador.ListaDeClubes
+                                           .Select(c => c.Id)
+                                           .ToList();
+                // avaliar se o utilizador alterou alguma categoria associada ao componente
+            // adicionadas -> lista de categorias adicionadas
+            // retiradas   -> lista de categorias retiradas
+            var adicionadas = ClubeEscolhido.Except(oldListaClubes);
+            var retiradas = oldListaClubes.Except(ClubeEscolhido.ToList());
 
-                //_webhost.WebRootPath vai ter o path para a pasta wwwroot
-                var saveimg = Path.Combine(_caminho.WebRootPath, "fotos", imgFile.FileName);
+            // se alguma Category foi adicionada ou retirada
+            // é necessário alterar a lista de categorias 
+            // associada à Lesson
+            if (adicionadas.Any() || retiradas.Any())
+            {
 
-                var imgext = Path.GetExtension(imgFile.FileName);
-
-                if (imgext == ".jpg" || imgext == ".png" || imgext == ".JPG" || imgext == ".PNG")
+                if (retiradas.Any())
                 {
-                    using (var uploadimg = new FileStream(saveimg, FileMode.Create))
+                    // retirar a Category 
+                    foreach (int oldClube in retiradas)
                     {
-                        await imgFile.CopyToAsync(uploadimg);
-
+                        var clubToRemove = jogador.ListaDeClubes.FirstOrDefault(c => c.Id == oldClube);
+                        jogador.ListaDeClubes.Remove(clubToRemove);
+                    }
+                }
+                if (adicionadas.Any())
+                {
+                    // adicionar a Categoria 
+                    foreach (int newClub in adicionadas)
+                    {
+                        var clubToAdd = await _context.Clube.FirstOrDefaultAsync(c => c.Id == newClub);
+                        jogador.ListaDeClubes.Add(clubToAdd);
                     }
                 }
             }
-            else
+
+            // avalia se o array com a lista de categorias escolhidas associadas ao Componente está vazio ou não
+            if (ClubeEscolhido.Length == 0)
             {
-                Jogador jogador1 = _context.Jogador.Find(novoJogador.Num_Fed);
-
-                _context.Entry<Jogador>(jogador1).State = EntityState.Detached;
-
-
-                novoJogador.Foto = jogador1.Foto;
+                //É gerada uma mensagem de erro
+                ModelState.AddModelError("", "É necessário selecionar pelo menos um clube.");
+                // gerar a lista clubes que podem ser associadas ao jogador
+                ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
+                // devolver controlo à View
+                return View(novoJogador);
             }
 
-            /***************************************************/
-            if (ModelState.IsValid)
+            // avalia se o array com a lista de categorias escolhidas associadas ao Componente está vazio ou não
+            if (ClubeEscolhido.Length < 1)
             {
-                try
-                {
+                //É gerada uma mensagem de erro
+                ModelState.AddModelError("", "Selecione apenas um clube.");
+                // gerar a lista Clubes que podem ser associadas ao Jogador
+                ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
+                // devolver controlo à View
+                return View(novoJogador);
+            }
 
+            // criar uma lista com os objetos escolhidos das Clubes
+            List<Clube> listaDeClubesEscolhidas = new List<Clube>();
+            // Para cada objeto escolhido..
+            foreach (int item in ClubeEscolhido)
+            {
+                //procurar a categoria
+                Clube Clube = _context.Clube.Find(item);
+                // adicionar a Categoria à lista
+                listaDeClubesEscolhidas.Add(Clube);
+            }
+
+            // adicionar a lista ao objeto de "Componente"
+            novoJogador.ListaDeClubes = listaDeClubesEscolhidas;
+           
+
+                //significa que adicionámos uma foto nova
+                if (imgFile != null)
+                {
+                    //apagamos a foto antiga da base de dados
+                    var fotoAntiga = jogador.Foto;
+                    _context.Foto.Remove(fotoAntiga);
+
+                    //apagamos a foto antiga do disco
+                    var removerDisco = Path.Combine(_caminho.WebRootPath, "fotos", fotoAntiga.Nome);
+                    System.IO.File.Delete(removerDisco);
+
+                    //processar a nova imagem
+                    var imgext = Path.GetExtension(imgFile.FileName);
+                
+                    if (imgext == ".jpg" || imgext == ".png" || imgext == ".jpeg")
+                    {
+                        Fotos foto = new Fotos();
+                        //definir novo nome da fotografia
+                        Guid g;
+                        g = Guid.NewGuid();
+
+                        nomeImg = jogador.Num_Fed + "" + g.ToString();
+
+
+                        //determinar a extensão do nome da imagem
+                        string extensao = Path.GetExtension(imgFile.FileName).ToLower();
+
+                        // agora, consigo ter o nome final do ficheiro
+                        nomeImg = nomeImg + extensao;
+                        foto.Nome = nomeImg;
+
+                        // associar este ficheiro aos dados da Fotografia do jogador
+                        jogador.Foto = foto;
+
+                        string localizacaoFicheiro = _caminho.WebRootPath;
+                        nomeImg = Path.Combine(localizacaoFicheiro, "fotos", nomeImg);
+                    }
+                    else
+                    {
+                        //se foram adicionados ficheiros inválidos
+                        //adicionar msg de erro
+                        ModelState.AddModelError("", "Os ficheiros adicionados não são válidos");
+                        flagErro = true;
+
+                    }
+                    if (!flagErro)
+                    {
+                        jogador.Numero_FederadoReal = novoJogador.Numero_FederadoReal;
+                        jogador.Name = novoJogador.Name;
+                        jogador.Num_Cam = novoJogador.Num_Cam;
+                        jogador.Data_Nasc = bornDate;
+                        jogador.Alcunha = novoJogador.Alcunha;
+
+                        try { 
+                            //processo de guardar foto do disco
+                            using var fileFoto = new FileStream(nomeImg, FileMode.Create);
+                            await imgFile.CopyToAsync(fileFoto);
+
+                            _context.Update(jogador);
+                            await _context.SaveChangesAsync();
+                            return RedirectToAction(nameof(Index));
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError("", ex.GetBaseException().ToString());
+                        }
+                    }
+
+                }
+                else //significa que não alterámos a foto
+                {
+                    jogador.Numero_FederadoReal = novoJogador.Numero_FederadoReal;
                     jogador.Name = novoJogador.Name;
                     jogador.Num_Cam = novoJogador.Num_Cam;
                     jogador.Data_Nasc = bornDate;
                     jogador.Alcunha = novoJogador.Alcunha;
-                    jogador.Foto = novoJogador.Foto;
 
-
- 
-                    _context.Update(jogador);
-                   
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!JogadorExists(jogador.Num_Fed))
+                    novoJogador.Foto = jogador.Foto;
+                    try
                     {
-                        return NotFound();
+                        _context.Update(jogador);
+
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        throw;
+                        ModelState.AddModelError("", ex.GetBaseException().ToString());
                     }
                 }
+
+                /***************************************************/
 
                 return RedirectToAction(nameof(Index));
             }
             return View(novoJogador);
         }
+
         private bool JogadorExists(int id)
         {
             return _context.Jogador.Any(e => e.Num_Fed == id);

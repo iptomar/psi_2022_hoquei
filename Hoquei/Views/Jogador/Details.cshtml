@@ -7,12 +7,12 @@
 <div>
     <hr />
     <div style="float:left; margin-right:20px;  margin-top:10px; border:4px solid black">
-        <img src="~/fotos/@Html.DisplayFor(model => model.Foto)"
+        <img src="~/fotos/@Html.DisplayFor(model => model.Foto.Nome)"
              width="200" />
     </div>
     <div style="line-height:2;  ">
         <b> Número de Federado:</b>
-        @Html.DisplayFor(model => model.Num_Fed) <br />
+        @Html.DisplayFor(model => model.Numero_FederadoReal) <br />
 
         <b> Nome:</b>
         @Html.DisplayFor(model => model.Name)<br />
@@ -23,19 +23,26 @@
         <b> Data de Nascimento:</b>
         @Html.TextBoxFor(model => model.Data_Nasc, "{0:dd/MM/yyyy}")<br />
 
-        <b> Foto:</b>
-        @Html.DisplayFor(model => model.Foto)<br />
 
+
+
+
+
+        <b>Clube: </b>
+
+        @foreach (var item in Model.ListaDeClubes)
+        {
+            <a asp-controller="Clube" asp-action="Details" asp-route-id="@item.Id" style="margin-right:5px;">@item.Name</a>}
 
 
     </div>
     <div>
-        <a asp-action="Edit" asp-route-id="@Model.Num_Fed">Editar</a>
+        @if (User.IsInRole("Admin") || User.IsInRole("Utilizador")) { 
+            <a asp-action="Edit" asp-route-id="@Model.Num_Fed">Editar</a>}
     </div>
 
     <div>
         <a class="nav-link text-dark" asp-action="Index">Voltar</a>
     </div>
-
 
 

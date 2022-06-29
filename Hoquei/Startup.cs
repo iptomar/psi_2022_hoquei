@@ -28,7 +28,7 @@ namespace Hoquei
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            
             //uso de variáveis de sessão
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
@@ -50,6 +50,10 @@ namespace Hoquei
                             .AddRoles<IdentityRole>() // ativa a utilização de Roles
                             .AddEntityFrameworkStores<HoqueiDB>();
             services.AddControllersWithViews();
+
+//            services.Configure<PasswordHasherOptions>(options =>
+//    options.CompatibilityMode = PasswordHasherCompatibilityMode.IdentityV2
+//);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,7 +74,7 @@ namespace Hoquei
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
 

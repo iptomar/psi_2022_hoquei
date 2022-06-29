@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Hoquei.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hoquei.Controllers
 {
@@ -18,17 +20,20 @@ namespace Hoquei.Controllers
         /// </summary>
         private readonly HoqueiDB _context;
 
-        public UserController(HoqueiDB context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public UserController(HoqueiDB context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: UserController
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Index()
         {
             return View(await _context.User.ToListAsync());
         }
-
+        [Authorize(Roles = "Admin,Utilizador")]
         // GET: UserController/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -46,29 +51,7 @@ namespace Hoquei.Controllers
 
             return View(users);
         }
-
-        //// GET: UserController/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: UserController/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-        // -------------------------------------------------------------------------------------------------------
-        // GET: User/Edit/5
+        [Authorize(Roles = "Admin,Utilizador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -87,9 +70,10 @@ namespace Hoquei.Controllers
         // POST: User/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin,Utilizador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,UserName,Email,NumTele,CC,DataNascimento")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,UserName,NumTele,CC,DataNascimento,UserNameId,Email")] User user)
         {
             if (id != user.Id)
             {
@@ -98,9 +82,49 @@ namespace Hoquei.Controllers
 
             if (ModelState.IsValid)
             {
+                User emailUser = await _context.User.Where(e => e.Email == user.Email).FirstOrDefaultAsync();
+                
+                if (emailUser != null /*&& aux != id*/)
+
+                {
+                    ModelState.AddModelError("", "Email já em uso");
+                    return View();
+                }
+
+                User nameUser = await _context.User.Where(e => e.UserName == user.UserName).FirstOrDefaultAsync();
+                
+                if (nameUser != null /*&& aux1 != id*/)
+                {
+                    ModelState.AddModelError("", "Username já em uso");
+                    return View();
+                }
+
+                //vamos realizar as alterações também nas tabelas da autenticação
+                ApplicationUser identidade = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == user.UserNameId); ;
+                
+                if (identidade == null)
+                {
+                    ModelState.AddModelError("", "Ocorreu um erro..");
+                    return View();
+                }
+                //verificar a idade do utilizador
+                if (user.DataNascimento.CompareTo(DateTime.Now.AddYears(-18)) > 0)
+                {
+                    ModelState.AddModelError("", "Para entrar no site é necessário ser maior de 18 anos");
+                    return View(user);
+                }
+
+                identidade.Email = user.Email;
+                identidade.UserName = user.UserName;
+                identidade.NormalizedEmail = identidade.Email.ToUpper();
+                identidade.NormalizedUserName = identidade.UserName.ToUpper();
+             
                 try
                 {
-                    _context.Update(user);
+                    //preparar as alterações 
+                    _context.Users.Update(identidade);
+                    _context.User.Update(user);
+                    //fazer commit das alterações na bd
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -123,6 +147,7 @@ namespace Hoquei.Controllers
         /*---------------------------------------------------*/
 
         // GET: UserController/Delete/5
+        [Authorize(Roles = "Admin,Utilizador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -145,12 +170,20 @@ namespace Hoquei.Controllers
         }
 
         // POST: UserController/Delete/5
+        [Authorize(Roles = "Admin,Utilizador")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int? id)
         {
             var utilizadorARemover = await _context.User.FindAsync(id);
+            var userARemover = await _context.Users.FirstOrDefaultAsync(u => u.UserName == utilizadorARemover.UserName);
+            
             _context.User.Remove(utilizadorARemover);
+            _context.Users.Remove(userARemover);
+            
+
+           
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

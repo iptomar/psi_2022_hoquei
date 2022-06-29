@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Hoquei.Models.Clube>
+
+@{ ViewData["Title"] = "Index"; }
+<head>
+    <link rel="stylesheet" href="~/css/ImagensFilmes.css" />
+</head>
+<h1>Lista de Clubes</h1>
+@if (User.IsInRole("Admin") || User.IsInRole("Utilizador")){
+<p><a asp-action="Adicionar">Adicionar clube</a></p>}
+
+@foreach (var item in Model)
+{
+
+    <div class="Clube">
+        <a asp-action="Details" asp-route-id="@item.Id">
+            <img src="~/fotos/@Html.DisplayFor(modelItem => item.Foto.Nome)" width="300" height="175" />
+
+            <h1>@Html.DisplayFor(modelItem => item.Name)</h1>
+
+        </a>
+    </div>}
+
+

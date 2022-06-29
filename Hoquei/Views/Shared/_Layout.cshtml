@@ -1,51 +1,75 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Hoquei.Data.ApplicationUser> SignInManager
+@inject UserManager<Hoquei.Data.ApplicationUser> UserManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Hoquei</title>
+    <title>@ViewData["Title"] - Hóquei Patins</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Hoquei</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Jogador" asp-action="Adicionar">Adicionar</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Jogador" asp-action="Index">Jogadores</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
+                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">Hoquei</a>
+                
+              
+
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                       <a class="nav-link text-white"  title="Manage">Olá @User.Identity.Name!</a>
+                        @* User.Identity.Name --> devolve o UserName  *@
+              <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">SAIR</a>
+                    }
+                    else
+                    {
+                       <a class="nav-link text-white"  asp-area="Identity" asp-page="/Account/Register">CRIAR CONTA</a>
+                       <a class="nav-link text-white"  asp-area="Identity" asp-page="/Account/Login">   ENTRAR</a>
+                    }
+
+                
+
             </div>
         </nav>
     </header>
     <div class="container">
+
+        <ul class="menu">
+            <li>
+                <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            </li>
+            @if (User.IsInRole("Admin")) {
+                <li>
+                    <a asp-area="" asp-controller="User" asp-action="Index">Lista de utilizadores</a>
+                </li> }
+
+            <li>
+                <a asp-area="" asp-controller="Jogador" asp-action="Index">Lista de jogadores</a>
+            </li>
+            <li>
+                <a asp-area="" asp-controller="Clube" asp-action="Index">Clubes</a>
+            </li>
+
+            <li>
+                <a asp-area="" asp-controller="Jogo" asp-action="Index">Jogos</a>
+            </li>
+
+
+            <li>
+                <a asp-area="" asp-controller="Campeonato" asp-action="Index">Campeonato</a>
+            </li>
+
+        </ul>
+
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class=" footer text-muted">
         <div class="container">
             &copy; 2022 - Hoquei - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

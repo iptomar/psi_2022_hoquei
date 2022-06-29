@@ -1,0 +1,122 @@
+﻿@model Hoquei.Models.Jogo
+
+@{
+    ViewData["Title"] = "Edit";
+    var a = ViewBag.CampeonatoSelec.ToString();
+    string selecionado = "";
+}
+
+<h1>Edit</h1>
+
+<h4>Jogo</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Local" class="control-label"></label>
+                <input asp-for="Local" class="form-control" />
+                <span asp-validation-for="Local" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Data" class="control-label"> Data do Jogo</label>
+                <input required type="datetime-local" name="Date" asp-for="Data" class="form-control" />
+                <span asp-validation-for="Data" class="text-danger"></span>
+            </div>
+
+            @*<div class="form-group">
+            @Html.DropDownList("Campeonato", new SelectList(ViewBag.ListaDeCampeonatos, "Id", "Designacao"), ViewBag.CampeonatoSelec)
+        </div>*@
+            <div class="form-group">
+                <label asp-for="GolosCasa" class="control-label">Golos da Equipa da Casa</label>
+                <input required type="number" name="GolosCasa" min="1" max="99" maxlength="2" placeholder="1" asp-for="GolosCasa" />
+                <span asp-validation-for="GolosCasa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GolosFora" class="control-label">Golos da Equipa Visitante</label>
+                <input required type="number" name="GolosFora" min="1" max="99" maxlength="2" placeholder="1" asp-for="GolosFora" />
+                <span asp-validation-for="GolosFora" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Clube da Casa</label>
+                @foreach (Clube item in ViewBag.ListaDeClubes)
+                {
+
+                    <br /> <input type="checkbox" value="@item.Id" name="Clube_CasaEscolhido" @selecionado /> @item.Name
+                    selecionado = "";
+
+                }
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Clube Visitante</label>
+                @foreach (Clube item in ViewBag.ListaDeClubes)
+                {
+                    //if (Model.Clube_Casa.Contains(item.ListaDeJogadores)) { selecionado = "checked"; }
+                    <br /> <input type="checkbox" value="@item.Id" name="Clube_ForaEscolhido" @selecionado /> @item.Name
+                    selecionado = "";
+                }
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Capitão da Casa</label>
+                @foreach (Jogador item in ViewBag.ListaDeJogadores)
+                {
+
+                    //if (Model..Contains(item)) { selecionado = "checked"; }
+                    <br /> <input type="checkbox" value="@item.Num_Fed" name="Capitao_CasaEscolhido" @selecionado /> @item.Name
+                    selecionado = "";
+                }
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Capitão Da Equipa Visitante</label>
+                @foreach (Jogador item in ViewBag.ListaDeJogadores)
+                {
+                    //if (Model.Capitao_Fora.(item.ListaD)) { selecionado = "checked"; }
+                    <br /> <input type="checkbox" value="@item.Num_Fed" name="Capitao_ForaEscolhido" @selecionado /> @item.Name
+                    selecionado = "";
+                }
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Marcadores Casa</label>
+                @foreach (Jogador item in ViewBag.ListaDeMarcadoresCasa)
+                {
+                    if (Model.ListaDeMarcadoresCasa.Contains(item)) { selecionado = "checked"; }
+                    <br /> <input type="checkbox" value="@item.Num_Fed" name="MarcadoresCasa" @selecionado /> @item.Name
+                    selecionado = "";
+                }
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Marcadores Fora</label>
+                @foreach (Jogador item in ViewBag.ListaDeMarcadoresFora)
+                {
+                    if (Model.ListaDeMarcadoresFora.Contains(item)) { selecionado = "checked"; }
+                    <br /> <input type="checkbox" value="@item.Num_Fed" name="MarcadoresFora" @selecionado /> @item.Name
+                    selecionado = "";
+                }
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Campeonato</label>
+                @foreach (Campeonato item in ViewBag.ListaDeCampeonatos)
+                {
+                    if (Model.Campeonatos.Equals(item)) { selecionado = "checked"; }
+                    <br /> <input type="checkbox" value="@item.Id" name="Campeonato" @selecionado /> @item.Designacao
+                    selecionado = "";
+                }
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a class="nav-link text-dark" asp-action="Index">Back to List</a>
+</div>
