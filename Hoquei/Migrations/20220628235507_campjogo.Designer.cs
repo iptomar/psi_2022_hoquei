@@ -4,14 +4,16 @@ using Hoquei.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hoquei.Migrations
 {
     [DbContext(typeof(HoqueiDB))]
-    partial class HoqueiDBModelSnapshot : ModelSnapshot
+    [Migration("20220628235507_campjogo")]
+    partial class campjogo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,33 +208,6 @@ namespace Hoquei.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Escalao");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            designacao = "Infantis"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            designacao = "Iniciados"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            designacao = "Juvenis"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            designacao = "Juniores"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            designacao = "Seniores"
-                        });
                 });
 
             modelBuilder.Entity("Hoquei.Models.Fotos", b =>
@@ -416,14 +391,14 @@ namespace Hoquei.Migrations
                         new
                         {
                             Id = "u",
-                            ConcurrencyStamp = "4e50dc3a-28ff-4f66-80da-26d82e321981",
+                            ConcurrencyStamp = "2b2687d5-1154-46ef-9d4d-671d70ebf633",
                             Name = "Utilizador",
                             NormalizedName = "UTILIZADOR"
                         },
                         new
                         {
                             Id = "a",
-                            ConcurrencyStamp = "02c28b60-4c6e-4eed-b119-d09a6b22ac7c",
+                            ConcurrencyStamp = "ee6c131d-2106-4683-a275-3d936a50cb38",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

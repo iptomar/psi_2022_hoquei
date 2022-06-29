@@ -75,7 +75,7 @@ namespace Hoquei.Models
         /// <summary>
         /// Capitao da equipa da casa
         /// </summary>
-        [Required]
+        ///[Required]
         public Campeonato Campeonatos { get; set; }
 
 

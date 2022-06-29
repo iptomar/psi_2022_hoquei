@@ -37,11 +37,19 @@ namespace Hoquei.Controllers
             //    return NotFound();
             //}
 
-            var campeonato = await _context.Campeonato.Include(c =>c.ListaDeJogos)
+            var campeonato = await _context.Campeonato.Include(c => c.ListaDeJogos)
                                                       .ThenInclude(a => a.Clube_Casa)
+                                                      .ThenInclude(a => a.Foto)
                                                       .Include(c => c.ListaDeJogos)
                                                       .ThenInclude(b => b.Clube_Fora)
+                                                      .ThenInclude(a => a.Foto)
+                                                      .Include(c => c.ListaDeClassificacoes)
                                                       .FirstOrDefaultAsync(m => m.Id == id);
+
+            //var classificacoes =  _context.Classificacoes
+            //    .Where(f => f.Campeonato_Id.Id == id)
+            //    .OrderByDescending(f => f.Pontos)
+            //    .FirstOrDefaultAsync();
 
             List < Jogo >  jogos= new List<Jogo>();
             jogos = campeonato.ListaDeJogos.ToList();
@@ -58,14 +66,15 @@ namespace Hoquei.Controllers
             //{
             //    return NotFound();
             //}
-            ViewBag.ListaDeClassificacoes = _context.Classificacoes.Where(i => i.Campeonato_Id.Id == id).ToList();
-            return View(await _context.Campeonato.ToListAsync());
+            ViewBag.ListaDeClassificacoes = _context.Classificacoes.Where(i => i.Campeonato_Id.Id == id).OrderBy(c => c.Pontos).ToListAsync();
+            return View(campeonato);
         }
         [Authorize(Roles = "Admin")]
         // GET: Campeonatoes/Create
         public IActionResult Create()
         {
             ViewBag.data =  _context.Escalao.ToList();
+            ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
             //ViewBag.data = _context.Escalao.OrderBy(e => e.Id).ToListAsync();
 
             return View();
@@ -144,7 +153,7 @@ namespace Hoquei.Controllers
 
             //var campeonato = await _context.Campeonato.FirstOrDefaultAsync(i => i.Id == id);
 
-           var campeonato = await _context.Campeonato.Include(e => e.escalao).FirstOrDefaultAsync(i => i.Id == id);
+            var campeonato = await _context.Campeonato.Include(e => e.escalao).FirstOrDefaultAsync(i => i.Id == id);
             
        
             if (campeonato == null)

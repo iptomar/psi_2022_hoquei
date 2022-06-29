@@ -26,16 +26,16 @@
             </div>
 
             @*<div class="form-group">
-                @Html.DropDownList("Campeonato", new SelectList(ViewBag.ListaDeCampeonatos, "Id", "Designacao"), ViewBag.CampeonatoSelec)
-            </div>*@
+            @Html.DropDownList("Campeonato", new SelectList(ViewBag.ListaDeCampeonatos, "Id", "Designacao"), ViewBag.CampeonatoSelec)
+        </div>*@
             <div class="form-group">
                 <label asp-for="GolosCasa" class="control-label">Golos da Equipa da Casa</label>
-                <input required type="number" name="GolosCasa" min="1" max="99" maxlength="2" placeholder="1" asp-for="GolosCasa"/>
+                <input required type="number" name="GolosCasa" min="1" max="99" maxlength="2" placeholder="1" asp-for="GolosCasa" />
                 <span asp-validation-for="GolosCasa" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="GolosFora" class="control-label">Golos da Equipa Visitante</label>
-                <input required type="number" name="GolosFora" min="1" max="99" maxlength="2" placeholder="1"  asp-for="GolosFora"/>
+                <input required type="number" name="GolosFora" min="1" max="99" maxlength="2" placeholder="1" asp-for="GolosFora" />
                 <span asp-validation-for="GolosFora" class="text-danger"></span>
             </div>
 
@@ -97,6 +97,16 @@
                 {
                     if (Model.ListaDeMarcadoresFora.Contains(item)) { selecionado = "checked"; }
                     <br /> <input type="checkbox" value="@item.Num_Fed" name="MarcadoresFora" @selecionado /> @item.Name
+                    selecionado = "";
+                }
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Campeonato</label>
+                @foreach (Campeonato item in ViewBag.ListaDeCampeonatos)
+                {
+                    if (Model.Campeonatos.Equals(item)) { selecionado = "checked"; }
+                    <br /> <input type="checkbox" value="@item.Id" name="Campeonato" @selecionado /> @item.Designacao
                     selecionado = "";
                 }
             </div>

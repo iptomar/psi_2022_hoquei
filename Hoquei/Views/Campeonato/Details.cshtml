@@ -31,33 +31,78 @@
                 
                     @foreach (var item in Model.ListaDeJogos)
                     {
-                <tr>
-                    <td>
-                        <img src="~/clubefotos/@item.Clube_Casa.Foto" width="30" height="40">
-                        @Html.DisplayFor(modelItem => item.Clube_Casa.Name)
+                        <tr>
+                                <td>
+                                    <img src="~/fotos/@item.Clube_Casa.Foto.Nome" width="30" height="40">
+                                    @Html.DisplayFor(modelItem => item.Clube_Casa.Name)
 
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.GolosCasa)  -  @Html.DisplayFor(modelItem => item.GolosFora)
-                    </td>
-                    <td>
-                        <img src="~/clubefotos/@item.Clube_Fora.Foto" width="30" height="40">
-                        @Html.DisplayFor(modelItem => item.Clube_Fora.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GolosCasa)  -  @Html.DisplayFor(modelItem => item.GolosFora)
+                                </td>
+                                <td>
+                                    <img src="~/fotos/@item.Clube_Fora.Foto.Nome" width="30" height="40">
+                                    @*<img src="~/fotos/@Html.DisplayFor(modelItem => item.Clube_Fora.Foto.Nome)" width="30" height="40" />*@
+                                    @Html.DisplayFor(modelItem => item.Clube_Fora.Name)
 
-                    </td>
+                                </td>
                     
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Local);
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Data);
-                    </td>
-                </tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Local)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Data)
+                                </td>
+                        </tr>
                     
                     }
                 
                 </tbody>
             </table>
+
+        <table class="table">
+            <thead>
+                <tr>
+
+                    <th>
+
+                        Clube
+                    </th>
+                    <th>
+
+                        Pontos
+                    </th>
+                    <th>
+
+                        Golos Marcados
+                    </th>
+                    <th>
+
+                        Golos Sofridos
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ListaDeClassificacoes.OrderByDescending(i => i.Pontos))
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Clube.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Pontos)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Golos_Marcados)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Golos_Sofridos)
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
     
 </div>
 <div>

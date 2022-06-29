@@ -182,50 +182,6 @@ namespace Hoquei.Controllers
             Campeonato campeonato = _context.Campeonato.Find(Campeonato);
             jogo.Campeonatos = campeonato;
 
-            //if(_context.Classificacoes.Where(f => f.Clube == Clube_ca){
-
-            //}
-
-            //Classificacoes classificacoes1 = new Classificacoes();
-            //classificacoes1.Campeonato_Id = campeonato;
-            //classificacoes1.Clube = clube_casaEscolhido;
-            //classificacoes1.Golos_Marcados = GolosCasa;
-            //classificacoes1.Golos_Sofridos = GolosFora;
-
-            //Classificacoes classificacoes2 = new Classificacoes();
-            //classificacoes2.Campeonato_Id = campeonato;
-            //classificacoes2.Clube = clube_foraEscolhido;
-            //classificacoes2.Golos_Marcados = GolosFora;
-            //classificacoes2.Golos_Sofridos = GolosCasa;
-
-            ////pontos 
-            //if(GolosCasa > GolosFora) { 
-            //    classificacoes1.Pontos = classificacoes1.Pontos + 3;
-            //}
-            //if (GolosCasa < GolosFora)
-            //{
-            //    classificacoes2.Pontos = classificacoes2.Pontos + 3;
-            //}
-            //else
-            //{
-            //    classificacoes1.Pontos = classificacoes1.Pontos + 1;
-            //    classificacoes2.Pontos = classificacoes2.Pontos + 1;
-            //}
-
-            //// avalia se o array com a lista de marcas escolhidas associadas ao carro está vazio ou não
-            //if (MarcadoresCasa.Length == 0)
-            //{
-            //    //É gerada uma mensagem de erro
-            //    ModelState.AddModelError("", "É necessário selecionar pelo menos um marcadorcasa.");
-            //    // gerar as listas
-            //    ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
-            //    ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-            //    ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
-            //    ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
-            //    ViewBag.ListaDeEscaloes = _context.Escalao.OrderBy(c => c.Id).ToList();
-            //    // devolver controlo à View
-            //    return View(jogo);
-            //}
 
             Classificacoes classificacao1 = _context.Classificacoes.Where(i => i.Campeonato_Id.Id == campeonato.Id)
                                                        .Where(j => j.Clube == jogo.Clube_Casa).FirstOrDefault();
@@ -248,8 +204,8 @@ namespace Hoquei.Controllers
             }
 
             classificacao1.Golos_Marcados = GolosCasa;
-            classificacao2.Golos_Sofridos = GolosFora;
-            classificacao1.Golos_Marcados = GolosFora;
+            classificacao1.Golos_Sofridos = GolosFora;
+            classificacao2.Golos_Marcados = GolosFora;
             classificacao2.Golos_Sofridos = GolosCasa;
 
             // criar uma lista com os objetos escolhidos dos jogadores
@@ -283,22 +239,22 @@ namespace Hoquei.Controllers
             jogo.GolosFora = GolosFora;
 
             //adicionar o jogo criado ao campeonato
-            Campeonato champ = await _context.Campeonato.FindAsync(int.Parse(Request.Form["Campeonato"]));
-            champ.ListaDeJogos.Add(jogo);
-            try
-            {
-                _context.Add(classificacao1);
-                _context.Add(classificacao2);
+            //Campeonato champ = await _context.Campeonato.FindAsync(int.Parse(Request.Form["Campeonato"]));
+            //champ.ListaDeJogos.Add(jogo);
+            //try
+            //{
+                //_context.Add(classificacao1);
+                //_context.Add(classificacao2);
                 _context.Add(jogo);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
-            }
-            catch (Exception e)
-            {
-                ModelState.AddModelError("", e.ToString());
-                return RedirectToAction(nameof(Index));
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    ModelState.AddModelError("", e.ToString());
+            //    return RedirectToAction(nameof(Index));
+            //}
         }
 
         // GET: Jogador/Details/5
@@ -357,6 +313,7 @@ namespace Hoquei.Controllers
                                            .Include(l => l.ListaDeMarcadoresCasa)
                                            .Include(l => l.Capitao_Fora)
                                            .Include(l => l.Capitao_Casa)
+                                           .Include(l => l.Campeonatos)
                                            .FirstOrDefaultAsync(m => m.JogoId == id);
 
 
@@ -367,7 +324,9 @@ namespace Hoquei.Controllers
             }
             ViewBag.ListaDeClubes = _context.Clube.OrderBy(c => c.Id).ToList();
             ViewBag.ListaDeJogadores = _context.Jogador.OrderBy(c => c.Num_Fed).ToList();
-            ViewBag.ListaDeMarcadores = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+            ViewBag.ListaDeCampeonatos = _context.Campeonato.OrderBy(c => c.Id).ToList();
+            ViewBag.ListaDeMarcadoresCasa = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
+            ViewBag.ListaDeMarcadoresFora = _context.ListaDeJogadores.OrderBy(c => c.Num_Fed).ToList();
             Jogo jogo = _context.Jogo.Find(id);
             Campeonato champ = await _context.Campeonato.FirstOrDefaultAsync(l => l.ListaDeJogos.Contains(jogo));
             if(champ != null) { 
@@ -382,7 +341,7 @@ namespace Hoquei.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("JogoId, Local, Data, Clube_Casa, Clube_Fora, Escalao, GolosCasa, GolosFora, Capitao_Casa, Capitao_Fora")] Jogo jogo, DateTime Date, int GolosCasa, int GolosFora, int Clube_CasaEscolhido, int Clube_ForaEscolhido, int Capitao_CasaEscolhido, int Capitao_ForaEscolhido, int[] MarcadoresCasa, int[] MarcadoresFora)
+        public async Task<IActionResult> Edit(int id, [Bind("JogoId, Local, Data, Clube_Casa, Clube_Fora, Escalao, GolosCasa, GolosFora, Capitao_Casa, Capitao_Fora")] Jogo jogo, DateTime Date, int GolosCasa, int GolosFora, int Clube_CasaEscolhido, int Clube_ForaEscolhido, int Capitao_CasaEscolhido, int Capitao_ForaEscolhido, int[] MarcadoresCasa, int[] MarcadoresFora, int Campeonato)
         {
 
             //avalia se o array com a lista de clubes escolhidos está vazio ou não
@@ -530,6 +489,33 @@ namespace Hoquei.Controllers
             jogo.GolosFora = GolosFora;
 
             var jogo1 = await _context.Jogo.FindAsync(id);
+
+            Campeonato campeonato = _context.Campeonato.Find(Campeonato);
+
+            Classificacoes classificacao1 = _context.Classificacoes.Where(i => i.Campeonato_Id.Id == campeonato.Id)
+                                                       .Where(j => j.Clube == jogo.Clube_Casa).FirstOrDefault();
+
+            Classificacoes classificacao2 = _context.Classificacoes.Where(i => i.Campeonato_Id.Id == campeonato.Id)
+                                                       .Where(j => j.Clube == jogo.Clube_Fora).FirstOrDefault();
+
+            if (GolosCasa > GolosFora)
+            {
+                classificacao1.Pontos = classificacao1.Pontos + 3;
+            }
+            if (GolosCasa < GolosFora)
+            {
+                classificacao2.Pontos = classificacao2.Pontos + 3;
+            }
+            else
+            {
+                classificacao1.Pontos = classificacao1.Pontos + 1;
+                classificacao2.Pontos = classificacao2.Pontos + 1;
+            }
+
+            classificacao1.Golos_Marcados = GolosCasa;
+            classificacao2.Golos_Sofridos = GolosFora;
+            classificacao1.Golos_Marcados = GolosFora;
+            classificacao2.Golos_Sofridos = GolosCasa;
 
             /***************************************************/
             //if (ModelState.IsValid)

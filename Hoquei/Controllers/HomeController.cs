@@ -1,5 +1,7 @@
-﻿using Hoquei.Models;
+﻿using Hoquei.Data;
+using Hoquei.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -13,14 +15,23 @@ namespace Hoquei.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly HoqueiDB _context;
+
+        public HomeController(ILogger<HomeController> logger, HoqueiDB context)
         {
+            _context = context;
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+
+            return View(await _context.Jogo.Include(c => c.Clube_Casa)
+                                           .ThenInclude(c => c.Foto)
+                                           .Include(c => c.Clube_Fora)
+                                           .ThenInclude(c => c.Foto)
+                                           //.Include(c => c.)
+                                           .ToListAsync());
         }
 
         public IActionResult Privacy()

@@ -43,9 +43,9 @@
 
 
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.DropDownList("Campeonato", new SelectList(ViewBag.ListaCampeonatos, "Id", "Designacao"))
-        </div>
+        </div>*@
         @*<div class="form-group">
             <label asp-for="Escalao" class="control-label"></label>
             <input asp-for="Escalao" class="form-control" />
@@ -85,13 +85,13 @@
                 <label class="control-label">Marcadores Fora</label>
                 @foreach (Jogador item in ViewBag.ListaDeMarcadoresFora)
                 {
-                    <br /> <input type="checkbox" value="@item.Num_Fed" name="Marcadores" /> @item.Name}
+                    <br /> <input type="checkbox" value="@item.Num_Fed" name="MarcadoresCasa" /> @item.Name}
             </div>
             <div class="form-group">
                 <label class="control-label">Marcadores Casa</label>
                 @foreach (Jogador item in ViewBag.ListaDeMarcadoresCasa)
                 {
-                    <br /> <input type="checkbox" value="@item.Num_Fed" name="Marcadores" /> @item.Name}
+                    <br /> <input type="checkbox" value="@item.Num_Fed" name="MarcadoresFora" /> @item.Name}
             </div>
             <div class="form-group">
                 <input type="submit" value="Adicionar" class="btn btn-primary" />

@@ -44,13 +44,13 @@ namespace Hoquei.Data
         {
             base.OnModelCreating(modelbuilder);
 
-            //modelbuilder.Entity<Escalao>().HasData(
-            //    new Escalao { Id = 1, designacao = "Infantis" },
-            //    new Escalao { Id = 2, designacao = "Iniciados" },
-            //    new Escalao { Id = 3, designacao = "Juvenis" },
-            //    new Escalao { Id = 4, designacao = "Juniores" },
-            //    new Escalao { Id = 5, designacao = "Seniores" }
-            //    );
+            modelbuilder.Entity<Escalao>().HasData(
+                new Escalao { Id = 1, designacao = "Infantis" },
+                new Escalao { Id = 2, designacao = "Iniciados" },
+                new Escalao { Id = 3, designacao = "Juvenis" },
+                new Escalao { Id = 4, designacao = "Juniores" },
+                new Escalao { Id = 5, designacao = "Seniores" }
+                );
             //modelbuilder.Entity<Jogador>().HasOne(j => j.Foto).WithOne(f => f.).HasForeignKey<Fotos>(b => b.JogadorFK);
 
 
